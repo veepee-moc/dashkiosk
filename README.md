@@ -34,6 +34,10 @@ Here is a demonstration video:
 
 # Development
 
+To fetch dependencies:
+
+    $ yarn
+
 To run the server for development:
 
     $ grunt serve
