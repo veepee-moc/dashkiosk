@@ -1,17 +1,15 @@
-FROM node:6
+FROM node:10
 
-RUN npm install -g bower grunt-cli
+RUN yarn global add bower grunt-cli
 RUN apt-get -qq update && apt-get install -qq gifsicle libjpeg-progs optipng libavahi-compat-libdnssd-dev
 
 WORKDIR /dashkiosk
 COPY . /dashkiosk/
-ENV NPM_CONFIG_LOGLEVEL warn
-RUN npm install && \
+RUN yarn install && \
     grunt && \
     cd dist && \
-    npm install --production && \
-    rm -rf ../node_modules ../build && \
-    npm cache clean
+    yarn install --production && \
+    yarn cache clean
 
 RUN chmod +x /dashkiosk/entrypoint.sh
 
