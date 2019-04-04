@@ -7,6 +7,11 @@ angular.module('dashkiosk.controllers')
       $scope.group.$attach(name);
     };
 
+    // Preview this group on actual display
+    $scope.previewGroup = function() {
+      $scope.group.$preview(localStorage.getItem('register'));
+    };
+
     // Copy a dashboard to this group
     $scope.copyDashboard = function(id, dt) {
       if (dt.dropEffect === 'copy') {

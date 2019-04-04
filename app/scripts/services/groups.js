@@ -177,6 +177,17 @@ angular.module('dashkiosk.services')
           return false;
         });
     };
+    // Preview the group
+    Group.prototype.$preview = function(blob) {
+      return $http
+        .post('api/preview/group/' + this.id, { blob: blob })
+        .then(() => false)
+        .catch((err) => {
+          alertService.danger('Unable to preview group!',
+                              ((err || {}).data || {}).message);
+          return false;
+        });
+    };
     // Copy a dashboard from another group
     Group.prototype.$copy = function(id) {
       // We only have the ID, we need to find the

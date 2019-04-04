@@ -1,7 +1,8 @@
 angular.module('dashkiosk.controllers')
-  .controller('GroupsCtrl', function($scope, groups) {
+  .controller('GroupsCtrl', function($scope, groups, $location) {
     'use strict';
 
+    $scope.host = $location.protocol() + '://' + $location.host() + ':' + $location.port();
     $scope.groups = groups;
     $scope.createGroup = function() {
       var random = (function(length) {
