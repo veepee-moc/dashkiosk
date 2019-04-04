@@ -181,8 +181,8 @@ angular.module('dashkiosk.services')
     Group.prototype.$preview = function(blob) {
       return $http
         .post('api/preview/group/' + this.id, { blob: blob })
-        .then(() => false)
-        .catch((err) => {
+        .then(function() { return false; })
+        .catch(function(err) {
           alertService.danger('Unable to preview group!',
                               ((err || {}).data || {}).message);
           return false;
