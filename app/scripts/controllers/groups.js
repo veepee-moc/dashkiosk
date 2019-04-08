@@ -18,5 +18,4 @@ angular.module('dashkiosk.controllers')
       groups.$add({ name: 'New group ' + random,
                     description: 'Newly created group' });
     };
-
   });

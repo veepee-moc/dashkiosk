@@ -95,6 +95,46 @@ angular.module('dashkiosk.controllers')
     $scope.isNew = function() {
       return !realDashboard;
     };
+  })
+  .controller('CreateBroadcastCtrl', function ($scope, $http) {
+    'use strict';
 
+    $scope.display = false;
+    $scope.groups = angular.copy($scope.$parent.$parent.$parent.groups);
+    $scope.formattedGroups = [];
+    let i = 0;
+    for (var item in $scope.groups) {
+      if ({}.toString.call($scope.groups[item]) !== '[object Function]') {
+        $scope.formattedGroups[i] = $scope.groups[item];
+        i++;
+      }
+    }
+    $scope.selection = $scope.formattedGroups.map(function (elem) { return elem.id; });
+
+    $scope.toggleSelection = function toggleSelection(id) {
+      var idx = $scope.selection.indexOf(id);
+      if (idx > -1) {
+        $scope.selection.splice(idx, 1);
+      } else {
+        $scope.selection.push(id);
+      }
+    };
+
+    $scope.toggleDisplay = function toggleDisplay() {
+      $scope.display = !$scope.display;
+    };
+
+    $scope.submit = function () {
+      return $http
+        .post('/api/broadcast/', JSON.stringify({
+          groups: $scope.selection,
+          dashboard: $scope.dashboard
+        }), {})
+        .then(function () { $scope.$hide(); return false; })
+        .catch(function (err) {
+          console.log(err);
+          return false;
+        });
+    };
   });
 
