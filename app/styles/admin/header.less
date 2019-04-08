@@ -4,13 +4,15 @@ header {
     background-color: @gray-light;
     background-color: fade(@gray-light, 90%);
     color: white;
-    line-height: @navbar-height - 8px;
+    line-height: @navbar-height;
     .font-source-sans-pro(24px);
 
+    vertical-align: middle;
     .logo, .branding {
-        height: @navbar-height - 8px;
+        margin-top:-10px;
+        height: @navbar-height;
         width: auto;
-        margin: 4px 10px;
+        margin-left: 13px;
     }
     .branding {
         float: right;
@@ -43,5 +45,49 @@ header {
             .loading-indicator(@navbar-height - 12px);
         }
     }
-        
+
+    .navlink{
+        height:100% !important;
+    }
+    .link{
+        color:white;
+        margin-left:10px;
+    }
+    
+    .brand {
+        font-weight: bold;
+    }
+    
+    a{
+        text-decoration: none !important;
+    }
+    
+    a:hover{
+        color:white;
+        text-decoration: none !important;
+    }
+    
+    a:focus{
+        color:white;
+    }
+    
+    .navlink {
+        display:inline-block;
+    }
+    
+    .links {
+        height:100% !important;
+        display:inline-block;
+        vertical-align: middle;
+        transition: all 0.5s;
+    }
+    
+    .animation:hover{
+        letter-spacing: 2px;
+    }
+    
+    .divider {
+        padding-left:10px;
+        border-left: 2px solid  rgb(255, 255, 255);
+    }
 }
