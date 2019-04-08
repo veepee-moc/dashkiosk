@@ -1,3 +1,15 @@
+<div data-ui-element="dk-broadcast">
+  <span class="property edit"
+    bs-modal
+    data-container="body"
+    data-template="broadcast.create.html">
+    <button type="button" class="btn btn-default broadcast-button" ng-click="createBroadcast()">
+        <span class="glyphicon glyphicon-globe"></span>
+        Broadcast
+    </button>
+  </span>
+</div>
+
 <ul data-ui-element="dk-group-list">
   <li ng-repeat="group in groups track by group.id" class="col-md-6">
     <dk-group group="group" groups="groups">

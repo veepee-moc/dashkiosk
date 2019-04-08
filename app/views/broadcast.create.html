@@ -1,0 +1,65 @@
+<div class="modal" data-ui-element="dk-dashboard-edit" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" ng-controller="CreateBroadcastCtrl">
+      <form novalidate name="dashboardForm" class="form" role="form" ng-submit="submit()">
+        <div class="modal-body">
+          <div data-ui-element="dk-group-checkbox">
+            <div class="panel-default">
+              <div class="panel-heading collapsed" ng-click="toggleDisplay()">
+                <h3 class="panel-title">
+                  Select groups <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                </h3>
+              </div>
+            </div>
+            <div class="checkbox-container container col-md-12" ng-if="display === true">
+              <div class="col-md-6 checkboxes" ng-repeat="group in formattedGroups">
+                <label class="form-control">
+                  <input type="checkbox" name="test" value="{{group.id}}" ng-checked="selection.indexOf(group.id) > -1"
+                    ng-click="toggleSelection(group.id)">
+                    {{group.name}}
+                  </input>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="input-group" ng-class="{'has-error': dashboardForm.url.$invalid}">
+            <span class="input-group-addon"><span title="URL" class="glyphicon glyphicon-link"></span></span>
+            <input type="url" class="form-control" placeholder="URL" name="url" required ng-model="dashboard.url">
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon"><span title="Description" class="glyphicon glyphicon-book"></span></span>
+            <input type="text" class="form-control" placeholder="Description" name="description"
+              ng-model="dashboard.description">
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group" ng-class="{'has-error': dashboardForm.timeout.$invalid}">
+                <span class="input-group-addon"><span title="Timeout" class="glyphicon glyphicon-refresh"></span></span>
+                <input type="number" class="form-control" placeholder="Timeout" name="timeout"
+                  ng-model="dashboard.timeout" required pattern="^[0-9]*$">
+                <span class="input-group-addon">s</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group" ng-class="{'has-error': dashboardForm.delay.$invalid}">
+                <span class="input-group-addon"><span title="Delay" class="glyphicon glyphicon-time"></span></span>
+                <input type="number" class="form-control" placeholder="Delay" name="delay" ng-model="dashboard.delay" pattern="^[0-9]*$">
+                <span class="input-group-addon">s</span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon"><span title="Viewport"
+                class="glyphicon glyphicon-resize-full"></span></span>
+            <input type="text" class="form-control" viewport autocapitalize="off" autocorrect="off"
+              placeholder="Viewport size (height × width)" name="viewport" ng-model="dashboard.viewport">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" ng-click="$hide()">Cancel</button>
+          <button type="submit" class="btn btn-primary" ng-disabled="!dashboardForm.$valid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
