@@ -4,56 +4,126 @@
 // dedicated functions.
 
 angular.module('dashkiosk.services')
-  .factory('groupsService', function($window, $q, $http, $rootScope, loadingIndicatorService, alertService) {
+  .factory('groupsService', function ($window, $q, $http, $rootScope, loadingIndicatorService, alertService) {
     'use strict';
     var io = $window.io,
-        socket = io.connect($window.location.origin + '/changes'),
-        deferred = null,        // Will resolve once we get data for the first time
-        ready = false;
+      socket = io.connect($window.location.origin + '/changes'),
+      deferred = null,        // Will resolve once we get data for the first time
+      ready = false;
 
     var groups = { server: {} };
 
     loadingIndicatorService.increment();
-    socket.on('connect', function() {
-      console.info('[Dashkiosk] connected to socket.io server');
-      socket.once('snapshot', function() {
+    socket.on('connect', function () {
+      //console.info('[Dashkiosk] connected to socket.io server');
+      socket.once('snapshot', function () {
         loadingIndicatorService.decrement();
       });
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
       console.warn('[Dashkiosk] lost connection to socket.io server');
       loadingIndicatorService.increment();
     });
 
     // Full update
-    socket.on('snapshot', function(newGroups) {
-      console.info('[Dashkiosk] received a full snapshot of all groups');
+    socket.on('snapshot', function (newGroups) {
+      //console.info('[Dashkiosk] received a full snapshot of all groups');
       groups.server = newGroups;
       fromServer();
     });
 
     // Incremental updates
-    socket.on('group.created', function(group) {
-      console.info('[Dashkiosk] received a new group', group);
+    socket.on('group.created', function (group) {
+      //console.info('[Dashkiosk] received a new group', group);
       groups.server[group.id] = group;
+
+      var groupsOrdered = [];
+      _.each(groups.server, function (group) {
+        groupsOrdered.push(group.id);
+      });
+
+      groupsOrdered.sort();
+      var groupsServerTemp = {};
+
+      _.each(groupsOrdered, function (groupTmp) {
+        _.each(groups.server, function (group) {
+          if (group.id === groupTmp) {
+            var groupKey = parseInt(group.rank + '' + group.id);
+            groupsServerTemp[groupKey] = group;
+          }
+        });
+      });
+
+      groups.server = {};
+      groups.server = groupsServerTemp;
+
+      console.log(groups.server);
+
       fromServer();
     });
-    socket.on('group.updated', function(group) {
-      console.info('[Dashkiosk] updated group', group);
-      groups.server[group.id] = group;
+
+    socket.on('group.updated', function (group) {
+      //console.info('[Dashkiosk] updated group', group);
+      console.log(groups.server);
+
+      //groups.server[group.id] = group;
+      _.each(groups.server, function (g) {
+        if (group.id === g.id) {
+          _.each(groups.server, function (g2) {
+            if (g2.id === group.id && g2.rank !== group.rank) {
+              var groupKey = parseInt(g2.rank + '' + g2.id);
+              delete groups.server[groupKey];
+            }
+          });
+        }
+      });
+
+      var groupKey = parseInt(group.rank + '' + group.id);
+      groups.server[groupKey] = group;
+
+      var groupsOrdered = [];
+      _.each(groups.server, function (group) {
+        groupsOrdered.push(parseInt(group.id));
+      });
+
+      groupsOrdered.sort();
+      var groupsServerTemp = {};
+
+      _.each(groupsOrdered, function (groupTmp) {
+        _.each(groups.server, function (group) {
+          if (group.id === groupTmp) {
+            var groupKey = parseInt(group.rank + '' + group.id);
+            groupsServerTemp[groupKey] = group;
+          }
+        });
+      });
+
+      groups.server = {};
+      groups.server = groupsServerTemp;
+
       fromServer();
+
     });
-    socket.on('group.deleted', function(group) {
+
+    socket.on('group.deleted', function (group) {
       console.info('[Dashkiosk] deleted group', group);
-      delete groups.server[group.id];
+
+      _.each(groups.server, function (g) {
+        if (group.id === g.id) {
+          delete groups.server[g.rank + '' + g.id];
+        }
+      });
+
       fromServer();
     });
-    socket.on('display.updated', function(display) {
+
+    socket.on('display.updated', function (display) {
       console.info('[Dashkiosk] updated display', display);
       // Remove the display from any existing group
-      _.each(groups.server, function(group) {
-        group.displays = _.omit(group.displays, function(d) { return d.name === display.name; });
+      _.each(groups.server, function (group) {
+        group.displays = _.omit(group.displays, function (d) { return d.name === display.name; });
       });
+
       // Add it back to the right group
       var group = groups.server[display.group];
       if (group) {
@@ -61,19 +131,21 @@ angular.module('dashkiosk.services')
       }
       fromServer();
     });
-    socket.on('display.deleted', function(display) {
+    socket.on('display.deleted', function (display) {
       console.debug('[Dashkiosk] deleted display', display);
-      _.each(groups.server, function(group) {
-        group.displays = _.omit(group.displays, function(d) { return d.name === display.name; });
+      _.each(groups.server, function (group) {
+        group.displays = _.omit(group.displays, function (d) { return d.name === display.name; });
       });
       fromServer();
     });
 
+
     // Update client version of the data. We just apply any diff that
     // comes from the server.
     function fromServer() {
+
       // Start a digest cycle.
-      $rootScope.$apply(function() {
+      $rootScope.$apply(function () {
         groups.client.applyDiff(groups.server);
         console.debug('[Dashkiosk] current view', groups.client);
       });
@@ -87,10 +159,10 @@ angular.module('dashkiosk.services')
 
     function diff(a, b, fnOnlyA, fnOnlyB, fnBoth, thisArg) {
       var kA = _.keys(a),
-          kB = _.keys(b),
-          onlyA = _.difference(kA, kB),
-          onlyB = _.difference(kB, kA),
-          both = _.intersection(kA, kB);
+        kB = _.keys(b),
+        onlyA = _.difference(kA, kB),
+        onlyB = _.difference(kB, kA),
+        both = _.intersection(kA, kB);
       _.each(onlyA, fnOnlyA, thisArg);
       _.each(onlyB, fnOnlyB, thisArg);
       _.each(both, fnBoth, thisArg);
@@ -99,27 +171,43 @@ angular.module('dashkiosk.services')
     // Collection of groups
     function GroupCollection() {
     }
-    GroupCollection.prototype.applyDiff = function(data) {
+    GroupCollection.prototype.applyDiff = function (data) {
       var self = this;
       diff(self, data,
-           function(k) { delete self[k]; },
-           function(k) { self[k] = new Group(data[k], self); },
-           function(k) { self[k].applyDiff(data[k]); });
+        function (k) { delete self[k]; },
+        function (k) { self[k] = new Group(data[k], self); },
+        function (k) { self[k].applyDiff(data[k]); });
     };
-    // Add a new group
-    GroupCollection.prototype.$add = function(params) {
+
+    // get groups
+    GroupCollection.prototype.$getAll = function () {
       return $http
-        .post('api/group', params)
-        .then(function() { return false; })
-        .catch(function(err) {
-          alertService.danger('Unable to create new group!',
-                              ((err || {}).data || {}).message);
+        .get('api/group')
+        .then(function (groups) {
+          return groups.data;
+        })
+        .catch(function (err) {
+          alertService.danger('Unable to get groups!',
+            ((err || {}).data || {}).message);
           return false;
         });
     };
+
+    // Add a new group
+    GroupCollection.prototype.$add = function (params) {
+      return $http
+        .post('api/group', params)
+        .then(function () { return false; })
+        .catch(function (err) {
+          alertService.danger('Unable to create new group!',
+            ((err || {}).data || {}).message);
+          return false;
+        });
+    };
+
     // Find a dashboard with its ID
-    GroupCollection.prototype.$findDashboard = function(id) {
-      return _.find(_.map(this, function(group) {
+    GroupCollection.prototype.$findDashboard = function (id) {
+      return _.find(_.map(this, function (group) {
         return group.$findDashboard(id);
       }));
     };
@@ -127,58 +215,103 @@ angular.module('dashkiosk.services')
     // One group
     function Group(data, groups) {
       _.extend(this, data);
-      this.displays = _.mapValues(this.displays, function(d) { return new Display(d); });
+      this.displays = _.mapValues(this.displays, function (d) { return new Display(d); });
       this.dashboards = new DashboardCollection(this.dashboards, this);
       this.groups = groups;
+
     }
-    Group.prototype.applyDiff = function(data) {
+    Group.prototype.applyDiff = function (data) {
       var self = this;
       diff(_.omit(self, ['displays', 'dashboards', 'groups']),
-           _.omit(data, ['displays', 'dashboards', 'groups']),
-           function(k) { delete self[k]; },
-           function(k) { self[k] = data[k]; },
-           function(k) { self[k] = data[k]; });
+        _.omit(data, ['displays', 'dashboards', 'groups']),
+        function (k) { delete self[k]; },
+        function (k) { self[k] = data[k]; },
+        function (k) { self[k] = data[k]; });
       self.dashboards.applyDiff(data.dashboards);
       diff(self.displays, data.displays,
-           function(k) { delete self.displays[k]; },
-           function(k) { self.displays[k] = new Display(data.displays[k]); },
-           function(k) { self.displays[k].applyDiff(data.displays[k]); });
+        function (k) { delete self.displays[k]; },
+        function (k) { self.displays[k] = new Display(data.displays[k]); },
+        function (k) { self.displays[k].applyDiff(data.displays[k]); });
     };
     // Update a group parameters
-    Group.prototype.$update = function(params) {
+    Group.prototype.$update = function (params) {
       return $http
         .put('api/group/' + this.id, params)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to update group!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
     // Delete a group
-    Group.prototype.$delete = function() {
+    Group.prototype.$delete = function () {
       return $http
         .delete('api/group/' + this.id)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to delete group!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
+
+    //update group rank
+    Group.prototype.$updaterank = function (increment) {
+
+      if (increment < 0 && this.rank === 0) {
+        return;
+      }
+
+      var current = (this.rank - 1) / 10;
+      if (current < increment) {
+        position = increment + 2;
+      } else {
+        position = position * 10;
+      }
+
+      var groupstmp = [];
+
+      _.each(this.groups, function (element) {
+        var groupInfo = [element.id, element.rank];
+        groupstmp.push(groupInfo);
+
+      });
+
+      groupstmp.sort(function (a, b) {
+        if (a[1] < b[1]) return 1;
+        if (a[1] > b[1]) return -1;
+        return 0;
+
+      });
+
+      var i;
+      _.each(groupstmp, function (groupId, groupRank) {
+        _.each(groups.server, function (element) {
+          if (element.rank !== i * 10 + 1) {
+            element.rank = i * 10 + 1;
+          }
+        });
+        i = i + 1;
+      });
+
+      console.log(groupstmp);
+
+    };
+
     // Attach a display
-    Group.prototype.$attach = function(name) {
+    Group.prototype.$attach = function (name) {
       return $http
         .put('api/display/' + name + '/group/' + this.id)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to attach display!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
     // Copy a dashboard from another group
-    Group.prototype.$copy = function(id) {
+    Group.prototype.$copy = function (id) {
       // We only have the ID, we need to find the
       var dashboard = this.groups.$findDashboard(id);
       if (!dashboard) {
@@ -189,7 +322,7 @@ angular.module('dashkiosk.services')
       this.dashboards.$add(dashboard);
     };
     // Move a dashboard from another group
-    Group.prototype.$move = function(id) {
+    Group.prototype.$move = function (id) {
       var dashboard = this.groups.$findDashboard(id);
       if (!dashboard) {
         return;
@@ -206,11 +339,11 @@ angular.module('dashkiosk.services')
       dashboard.$delete();
     };
     // Find a dashboard with its ID
-    Group.prototype.$findDashboard = function(id) {
+    Group.prototype.$findDashboard = function (id) {
       return this.dashboards.$findDashboard(id);
     };
     // Check if the group is empty (not any display attached)
-    Group.prototype.$empty = function() {
+    Group.prototype.$empty = function () {
       return _.keys(this.displays).length === 0;
     };
 
@@ -218,52 +351,54 @@ angular.module('dashkiosk.services')
     function Display(data) {
       _.extend(this, data);
     }
-    Display.prototype.applyDiff = function(data) {
+    Display.prototype.applyDiff = function (data) {
       var self = this;
       diff(self, data,
-           function(k) { delete self[k]; },
-           function(k) { self[k] = data[k]; },
-           function(k) { self[k] = data[k]; });
+        function (k) { delete self[k]; },
+        function (k) { self[k] = data[k]; },
+        function (k) { self[k] = data[k]; });
     };
-    Display.prototype.$update = function(params) {
+    Display.prototype.$update = function (params) {
       return $http
         .put('api/display/' + this.name, params)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to update display!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
-    Display.prototype.$delete = function() {
+    Display.prototype.$delete = function () {
       return $http
         .delete('api/display/' + this.name)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to delete display!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
-    Display.prototype.$action = function(params) {
+    Display.prototype.$action = function (params) {
       return $http
         .post('api/display/' + this.name + '/action', params)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to trigger display action!',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
-    Display.prototype.$reload = function() {
-      return this.$action({action: 'reload'});
+    Display.prototype.$reload = function () {
+      return this.$action({ action: 'reload' });
     };
-    Display.prototype.$osd = function(enable) {
-      return this.$action({action: 'osd',
-                           text: ((enable === true)?this.name:
-                                  (enable === false)?null:
-                                  this.osd?null:
-                                  this.name)});
+    Display.prototype.$osd = function (enable) {
+      return this.$action({
+        action: 'osd',
+        text: ((enable === true) ? this.name :
+          (enable === false) ? null :
+            this.osd ? null :
+              this.name)
+      });
     };
 
     // Collection of dashboards. This should be mostly
@@ -290,14 +425,14 @@ angular.module('dashkiosk.services')
         enumerable: false,
         writable: true
       });
-      self.push.apply(self, _.map(data, function(d) {
+      self.push.apply(self, _.map(data, function (d) {
         return new Dashboard(d, group);
       }));
       return self;
     }
-    DashboardCollection.prototype.applyDiff = function(data) {
+    DashboardCollection.prototype.applyDiff = function (data) {
       var self = this;
-      _.each(data, function(d, i) {
+      _.each(data, function (d, i) {
         var idx = _.findIndex(self, { 'id': d.id });
         if (idx === -1) {
           self.splice(i, 0, new Dashboard(d, self.group));
@@ -310,18 +445,19 @@ angular.module('dashkiosk.services')
       });
       self.splice(data.length); // remove extra elements
     };
-    DashboardCollection.prototype.$add = function(params) {
+    DashboardCollection.prototype.$add = function (params) {
       return $http
         .post('api/group/' + this.group.id + '/dashboard', params)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to create new dashboard',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
-    DashboardCollection.prototype.$findDashboard = function(id) {
-      return _.find(this, function(dashboard) {
+
+    DashboardCollection.prototype.$findDashboard = function (id) {
+      return _.find(this, function (dashboard) {
         return dashboard.id === id;
       });
     };
@@ -336,37 +472,37 @@ angular.module('dashkiosk.services')
       });
       return self;
     }
-    Dashboard.prototype.applyDiff = function(data) {
+    Dashboard.prototype.applyDiff = function (data) {
       var self = this;
       diff(self, _.omit(data, 'group'),
-           function(k) { delete self[k]; },
-           function(k) { self[k] = data[k]; },
-           function(k) { self[k] = data[k]; });
+        function (k) { delete self[k]; },
+        function (k) { self[k] = data[k]; },
+        function (k) { self[k] = data[k]; });
     };
-    Dashboard.prototype.$delete = function() {
+    Dashboard.prototype.$delete = function () {
       return $http
         .delete('api/group/' + this.group.id + '/dashboard/' + this.id)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to delete dashboard',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
-    Dashboard.prototype.$update = function(params) {
+    Dashboard.prototype.$update = function (params) {
       return $http
         .put('api/group/' + this.group.id + '/dashboard/' + this.id, params)
-        .then(function() { return false; })
-        .catch(function(err) {
+        .then(function () { return false; })
+        .catch(function (err) {
           alertService.danger('Unable to update dashboard',
-                              ((err || {}).data || {}).message);
+            ((err || {}).data || {}).message);
           return false;
         });
     };
 
     groups.client = new GroupCollection();
 
-    return function() {
+    return function () {
       if (ready) {
         return groups.client;
       }

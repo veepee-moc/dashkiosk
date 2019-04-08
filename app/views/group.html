@@ -25,6 +25,16 @@
          editable-text="group.description"
          onbeforesave="group.$update({description: $data})"
          e-placeholder="Group description">{{ group.description || "..." }}</div>
+    <div class="rank">
+          Rank: {{ group.rank }}
+          <span class="property move" ng-click="group.$updaterank(-10)">
+              <span class="glyphicon glyphicon-chevron-down"></span>
+          </span>
+          <span class="property move" ng-click="group.$updaterank(+10)">
+              <span class="glyphicon glyphicon-chevron-up"></span>
+          </span>
+    </div>
+    
   </div>
   <div class="panel-body">
     <div class="displays">

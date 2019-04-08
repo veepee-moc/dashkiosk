@@ -1,8 +1,8 @@
 angular.module('dashkiosk.controllers')
   .controller('GroupsCtrl', function($scope, groups) {
     'use strict';
-
     $scope.groups = groups;
+    
     $scope.createGroup = function() {
       var random = (function(length) {
         var bits = 36,
@@ -15,7 +15,8 @@ angular.module('dashkiosk.controllers')
         return out.toUpperCase();
       })(6);
       groups.$add({ name: 'New group ' + random,
-                    description: 'Newly created group' });
+                    description: 'Newly created group',
+                    rank:1});
     };
 
   });
