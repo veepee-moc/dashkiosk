@@ -1,16 +1,21 @@
 header {
     width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
     height: @navbar-height;
     background-color: @gray-light;
     background-color: fade(@gray-light, 90%);
     color: white;
-    line-height: @navbar-height - 8px;
+    line-height: @navbar-height;
     .font-source-sans-pro(24px);
 
+    vertical-align: middle;
     .logo, .branding {
-        height: @navbar-height - 8px;
+        margin-top:-10px;
+        height: @navbar-height;
         width: auto;
-        margin: 4px 10px;
+        margin-left: 13px;
     }
     .branding {
         float: right;
@@ -43,5 +48,55 @@ header {
             .loading-indicator(@navbar-height - 12px);
         }
     }
-        
+
+    .navlink{
+        height:100% !important;
+    }
+    .link{
+        color:white;
+    }
+    
+    .brand {
+        font-weight: bold;
+    }
+    
+    a{
+        text-decoration: none !important;
+    }
+    
+    a:hover{
+        color:white;
+        text-decoration: none !important;
+    }
+    
+    a:focus{
+        color:white;
+    }
+    
+    .navlink {
+        display:inline-block;
+    }
+    
+    .links {
+        height:100% !important;
+        display:inline-block;
+        vertical-align: middle;
+        transition: all 0.5s;
+    }
+    
+    .animation:hover{
+        letter-spacing: 2px;
+    }
+
+    .divider {
+        display: inline;
+        margin: 5px 30px 5px 15px;
+        border-left: 2px solid  rgb(255, 255, 255);
+    }
+
+    .inner-link {
+        min-width: 90px;
+        max-width: 200px;
+        display: inline-block;
+    }
 }
