@@ -25,16 +25,13 @@
     <div class="navlink">
       <img class="branding" src="{{#asset}}images/stamp-{{ branding }}.svg{{/asset}}">
       <a ng-href="/receiver"><img class="logo" src="images/dashkiosk.svg"></a>
-      <div class="links">
-        <a class="link brand" ng-href="/receiver">Dashkiosk</a>
-      </div>
-      <div class="divider"></div>
-      <div class="links animation inner-link">
-        <a class="link" ng-href="admin#/groups">History</a>
-      </div>
-      <div class="links animation inner-link">
-        <a class="link" ng-href="https://dashkiosk.readthedocs.io/en/v{{ version }}/usage.html#administration">Documentation</a>
-      </div>
+      <a class="link brand" ng-href="/receiver">Dashkiosk</a>
+    </div>
+    <div class="navlink">
+      <a class="link links animation" ng-href="admin#/groups">History</a>
+    </div>
+    <div class="navlink">
+      <a class="link links animation" ng-href="https://dashkiosk.readthedocs.io/en/v{{ version }}/usage.html#administration">Documentation</a>
     </div>
   </header>
 
