@@ -51,10 +51,6 @@ module.exports = function(grunt) {
         files: [ 'app/views/*.html' ],
         tasks: [ 'build:templates' ]
       },
-      styles: {
-        files: [ 'app/styles/{,*/}*.less' ],
-        tasks: [ 'build:styles' ]
-      },
       images: {
         files: [ 'app/images/{,*/,*/*/}*.*' ],
         tasks: [ 'build:images' ]
@@ -77,7 +73,6 @@ module.exports = function(grunt) {
         },
         files: [
           'build/*.html',
-          'build/styles/*.css',
           'build/images/{,*/,*/*/}*.*',
           'build/fonts/*.{ttf,otf,woff,eot,svg}',
           'build/*.webapp',
@@ -97,6 +92,13 @@ module.exports = function(grunt) {
       }
     },
 
+    exec: {
+      react: {
+        cwd: './front',
+        cmd: 'yarn build'
+      },
+    },
+
     // Cleaning
     clean: {
       dist: {
@@ -110,15 +112,6 @@ module.exports = function(grunt) {
           dot: true,
           src: [ 'build/*' ]
         }]
-      }
-    },
-
-    // Install/update bower files
-    bower: {
-      install: {
-        options: {
-          copy: false
-        }
       }
     },
 
@@ -145,45 +138,6 @@ module.exports = function(grunt) {
       ]
     },
 
-    csslint: {
-      build: {
-        options: {
-          csslintrc: 'app/styles/.csslintrc',
-          'zero-units': false,   // Used by bootstrap in percentages
-          'bulletproof-font-face': false // Don't care about IE
-        },
-        src: [ 'build/styles/*.css' ]
-      }
-    },
-
-    // Transform less files
-    less: {
-      build: {
-        files: [{
-          expand: true,
-          cwd: 'app/styles',
-          src: [ '*.less' ],
-          dest: 'build/styles',
-          ext: '.css'
-        }]
-      }
-    },
-
-    // Add vendor prefixed styles
-    autoprefixer: {
-      options: {
-        browsers: [ 'last 2 versions', 'iOS >= 6', 'Android >= 4' ]
-      },
-      build: {
-        files: [{
-          expand: true,
-          cwd: 'build/styles/',
-          src: '*.css',
-          dest: 'build/styles/'
-        }]
-      }
-    },
-
     // JS minification
     uglify: {
       options: {
@@ -198,7 +152,6 @@ module.exports = function(grunt) {
         files: [{
           src: [
             'dist/public/scripts/{,*/}*.js',
-            'dist/public/styles/*.css',
             'dist/public/fonts/*.{ttf,otf,woff,eot,svg}',
             'dist/public/images/{,*/,*/*/}*.*'
           ]
@@ -223,7 +176,6 @@ module.exports = function(grunt) {
     },
     usemin: {
       html: [ 'dist/public/*.html' ],
-      css:  [ 'dist/public/styles/*.css' ],
       options: {
         assetsDirs: [ 'dist/public', 'dist/public/images', 'dist/public/fonts' ]
       }
@@ -253,31 +205,7 @@ module.exports = function(grunt) {
         }]
       }
     },
-
-    // Prepare Angular files to be minified
-    ngAnnotate: {
-      build: {
-        files: [{
-          expand: true,
-          cwd: 'build/scripts',
-          src: '{,*/}*.js',
-          dest: 'build/scripts'
-        }]
-      }
-    },
-
-    // Build templates
-    ngtemplates: {
-      options: {
-        module: 'dashkiosk'
-      },
-      build: {
-        cwd: 'app/views',
-        src: '*.html',
-        dest: 'build/scripts/views.js'
-      }
-    },
-
+    
     // browserify
     browserify: {
       scripts: {
@@ -351,23 +279,6 @@ module.exports = function(grunt) {
           src: [
             'fonts/*.{ttf,otf,woff,eot,svg}'
           ]
-        }, {
-          expand: true,
-          cwd: 'app/bower_components/bootstrap',
-          dest: 'build',
-          src: [
-            'fonts/*.{ttf,otf,woff,eot,svg}'
-          ]
-        }]
-      },
-      bower: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          dest: 'build',
-          src: [
-            'bower_components/**/*'
-          ]
         }]
       },
       html: {
@@ -398,6 +309,13 @@ module.exports = function(grunt) {
             'lib/**/*',
             'db/migrations/*.js'
           ]
+        }, {
+          expand: true,
+          cwd: 'front/build',
+          dest: 'dist/front/build',
+          src: [
+            '*'
+          ]
         }]
       }
     }
@@ -405,21 +323,16 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', [
-    'bower:install',
     'build',
     'concurrent:server'
   ]);
 
   grunt.registerTask('build', function(target) {
     switch (target) {
-    case 'templates':
-      grunt.task.run('ngtemplates:build');
-      break;
-    case 'styles':
-      grunt.task.run('less:build', 'csslint:build', 'autoprefixer:build');
-      break;
+    case 'react':
+      grunt.task.run('exec:react');
     case 'scripts':
-      grunt.task.run('jshint', 'browserify:scripts', 'ngAnnotate:build');
+      grunt.task.run('jshint', 'browserify:scripts');
       break;
     case 'images':
       grunt.task.run('copy:images');
@@ -436,10 +349,8 @@ module.exports = function(grunt) {
     case undefined:
       grunt.task.run(
         'clean:build',
-        'copy:bower',
         'copy:html',
-        'build:templates',
-        'build:styles',
+        'build:react',
         'build:scripts',
         'build:images',
         'build:fonts',
@@ -454,14 +365,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dist', [
     'clean:dist',
-    'bower:install',
     'build',
     'useminPrepare',
     'imagemin',
     'svgmin',
     'copy:dist',
     'concat',
-    'cssmin',
     'uglify',
     'filerev',
     'filerev_assets',
