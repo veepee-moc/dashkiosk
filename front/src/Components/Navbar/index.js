@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 
 class Navbar extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
                 <a className="navbar-brand" href="#">
-                    <img src="images/dashkiosk.svg" style={{marginTop: "-10px"}} width="50" height="50" alt="" />
+                    <img src={dashkioskIcon} width="50" height="50" alt="" />
                     Dashkiosk
                 </a>
                 <div className="collapse navbar-collapse" >
