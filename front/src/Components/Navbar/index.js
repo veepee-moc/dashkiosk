@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 
 class Navbar extends Component {
@@ -26,12 +27,18 @@ class Navbar extends Component {
                         </li>
                     </ul>
                 </div>
-                <div className="spinner-grow text-light">
+                <div className="spinner-grow text-light" hidden={this.props.socketConnected}>
                     <span className="sr-only">Loading...</span>
                 </div>
             </nav>
         );
     }
 }
-        
-export default withRouter(Navbar);
+
+function mapStateToProps(state) {
+    return ({
+        socketConnected: state.socketConnected
+    });
+}
+
+export default withRouter(connect(mapStateToProps, null)(Navbar));

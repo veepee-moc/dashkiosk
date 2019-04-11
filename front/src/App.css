@@ -1,0 +1,11 @@
+.btn:focus, .btn:active {
+    box-shadow: none !important;
+}
+
+a {
+    outline: none !important;
+}
+
+.margin-0 {
+    margin: 0px !important;
+}
