@@ -102,7 +102,7 @@ angular.module('dashkiosk.controllers')
     $scope.display = false;
     $scope.groups = angular.copy($scope.$parent.$parent.$parent.groups);
     $scope.formattedGroups = [];
-    let i = 0;
+    var i = 0;
     for (var item in $scope.groups) {
       if ({}.toString.call($scope.groups[item]) !== '[object Function]') {
         $scope.formattedGroups[i] = $scope.groups[item];
