@@ -6,10 +6,29 @@ class Display extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'YK5D6Z',
+            name: 'UNKNOWN',
             description: '',
             on: true
         };
+    }
+
+    updateDisplay() {
+        if (this.props.display) {
+            this.setState({
+                name: this.props.display.name,
+                description: this.props.display.description,
+                on: this.props.display.connected
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.updateDisplay();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.display !== prevProps.display)
+            this.updateDisplay();
     }
 
     render() {

@@ -16,47 +16,57 @@ export default function (admin) {
     });
     socket.on('snapshot', function (newGroups) {
         console.info('[Dashkiosk] received a full snapshot of all groups');
-        console.log(newGroups);
+        console.info(newGroups);
         admin.setState({
             groups: newGroups
         });
     });
-    /*
     socket.on('group.created', function (group) {
         console.info('[Dashkiosk] received a new group', group);
-        groups.server[group.id] = group;
-        fromServer();
+        admin.setState({
+            groups: Object.assign(admin.state.groups, { [group.id]: group })
+        });
     });
     socket.on('group.updated', function (group) {
         console.info('[Dashkiosk] updated group', group);
-        groups.server[group.id] = group;
-        fromServer();
+        admin.setState({
+            groups: Object.assign(admin.state.groups, { [group.id]: group })
+        });
     });
     socket.on('group.deleted', function (group) {
         console.info('[Dashkiosk] deleted group', group);
-        delete groups.server[group.id];
-        fromServer();
+        const groups = admin.state.groups;
+        delete groups[group.id];
+        admin.setState({
+            groups: groups
+        });
     });
+    function removeFirstOccurence(objArr, obj) {
+        for (const index in objArr) {
+            if (objArr[index].id === obj.id)
+                delete objArr[index];
+        }
+    }
     socket.on('display.updated', function (display) {
         console.info('[Dashkiosk] updated display', display);
-        // Remove the display from any existing group
-        _.each(groups.server, function (group) {
-            group.displays = _.omit(group.displays, function (d) { return d.name === display.name; });
-        });
-        // Add it back to the right group
-        var group = groups.server[display.group];
-        if (group) {
+        const groups = admin.state.groups;
+        for (const index in groups)
+            removeFirstOccurence(groups[index].displays, display);
+        const group = groups[display.group];
+        if (group)
             group.displays[display.name] = display;
-        }
-        fromServer();
+        admin.setState({
+            groups: groups
+        });
     });
     socket.on('display.deleted', function (display) {
         console.debug('[Dashkiosk] deleted display', display);
-        _.each(groups.server, function (group) {
-            group.displays = _.omit(group.displays, function (d) { return d.name === display.name; });
+        const groups = admin.state.groups;
+        for (const index in groups)
+            removeFirstOccurence(groups[index].displays, display);
+        admin.setState({
+            groups: groups
         });
-        fromServer();
     });
-    */
     return (socket);
 };
