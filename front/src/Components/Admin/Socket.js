@@ -1,25 +1,27 @@
 import socketIO from 'socket.io-client';
 
-export default function (groups) {
+export default function (admin) {
     const socket = socketIO.connect('http://localhost:9400/changes');
     socket.on('connect', function () {
         console.info('[Dashkiosk] connected to socket.io server');
-        groups.props.setStoreState({
+        admin.setState({
             socketConnected: true
         });
     });
     socket.on('disconnect', function () {
         console.warn('[Dashkiosk] lost connection to socket.io server');
-        groups.props.setStoreState({
+        admin.setState({
             socketConnected: false
         });
     });
-    /*
     socket.on('snapshot', function (newGroups) {
         console.info('[Dashkiosk] received a full snapshot of all groups');
-        groups.server = newGroups;
-        fromServer();
+        console.log(newGroups);
+        admin.setState({
+            groups: newGroups
+        });
     });
+    /*
     socket.on('group.created', function (group) {
         console.info('[Dashkiosk] received a new group', group);
         groups.server[group.id] = group;

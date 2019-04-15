@@ -27,7 +27,7 @@ class Navbar extends Component {
                         </li>
                     </ul>
                 </div>
-                <div className="spinner-grow text-light" hidden={this.props.socketConnected}>
+                <div className="spinner-grow text-light" hidden={this.props.connected}>
                     <span className="sr-only">Loading...</span>
                 </div>
             </nav>
@@ -35,10 +35,4 @@ class Navbar extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return ({
-        socketConnected: state.socketConnected
-    });
-}
-
-export default withRouter(connect(mapStateToProps, null)(Navbar));
+export default withRouter(Navbar);

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { SetStoreState } from '../../Actions';
 import Display from '../Display';
-import Socket from './socket';
 
 class Group extends Component {
     constructor(props) {
@@ -12,7 +10,13 @@ class Group extends Component {
             title: 'Unassigned',
             description: 'Newly created group'
         };
-        const socket = Socket(this);
+        if (this.props.group) {
+            console.log(this.props.group);
+            Object.assign(this.state, {
+                title: this.props.group.name,
+                description: this.props.group.description
+            });
+        }
     }
 
     render() {
@@ -52,10 +56,4 @@ class Group extends Component {
     }
 };
 
-function mapDispatchToProps(dispatch) {
-    return ({
-        setStoreState: (payload) => dispatch(SetStoreState(payload))
-    });
-}
-
-export default withRouter(connect(null, mapDispatchToProps)(Group));
+export default withRouter(Group);
