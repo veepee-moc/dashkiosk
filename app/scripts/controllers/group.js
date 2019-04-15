@@ -1,10 +1,22 @@
 angular.module('dashkiosk.controllers')
-  .controller('GroupCtrl', function($scope) {
+  .controller('GroupCtrl', function($scope, $http) {
     'use strict';
 
     // Attach a display to this group
     $scope.attachDisplay = function(name) {
       $scope.group.$attach(name);
+    };
+
+    $scope.moveGroupBefore = function (name) {
+      return $http
+        .put('/api/group/rank/' + name, JSON.stringify({
+          drop: $scope.group.id,
+        }), {})
+        .then(function () { console.log('done'); return false; })
+        .catch(function (err) {
+          console.log(err);
+          return false;
+        });
     };
 
     // Preview this group on actual display
