@@ -16,7 +16,6 @@ export default function (receiver) {
     receiver.props.setStoreState({
       receiverConnected: true
     });
-
     // We register by providing a blob the server handed us to
     // remember us. If we get null, that's fine, the server will see
     // us as a new fresh screen.
@@ -28,24 +27,29 @@ export default function (receiver) {
       localStorage.setItem('register', data);
     });
   });
+
   // Log various events
   socket.on('connecting', function () {
     console.info('[Dashkiosk] connect in progress to socket.io server');
     screen.connecting();
   });
+
   socket.on('connect_failed', function () {
     console.warn('[Dashkiosk] unable to connect to socket.io server');
     window.location.reload();
   });
+
   socket.on('error', function (message) {
     console.warn('[Dashkiosk] uncaught error with socket.io server: ' + message);
     window.location.reload();
   });
+
   socket.on('reconnecting', function (delay, attempts) {
     console.info('[Dashkiosk] reconnect in progress to socket.io server (next: ' +
       delay + ' attempts: ' + attempts + ')');
     screen.connecting();
   });
+
   socket.on('reconnect_failed', function () {
     console.warn('[Dashkiosk] unable to reconnect to socket.io server');
     window.location.reload();
@@ -80,5 +84,6 @@ export default function (receiver) {
     console.info('[Dashkiosk] viewport change to ' + (vp || 'default') + ' requested');
     new Viewport(vp).update();
   });
+
   return socket;
 }

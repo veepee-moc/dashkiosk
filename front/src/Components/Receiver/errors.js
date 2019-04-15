@@ -1,5 +1,4 @@
 module.exports = (function(window) {
-  'use strict';
 
   return {
     enable: function() {
@@ -17,7 +16,7 @@ module.exports = (function(window) {
           console.error('[Dashkiosk] fatal unexpected error, let\'s reload');
           window.setTimeout(function() {
             window.location.reload();
-          }, 1000);
+          }, 10000);
         }
       };
     }
