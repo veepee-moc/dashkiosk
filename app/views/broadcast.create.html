@@ -12,11 +12,20 @@
               </div>
             </div>
             <div class="checkbox-container container col-md-12" ng-if="display === true">
+              <div class="col-md-12 check-uncheck-container">
+              <button type="button" class="btn btn-default col-md-4 check-buttons" ng-click="check()">
+                Check all
+              </button>
+              <div class="col-md-4"></div>
+              <button type="button" class="btn btn-default col-md-4 check-buttons" ng-click="uncheck()">
+                Uncheck all
+              </button>
+            </div>
               <div class="col-md-6 checkboxes" ng-repeat="group in formattedGroups">
                 <label class="form-control">
-                  <input type="checkbox" name="test" value="{{group.id}}" ng-checked="selection.indexOf(group.id) > -1"
-                    ng-click="toggleSelection(group.id)">
-                    {{group.name}}
+                  <input type="checkbox" name="groupCheck" value="{{group.id}}"
+                    ng-checked="selection.indexOf(group.id) > -1" ng-click="toggleSelection(group.id)">
+                  {{group.name}}
                   </input>
                 </label>
               </div>
@@ -43,7 +52,8 @@
             <div class="col-md-6">
               <div class="input-group" ng-class="{'has-error': dashboardForm.delay.$invalid}">
                 <span class="input-group-addon"><span title="Delay" class="glyphicon glyphicon-time"></span></span>
-                <input type="number" class="form-control" placeholder="Delay" name="delay" ng-model="dashboard.delay" pattern="^[0-9]*$">
+                <input type="number" class="form-control" placeholder="Delay" name="delay" ng-model="dashboard.delay"
+                  pattern="^[0-9]*$">
                 <span class="input-group-addon">s</span>
               </div>
             </div>
