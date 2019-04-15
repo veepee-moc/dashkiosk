@@ -1,5 +1,4 @@
 module.exports = (function(window) {
-  'use strict';
 
   window.addEventListener('resize', function() {
     // On resize, find any element with a simulatedViewport attribute

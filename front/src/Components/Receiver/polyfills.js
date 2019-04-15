@@ -1,6 +1,5 @@
 // Simple polyfill for performance.now()
 module.exports = function() {
-  'use strict';
 
   (function() {
 

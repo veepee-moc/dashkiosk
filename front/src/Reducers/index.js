@@ -1,7 +1,8 @@
 import setStoreState from './setStoreState';
 
 const initialState = {
-    socketConnected: false
+    socketConnected: false,
+    receiverConnected: false
 };
 
 function rootReducer(state = initialState, action) {
