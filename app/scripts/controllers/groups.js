@@ -1,5 +1,5 @@
 angular.module('dashkiosk.controllers')
-  .controller('GroupsCtrl', function($scope, groups, $location) {
+  .controller('GroupsCtrl', function($scope, groups, $location, $http) {
     'use strict';
 
     $scope.host = $location.protocol() + '://' + $location.host() + ':' + $location.port();
@@ -17,5 +17,18 @@ angular.module('dashkiosk.controllers')
       })(6);
       groups.$add({ name: 'New group ' + random,
                     description: 'Newly created group' });
+    };
+
+    $scope.moveGroupToEnd = function(name) {
+      return $http
+        .put('/api/group/rank/' + name, JSON.stringify({
+          drop: -1,
+        }), {})
+        .then(function () { console.log('done'); return false; })
+        .catch(function (err) {
+          console.log(err);
+          return false;
+        });
+      //console.log('Moved', name, 'to the end');
     };
   });

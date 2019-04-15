@@ -4,7 +4,7 @@ import osd from './osd';
 import localStorage from './localstorage';
 import Viewport from './viewport';
 
-let connect = () => {
+export default function (receiver) {
   var socket = io.connect('http://localhost:9400' + '/displays', {
     'reconnection limit': 60 * 1000,
     'max reconnection attempts': Infinity
@@ -12,7 +12,10 @@ let connect = () => {
 
   socket.on('connect', function () {
     console.info('[Dashkiosk] connected to socket.io server');
-    screen.connected();
+    //screen.connected();
+    receiver.props.setStoreState({
+      receiverConnected: true
+    });
 
     // We register by providing a blob the server handed us to
     // remember us. If we get null, that's fine, the server will see
@@ -25,7 +28,6 @@ let connect = () => {
       localStorage.setItem('register', data);
     });
   });
-
   // Log various events
   socket.on('connecting', function () {
     console.info('[Dashkiosk] connect in progress to socket.io server');
@@ -78,10 +80,5 @@ let connect = () => {
     console.info('[Dashkiosk] viewport change to ' + (vp || 'default') + ' requested');
     new Viewport(vp).update();
   });
+  return socket;
 }
-
-let socketio = {
-  connect: connect
-};
-
-export default socketio;

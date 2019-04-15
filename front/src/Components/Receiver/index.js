@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-//import { SetStoreState } from '../../Actions';
+import { SetStoreState } from '../../Actions';
+import { connect } from 'react-redux';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
@@ -17,12 +18,13 @@ class Receiver extends Component {
 	componentDidMount() {
 		supervisor.ready();
 		console.log('[Dashkiosk] dashkiosk ready, connect to socket.io server');
-		socketio.connect();
+		socketio(this);
 	}
 
 	render() {
 		return (
 			<React.Fragment>
+				{ (this.props.receiverConnected) ? "oui" : "non" }
 				<div className="glow"></div>
 				<div className="osd text"></div>
 				<div className="osd technical"></div>
@@ -35,4 +37,16 @@ class Receiver extends Component {
 	}
 }
 
-export default withRouter(Receiver);
+function mapStateToProps(state) {
+    return ({
+        receiverConnected: state.receiverConnected
+    });
+}
+
+function mapDispatchToProps(dispatch) {
+	return ({
+			setStoreState: (payload) => dispatch(SetStoreState(payload))
+	});
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Receiver));
