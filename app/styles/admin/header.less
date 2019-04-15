@@ -1,5 +1,8 @@
 header {
     width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
     height: @navbar-height;
     background-color: @gray-light;
     background-color: fade(@gray-light, 90%);
@@ -9,8 +12,8 @@ header {
 
     vertical-align: middle;
     .logo, .branding {
-        margin-top:-10px;
-        height: @navbar-height;
+        display: inline-block;
+        height: @navbar-height - 10px;
         width: auto;
         margin-left: 13px;
     }
@@ -51,7 +54,6 @@ header {
     }
     .link{
         color:white;
-        margin-left:10px;
     }
     
     .brand {
@@ -76,18 +78,21 @@ header {
     }
     
     .links {
-        height:100% !important;
-        display:inline-block;
-        vertical-align: middle;
+        display: block;
+        height: 100% !important;
+        margin: 0px;
         transition: all 0.5s;
+        padding: 0px 10px;
     }
     
     .animation:hover{
-        letter-spacing: 2px;
+        background-color: rgb(40, 40, 40);
+        background-color: fade(rgb(40, 40, 40), 50%);
     }
-    
-    .divider {
-        padding-left:10px;
-        border-left: 2px solid  rgb(255, 255, 255);
+
+    .inner-link {
+        min-width: 90px;
+        max-width: 200px;
+        display: inline-block;
     }
 }

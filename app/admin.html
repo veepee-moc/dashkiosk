@@ -24,24 +24,18 @@
     </dk-loading-indicator>
     <div class="navlink">
       <img class="branding" src="{{#asset}}images/stamp-{{ branding }}.svg{{/asset}}">
-      <img class="logo" src="images/dashkiosk.svg">
-      <div class="links">
-          <a class="link brand">Dashkiosk</a>
-        </div>
-      <div class="links animation">
-        <a class="link divider" ng-href="admin#/groups">History</a>
-      </div>
+      <a ng-href="/receiver"><img class="logo" src="images/dashkiosk.svg"></a>
+      <a class="link brand" ng-href="/receiver">Dashkiosk</a>
+    </div>
+    <div class="navlink">
+      <a class="link links animation" ng-href="admin#/groups">History</a>
+    </div>
+    <div class="navlink">
+      <a class="link links animation" ng-href="https://dashkiosk.readthedocs.io/en/v{{ version }}/usage.html#administration">Documentation</a>
     </div>
   </header>
 
   <div class="container" ng-view>
-  </div>
-
-  <div class="footer">
-    <a href="https://dashkiosk.readthedocs.io/en/v{{ version }}/usage.html#administration">
-      <span class="glyphicon glyphicon-book"></span>
-      Dashkiosk documentation
-    </a>
   </div>
 
   <!-- build:js scripts/admin-vendor.js -->
