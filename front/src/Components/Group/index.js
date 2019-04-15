@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Display from '../Display';
+import EditableText from '../EditableText';
 
 class Group extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class Group extends Component {
             title: 'Unassigned',
             description: 'Newly created group',
             displays: [],
-            layoutSize: 3
+            layoutSize: 3,
+            inputTitle: false
         };
         this.updateGroupInfo = this.updateGroupInfo.bind(this);
     }
@@ -56,23 +58,16 @@ class Group extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log('An update ?');
-        if (this.props.group !== prevProps.group) {
-            console.log('Of course !');
+        if (this.props.group !== prevProps.group)
             this.updateGroupInfo();
-        }
     }
 
     render() {
         return (
             <div className="card">
-                <div className="card-header" style={{padding: "5px 10px 0px 10px"}}>
-                    <div className="card-title mb-0">
-                        {this.state.title}
-                    </div>
-                    <div className="card-subtitle mb-2 text-muted margin-0">
-                        {this.state.description}
-                    </div>
+                <div className="card-header pt-1 pr-2 pb-0 pl-2">
+                    <EditableText className="card-title mb-0" text={ this.state.title } />
+                    <EditableText className="card-subtitle text-muted m-0 mb-1" text={ this.state.description }  />
                 </div>
                 <div className="card-body pt-2 pb-2">
                     { this.renderDisplays() }

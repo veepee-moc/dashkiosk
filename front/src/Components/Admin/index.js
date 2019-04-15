@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Socket from './Socket';
-import Navbar from '../Navbar';import { log } from 'util';
-
+import Navbar from '../Navbar';
 import Group from '../Group';
 
 class Admin extends Component {
