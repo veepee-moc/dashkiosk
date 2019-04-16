@@ -2,23 +2,27 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Display from '../Display';
 import EditableText from '../EditableText';
+import Axios from 'axios';
 
 class Group extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: 0,
             title: 'Unassigned',
             description: 'Newly created group',
             displays: [],
-            layoutSize: 3,
-            inputTitle: false
+            layoutSize: 3
         };
         this.updateGroupInfo = this.updateGroupInfo.bind(this);
+        this.handleNameUpdate = this.handleNameUpdate.bind(this);
+        this.handleDescriptionUpdate = this.handleDescriptionUpdate.bind(this);
     }
 
     updateGroupInfo() {
         if (this.props.group) {
             this.setState({
+                id: this.props.group.id,
                 title: this.props.group.name,
                 description: this.props.group.description,
                 displays: this.props.group.displays
@@ -62,19 +66,35 @@ class Group extends Component {
             this.updateGroupInfo();
     }
 
+    handleNameUpdate(newName) {
+        Axios.put('/api/group/'+ this.state.id, { name: newName })
+            .catch((err) => console.error(err));
+    }
+
+    handleDescriptionUpdate(newDescription) {
+        Axios.put('/api/group/' + this.state.id, { description: newDescription })
+            .catch((err) => console.error(err));
+    }
+
     render() {
         return (
             <div className="card">
                 <div className="card-header pt-1 pr-2 pb-0 pl-2">
-                    <EditableText className="card-title mb-0" text={ this.state.title } />
-                    <EditableText className="card-subtitle text-muted m-0 mb-1" text={ this.state.description }  />
+                    <EditableText className="card-title mb-0" text={ this.state.title }
+                        onSubmit={ this.handleNameUpdate } />
+                    <EditableText className="card-subtitle text-muted m-0 mb-1" text={ this.state.description }
+                        onSubmit={ this.handleDescriptionUpdate } />
                 </div>
                 <div className="card-body pt-2 pb-2">
                     { this.renderDisplays() }
                 </div>
                 <div className="btn-group btn-group-sm">
-                    <button type="button" className="btn btn-light w-50 border-right rounded-0">Add a new dashboard</button>
-                    <button type="button" className="btn btn-light w-50 border-left rounded-0">Preview</button>
+                    <button type="button" className="btn btn-light w-50 border-right rounded-0">
+                        Add a new dashboard
+                    </button>
+                    <button type="button" className="btn btn-light w-50 border-left rounded-0">
+                        Preview
+                    </button>
                 </div>
             </div>
         );

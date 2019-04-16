@@ -40,11 +40,11 @@ class EditableText extends Component {
         this.setState({ editable: false });
     }
 
-    handleAcceptClick() {
-        if (this.props.onSubmit) {
+    handleAcceptClick(event) {
+        event.preventDefault();
+        if (this.props.onSubmit)
             this.props.onSubmit(this.input.value);
-            this.setState({ editable: false });
-        }
+        this.setState({ editable: false });
     }
 
     handleRejectClick() {
@@ -62,13 +62,17 @@ class EditableText extends Component {
                 <div hidden={ this.state.editable } className={this.props.className} onClick={ this.handleTextClick }>
                     { this.state.text }
                 </div>
-                <div hidden={ !this.state.editable } className="form-inline">
+                <form hidden={ !this.state.editable } className="form-inline" onSubmit={ this.handleAcceptClick }>
                     <input ref={(input) => { this.input = input; } } type="text" className="form-control form-control-sm w-50 m-1"/>
                     <div className="btn-group ml-1">
-                        <button className="btn btn-outline-success btn-sm" onClick={ this.handleAcceptClick }><IoMdCheckmark /></button>
-                        <button className="btn btn-outline-danger btn-sm" onClick={ this.handleRejectClick }><IoMdClose /></button>
+                        <button type="submit" className="btn btn-outline-success btn-sm">
+                            <IoMdCheckmark />
+                        </button>
+                        <button className="btn btn-outline-danger btn-sm" onClick={ this.handleRejectClick }>
+                            <IoMdClose />
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
         );
     }
