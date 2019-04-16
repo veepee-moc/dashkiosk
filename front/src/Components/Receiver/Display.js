@@ -1,5 +1,4 @@
 import React, { Image, Component } from 'react';
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Loading from './Loading';
 import './Receiver.css';
@@ -30,7 +29,7 @@ class Display extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
       this.setState({
-        delay: (this.props.dashboardToDisplay.timeout > this.props.dashboardToDisplay.delay) 
+        delay: (this.props.dashboardToDisplay && this.props.dashboardToDisplay.timeout > this.props.dashboardToDisplay.delay)
           ? setTimeout(() => {
             this.setState({
               render: true,
@@ -103,7 +102,8 @@ class Display extends Component {
 
 function mapStateToProps(state) {
   return ({
-    dashboardToDisplay: state.dashboardToDisplay
+    dashboardToDisplay: state.dashboardToDisplay,
+    connectionLost: state.connectionLost
   });
 }
 
