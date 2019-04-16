@@ -2,7 +2,8 @@ import setStoreState from './setStoreState';
 
 const initialState = {
     socketConnected: false,
-    receiverConnected: false
+    receiverConnected: false,
+    dashboardToDisplay: {}
 };
 
 function rootReducer(state = initialState, action) {
