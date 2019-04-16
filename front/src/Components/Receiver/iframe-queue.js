@@ -1,5 +1,4 @@
 module.exports = (function(window, undefined) {
-  'use strict';
 
   var Viewport = require('./viewport');
 

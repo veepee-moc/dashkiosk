@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
-import { Container, Row, Col } from 'react-bootstrap';
+import './Receiver.css';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
@@ -25,23 +25,19 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<Container>
-				<Row>
-					coucou
-					<div className="glow"></div>
-					<div className="osd text"></div>
-					<div className="osd technical"></div>
-					<div className="connecting"></div>
-					<div className="show loading" id="loading">
-						<div className="branding branding-{{ branding }}"></div>
-					</div>
-				</Row>
-				<Row>COUC</Row>
+			<>
+				<div className="glow"></div>
+				<div className="osd text"></div>
+				<div className="osd technical"></div>
+				<div className="connecting"></div>
+				<div className="show loading" id="loading">
+					<div className="branding branding-{{ branding }}"></div>
+				</div>
 				{(this.props.receiverConnected)
 					? <Display />
 					: <Loading />
 				}
-			</Container>
+			</>
 		);
 	}
 }
