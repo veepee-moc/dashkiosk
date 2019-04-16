@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import Socket from './Socket';
-import Navbar from '../Navbar';import { log } from 'util';
-
+import Navbar from '../Navbar';
 import Group from '../Group';
 
 class Admin extends Component {
@@ -17,31 +16,30 @@ class Admin extends Component {
     }
 
     renderGroups() {
-        const groupsArr = [];
         var layoutSize = 0;
-        var groups = []
-        for (const group in this.state.groups) {
-            if (layoutSize % this.state.layoutSize === 0 && layoutSize !== 0) {
-                groupsArr.push(groups);
-                groups = [];
-            }
-            groups.push(this.state.groups[group]);
+        const groups = [];
+        for (const index in this.state.groups) {
+            var i = Math.floor(layoutSize / this.state.layoutSize);
+            if (!groups[i])
+                groups[i] = [];
+            groups[i].push(this.state.groups[index]);
             ++layoutSize;
         }
-        groupsArr.push(groups);
-        return groupsArr.map((groupsToRender) => {
-            return (
-                <div className="row mb-2">
-                    {groupsToRender.map((group) => {
-                        return (
-                            <div className="col-sm" style={{maxWidth: 100 / this.state.layoutSize +'%'}}>
-                                <Group group={group} />
-                            </div>
-                        );
-                    })}
-                </div>
-            );
-        });
+        return (
+            groups.map((groupsToRender, index) => {
+                return (
+                    <div className="row mb-2" key={index}>
+                        {groupsToRender.map((group) => {
+                            return (
+                                <div className="col-sm" style={{maxWidth: 100 / this.state.layoutSize + '%'}} key={group.id}>
+                                    <Group group={group} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            })
+        );
     }
 
     render() {
