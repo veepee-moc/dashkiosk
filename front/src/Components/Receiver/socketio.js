@@ -5,7 +5,7 @@ import localStorage from './localstorage';
 import Viewport from './viewport';
 
 export default function (receiver) {
-  var socket = io.connect('http://localhost:9400' + '/displays', {
+  var socket = io.connect('http://localhost:9400/displays', {
     'reconnection limit': 60 * 1000,
     'max reconnection attempts': Infinity
   });
@@ -58,13 +58,12 @@ export default function (receiver) {
   socket.on('disconnect', function () {
     console.warn('[Dashkiosk] connection to socket.io lost');
     receiver.props.setStoreState({
-      receiverConnected: false
+      connectionLost: true
     });
   });
 
   socket.on('dashboard', function (dashboard) {
     console.info('[Dashkiosk] should display dashboard ' + dashboard.url);
-    console.log(dashboard);
     receiver.props.setStoreState({
       dashboardToDisplay: dashboard
     });

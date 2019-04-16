@@ -1,6 +1,4 @@
-module.exports = (function(window, undefined) {
-  'use strict';
-
+module.exports = (function(window) {
   // Using local storage if available
   function LocalStorage() {
   }
