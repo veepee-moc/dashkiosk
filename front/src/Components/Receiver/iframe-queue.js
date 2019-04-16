@@ -1,4 +1,4 @@
-module.exports = (function(window, undefined) {
+module.exports = (function(window) {
 
   var Viewport = require('./viewport');
 
