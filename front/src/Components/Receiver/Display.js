@@ -52,27 +52,13 @@ class Display extends Component {
   }
 
   render() {
-    if (this.state.render) {
+    if (this.state.render || this.state.displayedDashboard) {
       return (
         <iframe
           title={this.props.dashboardToDisplay.description
             ? this.props.dashboardToDisplay.desciption
             : this.props.dashboardToDisplay.url}
-          src={this.props.dashboardToDisplay.url}
-          style={style.iframe}
-          frameBorder='0'
-          scrolling='no'
-          width='100%'
-          height='100%'
-        />
-      );
-    } else if (this.state.displayedDashboard) {
-      return (
-        <iframe
-          title={this.props.dashboardToDisplay.description
-            ? this.props.dashboardToDisplay.desciption
-            : this.props.dashboardToDisplay.url}
-          src={this.state.displayedDashboard}
+          src={(this.state.render) ? this.props.dashboardToDisplay.url : this.state.displayedDashboard}
           style={style.iframe}
           frameBorder='0'
           scrolling='no'
