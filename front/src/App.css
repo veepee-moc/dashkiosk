@@ -1,15 +1,34 @@
-html, body, #app, #root {
+.fullwindow {
     height: 100%;
+    width: 100%;
 }
 
 .btn:focus, .btn:active {
     box-shadow: none !important;
 }
 
-a {
-    outline: none !important;
+.btn.btn-noframe-dark {
+    border: none;
+    color: black;
 }
 
-.margin-0 {
-    margin: 0px !important;
+.btn.btn-noframe-dark:hover {
+    background-color: rgb(100, 100, 100);
+    background-color: rgba(100, 100, 100, 0.3);
+}
+
+.btn.btn-nostyle {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.btn.btn-nostyle:hover {
+    background-color: rgb(100,100,100);
+    background-color: rgba(200,200,200,0.1);
+}
+
+a {
+    outline: none !important;
 }

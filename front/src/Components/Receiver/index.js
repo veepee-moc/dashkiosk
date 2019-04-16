@@ -25,7 +25,7 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<>
+			<div className="fullwindow">
 				<div className="glow"></div>
 				<div className="osd text"></div>
 				<div className="osd technical"></div>
@@ -37,7 +37,7 @@ class Receiver extends Component {
 					? <Display />
 					: <Loading />
 				}
-			</>
+			</div>
 		);
 	}
 }

@@ -5,7 +5,8 @@ import localStorage from './localstorage';
 import Viewport from './viewport';
 
 export default function (receiver) {
-  var socket = io.connect('http://localhost:9400/displays', {
+
+  var socket = io.connect('/displays', {
     'reconnection limit': 60 * 1000,
     'max reconnection attempts': Infinity
   });

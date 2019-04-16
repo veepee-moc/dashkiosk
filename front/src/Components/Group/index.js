@@ -3,6 +3,9 @@ import { withRouter } from 'react-router-dom';
 import Display from '../Display';
 import EditableText from '../EditableText';
 import Axios from 'axios';
+import { toast } from 'react-toastify';
+import { IoMdTrash, IoMdRefresh, IoMdLocate } from 'react-icons/io';
+import Swap from '../Swap';
 
 class Group extends Component {
     constructor(props) {
@@ -17,6 +20,9 @@ class Group extends Component {
         this.updateGroupInfo = this.updateGroupInfo.bind(this);
         this.handleNameUpdate = this.handleNameUpdate.bind(this);
         this.handleDescriptionUpdate = this.handleDescriptionUpdate.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleRefresh = this.handleRefresh.bind(this);
+        this.handleOSD = this.handleOSD.bind(this);
     }
 
     updateGroupInfo() {
@@ -68,18 +74,58 @@ class Group extends Component {
 
     handleNameUpdate(newName) {
         Axios.put('/api/group/'+ this.state.id, { name: newName })
-            .catch((err) => console.error(err));
+            .catch(() => toast.error('Failed to edit group\'s name'));
     }
 
     handleDescriptionUpdate(newDescription) {
-        Axios.put('/api/group/' + this.state.id, { description: newDescription })
-            .catch((err) => console.error(err));
+        Axios.put('/api/group/'+ this.state.id, { description: newDescription })
+            .catch(() => toast.error('Failed to edit group\'s description.'));
+    }
+
+    handleDelete() {
+        Axios.delete('/api/group/'+ this.state.id)
+            .catch(() => toast.error('Failed to delete the group.'));
+    }
+
+    handleRefresh() {
+        const promises = Object.values(this.state.displays).map((display) => {
+            if (display.connected)
+                return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
+        });
+        Promise.all(promises)
+            .then(() => toast.success('Successfully reloaded all displays.'))
+            .catch(() => toast.error('Failed to reload all displays.'));
+    }
+
+    handleOSD() {
+        const enable = !Object.values(this.state.displays).every((display) => !display.connected || display.osd);
+        const promises = Object.values(this.state.displays).map((display) => {
+            if (display.connected)
+                return Axios.post('/api/display/'+ display.name +'/action',
+                    { action: 'osd', text: enable || !display.osd ? display.name : null });
+        });
+        Promise.all(promises)
+            .then(() => toast.success('Successfully set OSD on all displays.'))
+            .catch(() => toast.error('Failed to set OSD on all displays.'));
     }
 
     render() {
         return (
             <div className="card">
                 <div className="card-header pt-1 pr-2 pb-0 pl-2">
+                    <Swap className="float-right" control={!(Object.keys(this.state.displays).length === 0)}>
+                        <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.handleDelete }>
+                            <IoMdTrash />
+                        </button>
+                        <div hidden={ Object.values(this.state.displays).find((obj) => obj.connected) === undefined }>
+                            <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.handleRefresh }>
+                                <IoMdRefresh />
+                            </button>
+                            <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.handleOSD }>
+                                <IoMdLocate />
+                            </button>
+                        </div>
+                    </Swap>
                     <EditableText className="card-title mb-0" text={ this.state.title }
                         onSubmit={ this.handleNameUpdate } />
                     <EditableText className="card-subtitle text-muted m-0 mb-1" text={ this.state.description }
