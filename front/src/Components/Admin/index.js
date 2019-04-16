@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
+import Preview from '../Preview';
 
 class Admin extends Component {
     constructor(props) {
@@ -48,6 +49,7 @@ class Admin extends Component {
                 <Navbar connected={ this.state.socketConnected } />
                 <div className="container-fluid mt-3">
                     { this.renderGroups() }
+                <Preview />
                 </div>
             </div>
         );

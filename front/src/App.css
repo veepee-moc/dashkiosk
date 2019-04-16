@@ -10,6 +10,18 @@ a {
     outline: none !important;
 }
 
+.btn.btn-nostyle {
+    background: none;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.btn.btn-nostyle:hover {
+    background-color: rgb(100,100,100);
+    background-color: rgba(200,200,200,0.1);
+}
+
 .margin-0 {
     margin: 0px !important;
 }
