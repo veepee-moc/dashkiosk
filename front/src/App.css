@@ -2,10 +2,16 @@
     box-shadow: none !important;
 }
 
-a {
-    outline: none !important;
+.btn.btn-noframe-dark {
+    border: none;
+    color: black;
 }
 
-.margin-0 {
-    margin: 0px !important;
+.btn.btn-noframe-dark:hover {
+    background-color: rgb(100, 100, 100);
+    background-color: rgba(100, 100, 100, 0.3);
+}
+
+a {
+    outline: none !important;
 }
