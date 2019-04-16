@@ -1,7 +1,7 @@
 import socketIO from 'socket.io-client';
 
 export default function (admin) {
-    const socket = socketIO.connect('http://localhost:9400/changes');
+    const socket = socketIO.connect('/changes');
     socket.on('connect', function () {
         console.info('[Dashkiosk] connected to socket.io server');
         admin.setState({
