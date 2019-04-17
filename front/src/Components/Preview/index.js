@@ -14,7 +14,7 @@ class Preview extends Component {
 
     render() {
         return (
-            <div className="card w-75 mx-auto">
+            <div className={ this.state.opened ? "card w-75 mx-auto" : "card w-25 mx-auto"}>
                 <button className="btn btn-nostyle" onClick={() => this.setState({ opened: !this.state.opened })} aria-expanded={this.state.opened} aria-controls="collapseIframe">
                     <div className="card-header">
                         Preview
