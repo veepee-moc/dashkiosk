@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
+import { Spinner } from 'react-bootstrap';
 import './Receiver.css';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
-import Loading from './Loading';
 import Display from './Display';
+import Swap from '../Swap';
 
 class Receiver extends Component {
 	constructor(props) {
@@ -25,7 +26,11 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<div className="fullwindow">
+			<div>
+				<Swap control={ !this.props.receiverConnected }>
+					<Display />
+					<Spinner className="centered" animation="grow" />
+				</Swap>
 				<div className="glow"></div>
 				<div className="osd text"></div>
 				<div className="osd technical"></div>
@@ -33,10 +38,6 @@ class Receiver extends Component {
 				<div className="show loading" id="loading">
 					<div className="branding branding-{{ branding }}"></div>
 				</div>
-				{(this.props.receiverConnected)
-					? <Display />
-					: <Loading />
-				}
 			</div>
 		);
 	}

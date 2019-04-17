@@ -34,7 +34,7 @@ class Display extends Component {
     render() {
         return (
             <div className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
-                <div className="embed-responsive-item content">
+                <div className="embed-responsive-item content" draggable>
                     <p className="text-monospace text-light mb-0">{ this.state.name }</p>
                     <p className="text-monospace text-light font-italic" style={{fontSize: 13}}>{ this.state.description }</p>
                 </div>

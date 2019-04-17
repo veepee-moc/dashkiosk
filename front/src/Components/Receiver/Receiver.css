@@ -1,14 +1,10 @@
-.fill {
-  height: 100%;
-  min-height: 100%;
-};
-
-.full {
-  height: 100% !important;
-  width: 100%;
-};
-
 .background {
   background-repeat: no-repeat;
   background-size: auto;
+};
+
+.right-bottom {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
 };
