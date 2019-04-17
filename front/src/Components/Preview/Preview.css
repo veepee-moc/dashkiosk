@@ -1,3 +1,12 @@
 .preview-iframe {
     border: none;
 }
+
+.preview-collapse {
+    width: 75% !important;
+    transition: width 0.5s;
+}
+
+.preview-collapse.short {
+    width: 25% !important;
+}

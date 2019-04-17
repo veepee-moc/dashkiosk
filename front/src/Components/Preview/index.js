@@ -8,13 +8,13 @@ class Preview extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opened: false,
+            opened: true,
         };
     }
 
     render() {
         return (
-            <div className={ this.state.opened ? "card w-75 mx-auto" : "card w-25 mx-auto"}>
+            <div className={ this.state.opened ? "card preview-collapse mx-auto" : "card preview-collapse short mx-auto"}>
                 <button className="btn btn-nostyle" onClick={() => this.setState({ opened: !this.state.opened })} aria-expanded={this.state.opened} aria-controls="collapseIframe">
                     <div className="card-header">
                         Preview
