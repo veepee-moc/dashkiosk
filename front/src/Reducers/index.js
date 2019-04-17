@@ -1,19 +1,20 @@
 import setStoreState from './setStoreState';
 
 const initialState = {
-    socketConnected: false,
-    receiverConnected: false,
-    connectionLost: false,
-    dashboardToDisplay: {}
+	socketConnected: false,
+	receiverConnected: false,
+	connectionLost: false,
+	reloadRequired: false,
+	dashboardToDisplay: {}
 };
 
 function rootReducer(state = initialState, action) {
-    switch (action.type) {
-        case 'SetStoreState':
-            return setStoreState(state, action.payload);
-        default:
-            return (state);
-    }
+	switch (action.type) {
+		case 'SetStoreState':
+			return setStoreState(state, action.payload);
+		default:
+			return (state);
+	}
 }
 
 export default rootReducer;

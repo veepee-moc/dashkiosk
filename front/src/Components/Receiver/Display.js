@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
-import Loading from './Loading';
 import { Spinner } from 'react-bootstrap';
-import './Receiver.css';
 
 const style = {
   iframe: {
@@ -28,6 +27,11 @@ class Display extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
+      if (this.props.reloadRequired) {
+        this.props.setStoreState({
+          reloadRequired: false
+        });
+      }
       const timeout = (!this.props.dashboardToDisplay.timeout) ? 0 : this.props.dashboardToDisplay.timeout;
       const delay = (!this.props.dashboardToDisplay.delay) ? 0 : this.props.dashboardToDisplay.delay;
       let delayBeforeDisplay = 0;
@@ -48,7 +52,7 @@ class Display extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate() {
     clearTimeout(this.state.delay);
   }
 
@@ -62,8 +66,8 @@ class Display extends Component {
             title={dashboardToDisplay.description
               ? dashboardToDisplay.desciption
               : dashboardToDisplay.url}
-            src={(this.state.render) 
-              ? dashboardToDisplay.url 
+            src={(this.state.render)
+              ? dashboardToDisplay.url
               : this.state.displayedDashboard}
             style={style.iframe}
             frameBorder='0'
@@ -72,22 +76,10 @@ class Display extends Component {
             height='100%'
           />
           {this.props.connectionLost
-            ? <div className='right-bottom'>
-                <Spinner animation='grow' size='lg' />
-              </div>
+            ? <Spinner className='right-bottom' animation='grow' size='lg' />
             : ''}
         </>
       );
-    } else if (this.state.displayedDashboard) {
-      return (
-        <iframe
-          src={this.state.displayedDashboard}
-          style={style.iframe}
-          frameBorder='0'
-          scrolling='no'
-          width='100%'
-          height='100%'
-        />);
     } else {
       return <Spinner className="centered" animation="grow" />;
     }
@@ -97,8 +89,15 @@ class Display extends Component {
 function mapStateToProps(state) {
   return ({
     dashboardToDisplay: state.dashboardToDisplay,
-    connectionLost: state.connectionLost
+    connectionLost: state.connectionLost,
+    reloadRequired: state.reloadRequired,
   });
 }
 
-export default connect(mapStateToProps, null)(Display);
+function mapDispatchToProps(dispatch) {
+  return ({
+    setStoreState: (payload) => dispatch(SetStoreState(payload))
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Display);

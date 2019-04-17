@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import screen from './screen';
 import osd from './osd';
 import localStorage from './localstorage';
 import Viewport from './viewport';
@@ -13,7 +12,6 @@ export default function (receiver) {
 
   socket.on('connect', function () {
     console.info('[Dashkiosk] connected to socket.io server');
-    //screen.connected();
     receiver.props.setStoreState({
       receiverConnected: true,
       connectionLost: false
@@ -33,26 +31,28 @@ export default function (receiver) {
   // Log various events
   socket.on('connecting', function () {
     console.info('[Dashkiosk] connect in progress to socket.io server');
-    //screen.connecting();
     receiver.props.setStoreState({
-      connectionLost: true
+      connectionLost: true,
     });
   });
 
   socket.on('connect_failed', function () {
     console.warn('[Dashkiosk] unable to connect to socket.io server');
-    window.location.reload();
+    receiver.props.setStoreState({
+      receiverConnected: false,
+    });
   });
 
   socket.on('error', function (message) {
     console.warn('[Dashkiosk] uncaught error with socket.io server: ' + message);
-    window.location.reload();
+    receiver.props.setStoreState({
+      receiverConnected: false,
+    });
   });
 
   socket.on('reconnecting', function (delay, attempts) {
     console.info('[Dashkiosk] reconnect in progress to socket.io server (next: ' +
       delay + ' attempts: ' + attempts + ')');
-    //screen.connecting();
     receiver.props.setStoreState({
       connectionLost: true
     });
@@ -60,7 +60,9 @@ export default function (receiver) {
 
   socket.on('reconnect_failed', function () {
     console.warn('[Dashkiosk] unable to reconnect to socket.io server');
-    window.location.reload();
+    receiver.props.setStoreState({
+      receiverConnected: false
+    });
   });
 
   socket.on('disconnect', function () {
@@ -75,12 +77,13 @@ export default function (receiver) {
     receiver.props.setStoreState({
       dashboardToDisplay: dashboard
     });
-    //screen.dashboard(dashboard);
   });
 
   socket.on('reload', function () {
     console.info('[Dashkiosk] reload requested');
-    window.location.reload();
+    receiver.props.setStoreState({
+      reloadRequired: true
+    });
   });
 
   socket.on('osd', function (text) {

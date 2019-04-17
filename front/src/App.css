@@ -7,6 +7,12 @@
     transform: translate(-50%, -50%);
 }
 
+.right-bottom {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+}
+
 .btn:focus, .btn:active {
     box-shadow: none !important;
 }
