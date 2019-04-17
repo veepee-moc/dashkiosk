@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoMdTrash, IoMdRefresh, IoMdLocate } from 'react-icons/io';
 import Swap from '../Swap';
+import localStorage from '../Receiver/localstorage'
 
 class Group extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class Group extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleRefresh = this.handleRefresh.bind(this);
         this.handleOSD = this.handleOSD.bind(this);
+        this.handlePreview = this.handlePreview.bind(this);
     }
 
     updateGroupInfo() {
@@ -109,6 +111,11 @@ class Group extends Component {
             .catch(() => toast.error('Failed to set OSD on all displays.'));
     }
 
+    handlePreview() {
+        Axios.post('/api/preview/group/' + this.state.id, { blob: localStorage.getItem('register') })
+            .catch(() => toast.error('Failed to preview group.'));
+    }
+
     render() {
         return (
             <div className="card">
@@ -138,7 +145,7 @@ class Group extends Component {
                     <button type="button" className="btn btn-light w-50 border-right rounded-0">
                         Add a new dashboard
                     </button>
-                    <button type="button" className="btn btn-light w-50 border-left rounded-0">
+                    <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={ this.handlePreview }>
                         Preview
                     </button>
                 </div>
