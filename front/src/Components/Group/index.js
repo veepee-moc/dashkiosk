@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { IoMdTrash, IoMdRefresh, IoMdLocate } from 'react-icons/io';
 import Swap from '../Swap';
 import localStorage from '../Receiver/localstorage'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 class Group extends Component {
     constructor(props) {
@@ -41,9 +42,11 @@ class Group extends Component {
 
     renderDisplays() {
         return Object.values(this.state.displays).map((display) =>
-            <li className="list-layout-item" key={display.id} style={{ width: 100 / this.state.layoutSize + '%' }}>
-                <Display display={ display } />
-            </li>
+            <CSSTransition key={display.id} classNames="fade" timeout={{ enter: 500, exit: 300 }}>
+                <li className="list-layout-item" key={display.id} style={{ width: 100 / this.state.layoutSize + '%' }}>
+                    <Display display={display} />
+                </li>
+            </CSSTransition>
         );
     }
 
@@ -122,7 +125,9 @@ class Group extends Component {
                 </div>
                 <div className="card-body pt-2 pb-2">
                     <ul className="list-layout">
-                        { this.renderDisplays() }
+                        <TransitionGroup>
+                            { this.renderDisplays() }
+                        </TransitionGroup>
                     </ul>
                 </div>
                 <div className="btn-group btn-group-sm">
