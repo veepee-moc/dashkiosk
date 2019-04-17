@@ -1,4 +1,4 @@
-import React, { Image, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Receiver.css';
 import { Spinner } from 'react-bootstrap';
@@ -28,15 +28,20 @@ class Display extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
+      const timeout = (!this.props.dashboardToDisplay.timeout) ? 0 : this.props.dashboardToDisplay.timeout;
+      const delay = (!this.props.dashboardToDisplay.delay) ? 0 : this.props.dashboardToDisplay.delay;
+      let delayBeforeDisplay = 0;
+      if (timeout > delay || timeout === 0) {
+        delayBeforeDisplay = (timeout > delay || !timeout) ? setTimeout(() => {
+          this.setState({
+            render: true,
+            displayedDashboard: this.props.dashboardToDisplay.url
+          })
+        }, delay * 1000)
+          : this.state.delay;
+      }
       this.setState({
-        delay: (this.props.dashboardToDisplay && this.props.dashboardToDisplay.timeout > this.props.dashboardToDisplay.delay)
-          ? setTimeout(() => {
-            this.setState({
-              render: true,
-              displayedDashboard: this.props.dashboardToDisplay.url
-            })
-          }, this.props.dashboardToDisplay.delay * 1000) 
-          : this.state.delay,
+        delay: delayBeforeDisplay,
         render: false,
         displayedDashboard: prevState.displayedDashboard
       });
@@ -48,20 +53,22 @@ class Display extends Component {
   }
 
   render() {
-    console.log(this);
-    if (this.state.render) {
+    if (this.state.render || this.state.displayedDashboard) {
       return (
         <iframe
-          src={this.props.dashboardToDisplay.url}
+          title={this.props.dashboardToDisplay.description
+            ? this.props.dashboardToDisplay.desciption
+            : this.props.dashboardToDisplay.url}
+          src={(this.state.render) ? this.props.dashboardToDisplay.url : this.state.displayedDashboard}
           style={style.iframe}
           frameBorder='0'
           scrolling='no'
           width='100%'
           height='100%'
         />
-        );
-      } else if (this.state.displayedDashboard) {
-        return (
+      );
+    } else if (this.state.displayedDashboard) {
+      return (
         <iframe
           src={this.state.displayedDashboard}
           style={style.iframe}
@@ -70,35 +77,11 @@ class Display extends Component {
           width='100%'
           height='100%'
         />);
-      } else {
-        return <Spinner className="centered" animation="grow" />;
-      }
+    } else {
+      return <Spinner className="centered" animation="grow" />;
+    }
   }
 }
-/*}		
-  <link rel="stylesheet" href="styles/unassigned.css">
-  <!-- endbuild -->
-  <style>
-   .logo {
-     background-image: url("{{#asset}}images/stamp-{{ branding }}.svg{{/asset}}");
-   }
-  </style>*//*
-
-<div class="background">
-</div>
-
-<div class="photos">
-{/*{#unassigned}}
-<div class="photo" data-image="images/unassigned/{{.}}"></div>
-{{/unassigned}
-</div>
-
-<div class="logo">salut a tous les amis</div>
-<img src={ img[0] } />
-<div class="clock"></div>
-</>
-);*/
-
 
 function mapStateToProps(state) {
   return ({

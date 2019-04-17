@@ -3,6 +3,7 @@ import setStoreState from './setStoreState';
 const initialState = {
     socketConnected: false,
     receiverConnected: false,
+    connectionLost: false,
     dashboardToDisplay: {}
 };
 

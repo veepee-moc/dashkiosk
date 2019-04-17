@@ -1,6 +1,4 @@
-module.exports = (function(window, undefined) {
-  'use strict';
-
+module.exports = (function(window) {
   return {
     hide: function() {
       Array.prototype.forEach.call(
