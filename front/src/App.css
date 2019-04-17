@@ -43,6 +43,7 @@ a {
     outline: none !important;
 }
 
+
 .animate-enter {
     opacity: 0;
 }
@@ -56,4 +57,13 @@ a {
 .animate-exit-active {
     opacity: 0;
     transition: opacity 200ms;
+}
+
+ul.list-layout {
+    padding: 0px;
+}
+
+li.list-layout-item {
+    padding: 3px;
+    display: inline-table;
 }

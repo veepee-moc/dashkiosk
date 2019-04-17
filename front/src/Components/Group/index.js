@@ -25,6 +25,7 @@ class Group extends Component {
         this.handleRefresh = this.handleRefresh.bind(this);
         this.handleOSD = this.handleOSD.bind(this);
         this.handlePreview = this.handlePreview.bind(this);
+        this.renderDisplays = this.renderDisplays.bind(this);
     }
 
     updateGroupInfo() {
@@ -39,29 +40,10 @@ class Group extends Component {
     }
 
     renderDisplays() {
-        var layoutSize = 0;
-        const displays = [];
-        for (const index in this.state.displays) {
-            var i = Math.floor(layoutSize / this.state.layoutSize);
-            if (!displays[i])
-                displays[i] = [];
-            displays[i].push(this.state.displays[index]);
-            ++layoutSize;
-        }
-        return (
-            displays.map((displaysToRender, index) => {
-                return (
-                    <div className="row" key={index}>
-                        {displaysToRender.map((display) => {
-                            return (
-                                <div className="col-sm p-1" style={{maxWidth: 100 / this.state.layoutSize + '%'}} key={display.id}>
-                                    <Display display={display} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                );
-            })
+        return Object.values(this.state.displays).map((display) =>
+            <li className="list-layout-item" key={display.id} style={{ width: 100 / this.state.layoutSize + '%' }}>
+                <Display display={ display } />
+            </li>
         );
     }
 
@@ -139,7 +121,9 @@ class Group extends Component {
                         onSubmit={ this.handleDescriptionUpdate } />
                 </div>
                 <div className="card-body pt-2 pb-2">
-                    { this.renderDisplays() }
+                    <ul className="list-layout">
+                        { this.renderDisplays() }
+                    </ul>
                 </div>
                 <div className="btn-group btn-group-sm">
                     <button type="button" className="btn btn-light w-50 border-right rounded-0">
