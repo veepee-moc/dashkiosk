@@ -12,8 +12,8 @@ class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route path="/receiver" component={Receiver} />
-            <Route path="/admin" component={Admin} />
+            <Route exact path={["/", "/receiver"]} component={Receiver} />
+            <Route exact path="/admin" component={Admin} />
           </Switch>
         </BrowserRouter>
         <ToastContainer position="bottom-right"/>

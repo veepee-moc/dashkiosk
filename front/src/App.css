@@ -36,3 +36,12 @@
 a {
     outline: none !important;
 }
+
+ul.list-layout {
+    padding: 0px;
+}
+
+li.list-layout-item {
+    padding: 3px;
+    display: inline-table;
+}

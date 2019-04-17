@@ -17,29 +17,10 @@ class Admin extends Component {
     }
 
     renderGroups() {
-        var layoutSize = 0;
-        const groups = [];
-        for (const index in this.state.groups) {
-            var i = Math.floor(layoutSize / this.state.layoutSize);
-            if (!groups[i])
-                groups[i] = [];
-            groups[i].push(this.state.groups[index]);
-            ++layoutSize;
-        }
-        return (
-            groups.map((groupsToRender, index) => {
-                return (
-                    <div className="row mb-2" key={index}>
-                        {groupsToRender.map((group) => {
-                            return (
-                                <div className="col-sm" style={{maxWidth: 100 / this.state.layoutSize + '%'}} key={group.id}>
-                                    <Group group={group} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                );
-            })
+        return Object.values(this.state.groups).map((group) =>
+            <li className="list-layout-item" key={group.id} style={{ width: 100 / this.state.layoutSize + '%' }}>
+                <Group group={group} />
+            </li>
         );
     }
 
@@ -48,7 +29,9 @@ class Admin extends Component {
             <div>
                 <Navbar connected={ this.state.socketConnected } />
                 <div className="container-fluid mt-3">
-                    { this.renderGroups() }
+                    <ul className="list-layout">
+                        { this.renderGroups() }
+                    </ul>
                     <div className="mt-3 mb-3">
                         <Preview />
                     </div>
