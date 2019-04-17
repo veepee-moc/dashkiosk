@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
-import './Receiver.css';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
