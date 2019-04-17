@@ -1,7 +1,7 @@
 import React, { Image, Component } from 'react';
 import { connect } from 'react-redux';
-import Loading from './Loading';
 import './Receiver.css';
+import { Spinner } from 'react-bootstrap';
 //import img from '../../images/unassigned/crab.jpg';
 
 const style = {
@@ -71,7 +71,7 @@ class Display extends Component {
           height='100%'
         />);
       } else {
-        return <Loading />;
+        return <Spinner className="centered" animation="grow" />;
       }
   }
 }

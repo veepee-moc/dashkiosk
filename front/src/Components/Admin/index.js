@@ -49,7 +49,9 @@ class Admin extends Component {
                 <Navbar connected={ this.state.socketConnected } />
                 <div className="container-fluid mt-3">
                     { this.renderGroups() }
-                <Preview />
+                    <div className="mt-3 mb-3">
+                        <Preview />
+                    </div>
                 </div>
             </div>
         );
