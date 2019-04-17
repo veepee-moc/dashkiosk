@@ -15,7 +15,8 @@ export default function (receiver) {
     console.info('[Dashkiosk] connected to socket.io server');
     //screen.connected();
     receiver.props.setStoreState({
-      receiverConnected: true
+      receiverConnected: true,
+      connectionLost: false
     });
     // We register by providing a blob the server handed us to
     // remember us. If we get null, that's fine, the server will see
@@ -32,7 +33,10 @@ export default function (receiver) {
   // Log various events
   socket.on('connecting', function () {
     console.info('[Dashkiosk] connect in progress to socket.io server');
-    screen.connecting();
+    //screen.connecting();
+    receiver.props.setStoreState({
+      connectionLost: true
+    });
   });
 
   socket.on('connect_failed', function () {
@@ -48,7 +52,10 @@ export default function (receiver) {
   socket.on('reconnecting', function (delay, attempts) {
     console.info('[Dashkiosk] reconnect in progress to socket.io server (next: ' +
       delay + ' attempts: ' + attempts + ')');
-    screen.connecting();
+    //screen.connecting();
+    receiver.props.setStoreState({
+      connectionLost: true
+    });
   });
 
   socket.on('reconnect_failed', function () {
