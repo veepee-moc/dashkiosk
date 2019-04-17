@@ -42,3 +42,18 @@
 a {
     outline: none !important;
 }
+
+.animate-enter {
+    opacity: 0;
+}
+.animate-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.animate-exit {
+    opacity: 1;
+}
+.animate-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}
