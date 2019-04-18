@@ -43,7 +43,7 @@ class Display extends Component {
         delay: delayBeforeDisplay,
         render: false,
         displayedDashboard: prevState.displayedDashboard
-      });
+      });  
     }
   }
 
@@ -51,8 +51,61 @@ class Display extends Component {
     clearTimeout(this.state.delay);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.viewportStyle);
+  }
+
+  viewportStyle = () => {
+    let el = this.props.dashboardToDisplay;
+    el.width = this.props.dashboardToDisplay.viewport
+      ? this.props.dashboardToDisplay.viewport.split('x')[0]
+      : window.innerWidth;
+    el.height = this.props.dashboardToDisplay.viewport
+      ? this.props.dashboardToDisplay.viewport.split('x')[1]
+      : window.innerHeight;
+    let style = {
+      transformOrigin: '',
+      MozTransform: '',
+      WebkitTransform: '',
+      position: 'absolute',
+      overflow: 'hidden',
+      height: '100%',
+      width: '100%',
+      top: '-2px',
+      left: '-2px',
+      backgroundColor: '#faf5f2'
+    };
+    var clientWidth = window.innerWidth,
+      clientHeight = window.innerHeight,
+      thisWidth = el.width || el.height * clientWidth / clientHeight,
+      thisHeight = el.height || el.width * clientHeight / clientWidth,
+      scale = Math.min(clientWidth / thisWidth, clientHeight / thisHeight),
+      transform = '',
+      tag = el.tagName;
+
+    if (scale - 1 < 0.02 && scale - 1 > -0.02) {
+      console.debug('[Dashkiosk] no need to rescale ' + tag);
+      this.setState({
+        dashboardStyle: style
+      });
+      return;
+    }
+    transform = 'scaleX(' + scale + ') scaleY(' + scale + ')';
+    console.debug('[Dashkiosk] apply following transform for ' + tag + ': ' + transform);
+    style.transformOrigin = style.MozTransformOrigin = style.WebkitTransformOrigin = 'top left';
+    style.transform = style.MozTransform = style.WebkitTransform = transform;
+    style.width = Math.round(clientWidth / scale) + 'px';
+    style.height = Math.round(clientHeight / scale) + 'px';
+    this.setState({
+      dashboardStyle: style
+    });
+    return;
+  }
+
   render() {
     const { dashboardToDisplay } = this.props;
+
+    console.log(dashboardToDisplay.viewport);
 
     if (this.state.render || this.state.displayedDashboard) {
       return (
