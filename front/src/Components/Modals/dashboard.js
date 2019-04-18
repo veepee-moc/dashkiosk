@@ -33,7 +33,8 @@ class ModalDashboard extends Component {
     this.setState({ [inputName]: inputValue});
   }
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const body = {
       url: this.state.Url,
       description: this.state.Description,
@@ -88,6 +89,7 @@ class ModalDashboard extends Component {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
+          onSubmit={this.handleSubmit}
           noValidate
           >
           <Modal.Header>
@@ -109,7 +111,7 @@ class ModalDashboard extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.props.onHide}>Close</Button>
-            <Button disabled={this.handleError()} type="submit" onClick={this.handleSubmit}>Save</Button>
+            <Button disabled={this.handleError()} type="submit">Save</Button>
           </Modal.Footer>
         </Form>
       </Modal>
