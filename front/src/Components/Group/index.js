@@ -8,7 +8,6 @@ import Display from '../Display';
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Droppable from '../DragAndDrop/Droppable';
 import Draggable from '../DragAndDrop/Draggable';
-import { isAbsolute } from 'upath';
 
 class Group extends Component {
     constructor(props) {
