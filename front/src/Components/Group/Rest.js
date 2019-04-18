@@ -11,6 +11,7 @@ class Rest {
         this.reloadGroupDisplays = this.reloadGroupDisplays.bind(this);
         this.toggleOSD = this.toggleOSD.bind(this);
         this.preview = this.preview.bind(this);
+        this.addDashboard = this.addDashboard.bind(this);
     }
 
     updateGroupName(newName) {
@@ -53,6 +54,12 @@ class Rest {
     preview() {
         Axios.post('/api/preview/group/' + this.parent.state.id, { blob: localStorage.getItem('register') })
             .catch(() => toast.error('Failed to preview group.'));
+    }
+
+    addDashboard(inputs) {
+        Axios.post('/api/group/' + this.parent.state.id + "/dashboard", inputs)
+            .then(() => toast.success('Successfully added dashboard.'))
+            .catch(() => toast.error('Failed to add dashboard.'));
     }
 }
 

@@ -8,6 +8,7 @@ import Display from '../Display';
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Droppable from '../DragAndDrop/Droppable';
 import Draggable from '../DragAndDrop/Draggable';
+import ModalDashboard from '../Modals/dashboard';
 
 class Group extends Component {
     constructor(props) {
@@ -22,6 +23,8 @@ class Group extends Component {
         this.Rest = new Rest(this);
         this.updateGroupInfo = this.updateGroupInfo.bind(this);
         this.renderDisplays = this.renderDisplays.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
     }
 
     updateGroupInfo() {
@@ -54,6 +57,14 @@ class Group extends Component {
         );
     }
 
+    closeModal() {
+        this.setState({ showModal: false });
+    }
+
+    openModal() {
+        this.setState({ showModal: true });
+    }
+
     render() {
         return (
             <Draggable type="Group" draggableId={ this.state.id }>
@@ -82,18 +93,19 @@ class Group extends Component {
 
                             <ul className="list-layout">
                                 <TransitionGroup>
-                                    { this.renderDisplays() }
+                                    {this.renderDisplays()}
                                 </TransitionGroup>
                             </ul>
                         </div>
                         <div className="btn-group btn-group-sm">
-                            <button type="button" className="btn btn-light w-50 border-right rounded-0">
+                            <button onClick={this.openModal} type="button" className="btn btn-light w-50 border-right rounded-0">
                                 Add a new dashboard
                             </button>
-                            <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={ this.Rest.preview }>
+                            <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={this.Rest.preview}>
                                 Preview
                             </button>
                         </div>
+                        <ModalDashboard show={this.state.showModal} rest={this.Rest} group={{ name: this.state.title, id: this.state.id }} onHide={this.closeModal} />
                     </div>
                 </Droppable>
             </Draggable>
