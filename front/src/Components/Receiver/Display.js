@@ -3,26 +3,20 @@ import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 
-const style = {
-  iframe: {
-    position: 'absolute',
-    overflow: 'hidden',
-    height: '100%',
-    width: '100%',
-    top: '0',
-    transformOrigin: '0 0',
-    backgroundColor: '#faf5f2'
-  },
-};
-
 class Display extends Component {
   constructor(props) {
     super(props);
     this.state = {
       render: false,
-      delay: null,
-      displayedDashboard: ''
+      delay: 0,
+      displayedDashboard: '',
+      dashboardStyle: {},
     };
+  }
+
+  componentDidMount() {
+    this.viewportStyle();
+    window.addEventListener('resize', this.viewportStyle);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -37,6 +31,7 @@ class Display extends Component {
       let delayBeforeDisplay = 0;
       if (timeout > delay || timeout === 0) {
         delayBeforeDisplay = (timeout > delay || !timeout) ? setTimeout(() => {
+          this.viewportStyle();
           this.setState({
             render: true,
             displayedDashboard: this.props.dashboardToDisplay.url
@@ -69,7 +64,7 @@ class Display extends Component {
             src={(this.state.render)
               ? dashboardToDisplay.url
               : this.state.displayedDashboard}
-            style={style.iframe}
+            style={this.state.dashboardStyle}
             frameBorder='0'
             scrolling='no'
             width='100%'
