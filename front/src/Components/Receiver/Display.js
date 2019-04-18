@@ -105,8 +105,6 @@ class Display extends Component {
   render() {
     const { dashboardToDisplay } = this.props;
 
-    console.log(dashboardToDisplay.viewport);
-
     if (this.state.render || this.state.displayedDashboard) {
       return (
         <>
