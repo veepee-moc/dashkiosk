@@ -2,24 +2,25 @@ import React, { Component } from 'react';
 import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
+import IFrame from './IFrame';
 
 class Display extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      render: false,
-      delay: 0,
-      displayedDashboard: '',
-      dashboardStyle: {},
+      displayed: 1,
+      screen1: {
+        dashboard: {},
+        dashboardStyle: {},
+      },
+      screen2: {
+        dashboard: {},
+        dashboardStyle: {},
+      },
     };
   }
 
-  componentDidMount() {
-    this.viewportStyle();
-    window.addEventListener('resize', this.viewportStyle);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       if (this.props.reloadRequired) {
         this.props.setStoreState({
@@ -28,106 +29,51 @@ class Display extends Component {
       }
       const timeout = (!this.props.dashboardToDisplay.timeout) ? 0 : this.props.dashboardToDisplay.timeout;
       const delay = (!this.props.dashboardToDisplay.delay) ? 0 : this.props.dashboardToDisplay.delay;
-      let delayBeforeDisplay = 0;
+      let screenToUpdate = `screen${this.state.displayed === 1 ? 2 : 1}`;
+      const actualDisp = this.state.displayed;
+      this.updateScreenWithDashboard(screenToUpdate, this.props.dashboardToDisplay);
       if (timeout > delay || timeout === 0) {
-        delayBeforeDisplay = (timeout > delay || !timeout) ? setTimeout(() => {
-          this.viewportStyle();
+        setTimeout(() => {
           this.setState({
-            render: true,
-            displayedDashboard: this.props.dashboardToDisplay.url
-          })
-        }, delay * 1000)
-          : this.state.delay;
+            displayed: (actualDisp === 1) ? 2 : 1,
+          });
+        }, 1000 * delay);
       }
-      this.setState({
-        delay: delayBeforeDisplay,
-        render: false,
-        displayedDashboard: prevState.displayedDashboard
-      });  
     }
   }
 
-  componentWillUpdate() {
-    clearTimeout(this.state.delay);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.viewportStyle);
-  }
-
-  viewportStyle = () => {
-    let el = this.props.dashboardToDisplay;
-    el.width = this.props.dashboardToDisplay.viewport
-      ? this.props.dashboardToDisplay.viewport.split('x')[0]
-      : window.innerWidth;
-    el.height = this.props.dashboardToDisplay.viewport
-      ? this.props.dashboardToDisplay.viewport.split('x')[1]
-      : window.innerHeight;
-    let style = {
-      transformOrigin: '',
-      MozTransform: '',
-      WebkitTransform: '',
-      position: 'absolute',
-      overflow: 'hidden',
-      height: '100%',
-      width: '100%',
-      top: '-2px',
-      left: '-2px',
-      backgroundColor: '#faf5f2'
-    };
-    var clientWidth = window.innerWidth,
-      clientHeight = window.innerHeight,
-      thisWidth = el.width || el.height * clientWidth / clientHeight,
-      thisHeight = el.height || el.width * clientHeight / clientWidth,
-      scale = Math.min(clientWidth / thisWidth, clientHeight / thisHeight),
-      transform = '',
-      tag = el.tagName;
-
-    if (scale - 1 < 0.02 && scale - 1 > -0.02) {
-      console.debug('[Dashkiosk] no need to rescale ' + tag);
-      this.setState({
-        dashboardStyle: style
-      });
-      return;
-    }
-    transform = 'scaleX(' + scale + ') scaleY(' + scale + ')';
-    console.debug('[Dashkiosk] apply following transform for ' + tag + ': ' + transform);
-    style.transformOrigin = style.MozTransformOrigin = style.WebkitTransformOrigin = 'top left';
-    style.transform = style.MozTransform = style.WebkitTransform = transform;
-    style.width = Math.round(clientWidth / scale) + 'px';
-    style.height = Math.round(clientHeight / scale) + 'px';
+  updateScreenWithDashboard(screen, dashboardToDisplay) {
     this.setState({
-      dashboardStyle: style
+      [screen]: {
+        dashboard: dashboardToDisplay.url ? dashboardToDisplay : {}
+      }
     });
-    return;
   }
 
   render() {
-    const { dashboardToDisplay } = this.props;
-
-    if (this.state.render || this.state.displayedDashboard) {
+    const displayedScreen = this.state[`screen${this.state.displayed}`];
+    if (displayedScreen.dashboard.length === 0) {
+      return <Spinner className="centered" animation="grow" />;
+    } else {
       return (
         <>
-          <iframe
-            title={dashboardToDisplay.description
-              ? dashboardToDisplay.desciption
-              : dashboardToDisplay.url}
-            src={(this.state.render)
-              ? dashboardToDisplay.url
-              : this.state.displayedDashboard}
-            style={this.state.dashboardStyle}
-            frameBorder='0'
-            scrolling='no'
-            width='100%'
-            height='100%'
-          />
+          <div hidden={ this.state.displayed === 2 }>
+            <IFrame
+              dashboard={this.state.screen1.dashboard}
+              style={this.state.screen1.dashboardStyle}
+            />
+          </div>
+          <div hidden={ this.state.displayed === 1 }>
+            <IFrame
+              dashboard={this.state.screen2.dashboard}
+              style={this.state.screen2.dashboardStyle}
+            />
+          </div>
           {this.props.connectionLost
             ? <Spinner className='right-bottom' animation='grow' size='lg' />
-            : ''}
+          : ''}
         </>
       );
-    } else {
-      return <Spinner className="centered" animation="grow" />;
     }
   }
 }

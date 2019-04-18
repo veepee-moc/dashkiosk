@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
 import osd from './osd';
 import localStorage from './localstorage';
-import Viewport from './viewport';
 
 export default function (receiver) {
 
@@ -46,7 +45,7 @@ export default function (receiver) {
   socket.on('error', function (message) {
     console.warn('[Dashkiosk] uncaught error with socket.io server: ' + message);
     receiver.props.setStoreState({
-      receiverConnected: false,
+      connectionLost: true,
     });
   });
 
@@ -96,10 +95,10 @@ export default function (receiver) {
     }
   });
 
-  socket.on('viewport', function (vp) {
+  /*socket.on('viewport', function (vp) {
     console.info('[Dashkiosk] viewport change to ' + (vp || 'default') + ' requested');
     new Viewport(vp).update();
-  });
+  });*/
 
   return socket;
 }
