@@ -7,12 +7,12 @@ class Draggable extends Component {
     }
 
     handleDragStart(event) {
-        event.dataTransfer.setData(this.props.type, event.target.draggableid);
+        event.dataTransfer.setData(this.props.type, this.props.draggableId);
     }
 
     render() {
         return (
-            <div draggable="true" onDragStart={ this.handleDragStart } draggableid={ this.props.draggableId }>
+            <div draggable="true" onDragStart={ this.handleDragStart }>
                 { this.props.children }
             </div>
         );
