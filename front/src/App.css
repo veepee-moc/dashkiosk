@@ -8,7 +8,7 @@
 }
 
 .right-bottom {
-    position: fixed;
+    position: absolute;
     bottom: 2%;
     right: 2%;
 }
@@ -66,4 +66,39 @@ ul.list-layout {
 li.list-layout-item {
     padding: 3px;
     display: inline-table;
+}
+
+.osd {
+    font-size: 40px;
+    text-shadow: 2px 0px #343a40, -2px 0px #343a40, 0px 2px #343a40, 0px -2px #343a40;
+    color: #f7f7f7;
+}
+
+@media(max-width: 479px) {
+    .osd {
+        font-size: 30px;
+    }
+}
+
+@media(min-width: 1900px) {
+    .osd {
+        font-size: 60px;
+    }
+}
+
+.osd > .title {
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+}
+
+.osd > .size {
+    position: absolute;
+    top: 2%;
+    right:2%;
+    text-align: right;
+}
+
+.osd > .size > span {
+    display: block;
 }

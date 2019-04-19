@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 
 export default class Display extends Component {
 	constructor(props) {
-    super(props);
-    this.state = {
+		super(props);
+		this.state = {
 			style: {
 				transformOrigin: '',
 				MozTransform: '',
 				WebkitTransform: '',
-				position: 'absolute',
 				overflow: 'hidden',
 				height: '100%',
 				width: '100%',
@@ -68,7 +67,7 @@ export default class Display extends Component {
 		this.setState({
 			style: style
 		});
-		return ;
+		return;
 	}
 
 	render() {
@@ -76,11 +75,11 @@ export default class Display extends Component {
 
 		return (
 			<iframe
-				title={ dashboard.description
+				title={dashboard.description
 					? dashboard.desciption
-					: dashboard.url }
-				src={ dashboard.url }
-				style={ this.state.style }
+					: dashboard.url}
+				src={dashboard.url}
+				style={this.state.style}
 				frameBorder='0'
 				scrolling='no'
 				width='100%'
