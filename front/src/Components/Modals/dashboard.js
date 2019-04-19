@@ -7,38 +7,50 @@ class ModalDashboard extends Component {
     super(props);
     this.state = {
       validated: false,
-      Timeout: 0,
+      Timeout: '',
       Viewport:'',
-      Delay: 0,
+      Delay: '',
       Url: '',
       Available: '',
       Description: '',
+      delayTime: 'sec',
+      timeoutTime: 'sec'
     }
     this.Rest = this.props.rest;
   }
 
   reinitialise = () => {
     this.setState({
-      Timeout: 0,
+      Timeout: '',
       Viewport:'',
       Delay: 0,
       Url: '',
       Available: '',
       Description: '',
+      delayTime: 'sec',
+      timeoutTime: 'sec'
     });
   }
 
   handleInput = (inputName, inputValue) => {
+    if (inputName === 'Timeout' && inputValue <= 0 || inputName === 'Delay' && inputValue <= 0)
+      inputValue = '';
     this.setState({ [inputName]: inputValue});
+  }
+
+  setTime = (time, value) => {
+    return (time === 'hour' ? (value * 60 * 60) : (value * 60));
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
+    const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const body = {
       url: this.state.Url,
       description: this.state.Description,
-      timeout: this.state.Timeout,
-      delay: this.state.Delay,
+      timeout: timeout,
+      delay: delay,
       viewport: this.state.Viewport,
       available:this.state.available
     };
@@ -70,7 +82,7 @@ class ModalDashboard extends Component {
 
   handleError = () => {
     var url = this.state.Url;
-    var ret = this.state.Delay < 0 || this.state.Timeout < 0 || !this.isValidViewport();
+    var ret =  !this.isValidViewport();
 
     if (url.length < 7)
       return true;
@@ -102,8 +114,12 @@ class ModalDashboard extends Component {
                 <FormInput md={12} sm={12} required={true} isInvalid={!this.isValidUrl()} placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
-                <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout < 0} placeholder="Timeout (in second)" name='Timeout' updateValue={this.handleInput} type="number" />
-                <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0} placeholder="Delay (in second)" name='Delay' updateValue={this.handleInput} type="number" />
+                <FormInput md={6} sm={12} required={false}  value={this.state.Timeout}
+                  placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
+                  dropdown={true}  time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
+                <FormInput md={6} sm={12} required={false}  value={this.state.Delay}
+                  placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
+                  dropdown={true}  time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
                 <FormInput md={12} sm={12} required={false} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
               </Form.Row>
             </Container>
