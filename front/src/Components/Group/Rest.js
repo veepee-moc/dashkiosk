@@ -15,22 +15,22 @@ class Rest {
     }
 
     updateGroupName(newName) {
-        Axios.put('/api/group/' + this.parent.state.id, { name: newName })
+        Axios.put('/api/group/' + this.parent.props.group.id, { name: newName })
             .catch(() => toast.error('Failed to edit group\'s name'));
     }
 
     updateGroupDescription(newDescription) {
-        Axios.put('/api/group/'+ this.parent.state.id, { description: newDescription })
+        Axios.put('/api/group/'+ this.parent.props.group.id, { description: newDescription })
             .catch(() => toast.error('Failed to edit group\'s description.'));
     }
 
     deleteGroup() {
-        Axios.delete('/api/group/'+ this.parent.state.id)
+        Axios.delete('/api/group/'+ this.parent.props.group.id)
             .catch(() => toast.error('Failed to delete the group.'));
     }
 
     reloadGroupDisplays() {
-        const promises = Object.values(this.parent.state.displays).map((display) => {
+        const promises = Object.values(this.parent.props.group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
         });
@@ -40,8 +40,8 @@ class Rest {
     }
 
     toggleOSD() {
-        const enable = !Object.values(this.parent.state.displays).every((display) => !display.connected || display.osd);
-        const promises = Object.values(this.parent.state.displays).map((display) => {
+        const enable = !Object.values(this.parent.props.group.displays).every((display) => !display.connected || display.osd);
+        const promises = Object.values(this.parent.props.group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action',
                     { action: 'osd', text: enable || !display.osd ? display.name : null });
@@ -52,12 +52,12 @@ class Rest {
     }
 
     preview() {
-        Axios.post('/api/preview/group/' + this.parent.state.id, { blob: localStorage.getItem('register') })
+        Axios.post('/api/preview/group/' + this.parent.props.group.id, { blob: localStorage.getItem('register') })
             .catch(() => toast.error('Failed to preview group.'));
     }
 
     addDashboard(inputs) {
-        Axios.post('/api/group/' + this.parent.state.id + "/dashboard", inputs)
+        Axios.post('/api/group/' + this.parent.props.group.id + "/dashboard", inputs)
             .then(() => toast.success('Successfully added dashboard.'))
             .catch(() => toast.error('Failed to add dashboard.'));
     }
