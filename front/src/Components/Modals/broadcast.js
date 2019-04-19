@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Row, Col, Button, Container, InputGroup, Form, Collapse, Card } from 'react-bootstrap';
+import { Modal, Row, Col, Button, Container, Form, Collapse, Card } from 'react-bootstrap';
 import { IoMdAddCircle, IoMdCloseCircle } from 'react-icons/io'
 import FormInput from './formInput';
 import Axios from 'axios';
@@ -17,6 +17,8 @@ class ModalBroadcast extends Component {
       validated: false,
       opened: false,
       enableAllGroup: true,
+      delayTime: 'sec',
+      timeoutTime: 'sec'
     }
   }
 
@@ -100,13 +102,19 @@ class ModalBroadcast extends Component {
       .catch(() => toast.error('Failed to broadcast.'));
   }
 
+  setTime = (time, value) => {
+    return (time === 'hour' ? (value * 60 * 60) : (value * 60));
+  }
+
   handleSubmit = () => {
+    const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
+    const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const dashboard = {
-      timeout: this.state.Timeout,
+      timeout: timeout,
       url: this.state.Url,
       description: this.state.Description,
       viewport: this.state.Viewport,
-      delay: this.state.Delay
+      delay: delay
     }
     let groups = [];
     let body;
@@ -141,7 +149,7 @@ class ModalBroadcast extends Component {
   }
 
   toggleIcon = (isEnable) => {
-    return (isEnable ? <IoMdAddCircle size="1.5em" /> : <IoMdCloseCircle size="1.5em" />) 
+    return (isEnable ? <IoMdAddCircle size="1.5em" /> : <IoMdCloseCircle size="1.5em" />)
   }
 
   allGroups() {
@@ -193,15 +201,17 @@ class ModalBroadcast extends Component {
               {this.allGroups()}
               <Form.Row>
                 <FormInput md={12} sm={12} required={true} isInvalid={!this.isValidUrl()}
-                placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
+                  placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description}
-                placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
-                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} 
-                placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
+                  placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport}
+                  placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout <= 0}
-                placeholder="Timeout (in second)" name='Timeout' updateValue={this.handleInput} type="number" />
+                  placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
+                  dropdown={true}  time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0}
-                placeholder="Delay (in second)" name='Delay' updateValue={this.handleInput} type="number" />
+                  placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
+                  dropdown={true}  time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
               </Form.Row>
             </Container>
           </Modal.Body>

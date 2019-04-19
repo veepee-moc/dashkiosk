@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, InputGroup, Form, FormCheck } from 'react-bootstrap';
+import { Modal, Button, Container, Form } from 'react-bootstrap';
 import FormInput from './formInput';
-import Rest from '../Group/Rest';
 
 class ModalDashboard extends Component {
   constructor(props) {

@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import { Modal, Row, Col, Button, Container, InputGroup, Form, Collapse, Card } from 'react-bootstrap';
-import { IoMdRefresh, IoMdLink, IoMdTime, IoMdHourglass, IoMdResize, IoMdDocument, IoMdCalendar } from 'react-icons/io'
+import { Col, DropdownButton, Dropdown, InputGroup, Form } from 'react-bootstrap';
+import { IoMdLink, IoMdTime, IoMdHourglass, IoMdResize, IoMdDocument, IoMdCalendar } from 'react-icons/io'
+
+const styles = {
+  borderTopRightRadius: '0.3em',
+  borderBottomRightRadius: '0.3em',
+  borderWidth: '1px',
+  borderColor: '#ced4da',
+  borderStyle: 'solid',
+  backgroundColor: '#E9ECEF',
+  minWidth: '80px'
+}
 
 class FormInput extends Component {
-  constructor(...args) {
-    super(...args);
-  }
-
   putIcon = () => {
     switch (this.props.name) {
+      default:
+        return ;
       case 'Url':
         return <IoMdLink />;
       case 'Delay':
@@ -21,6 +29,28 @@ class FormInput extends Component {
         return <IoMdDocument />;
       case 'Available':
         return <IoMdCalendar />;
+    }
+  }
+
+  selectTime() {
+    if (this.props.dropdown) {
+      return <> <DropdownButton
+        className="text-center"
+        as={InputGroup.Prepend}
+        variant=""
+        title={this.props.time}
+        id="input-group-dropdown-1"
+        style={styles}
+      >
+        <Dropdown.Item onClick={() => { this.props.selectTime('sec') }}>
+          sec
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={() => { this.props.selectTime('min') }}>min</Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={() => { this.props.selectTime('hour') }}>hour</Dropdown.Item>
+      </DropdownButton>
+      </>
     }
   }
 
@@ -40,8 +70,8 @@ class FormInput extends Component {
             aria-describedby="inputGroupPrepend"
             onChange={(input) => { this.props.updateValue(this.props.name, input.target.value) }}
             isInvalid={this.props.isInvalid}
-            // required={this.props.required}
-            />
+          />
+          {this.selectTime()}
           <Form.Control.Feedback type="invalid">
             {this.props.onError}
           </Form.Control.Feedback>
