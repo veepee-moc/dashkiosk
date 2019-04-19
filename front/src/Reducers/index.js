@@ -5,7 +5,8 @@ const initialState = {
 	receiverConnected: false,
 	connectionLost: false,
 	reloadRequired: false,
-	dashboardToDisplay: {}
+	dashboardToDisplay: {},
+	osd: ''
 };
 
 function rootReducer(state = initialState, action) {
