@@ -22,9 +22,21 @@
     color: black;
 }
 
+.btn.btn-noframe-light {
+    border: none;
+    color: white;
+}
+
 .btn.btn-noframe-dark:hover {
+    color: black;
     background-color: rgb(100, 100, 100);
     background-color: rgba(100, 100, 100, 0.3);
+}
+
+.btn.btn-noframe-light:hover {
+    color: white;
+    background-color: rgb(210, 210, 210);
+    background-color: rgba(210, 210, 210, 0.4);
 }
 
 .btn.btn-nostyle {

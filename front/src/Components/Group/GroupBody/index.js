@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Display from '../../Display';
+import Dashboard from '../../Dashboard'
 
 class GroupBody extends Component {
     constructor(props) {
@@ -8,6 +9,12 @@ class GroupBody extends Component {
         this.state = {
             layoutSize: 3
         };
+    }
+
+    renderDashboard() {
+        return this.props.dashboards.map((key) =>
+            <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } />
+        );
     }
 
     renderDisplays() {
@@ -20,10 +27,17 @@ class GroupBody extends Component {
 
     render() {
         return (
-            <div className="card-body pt-2 pb-2">
-                <ul className="list-layout">
-                    { this.renderDisplays() }
-                </ul>
+            <div>
+                <div className="card-body pt-2 pb-2">
+                    <ul className="list-layout">
+                        { this.renderDisplays() }
+                    </ul>
+                </div>
+                <div>
+                    <ul className="list-group list-group-flush">
+                        { this.renderDashboard() }
+                    </ul>
+                </div>
             </div>
         );        
     }
@@ -32,7 +46,8 @@ class GroupBody extends Component {
 function mapStateToProps(state, ownProps) {
     const group = state.admin.groups[ownProps.groupIndex];
     return {
-        displays: group ? Object.keys(group.displays) : null
+        displays: group ? Object.keys(group.displays) : null,
+        dashboards: group ? Object.keys(group.dashboards) : null
     };
 }
 
