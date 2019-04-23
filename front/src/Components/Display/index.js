@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Draggable from '../DragAndDrop/Draggable';
 import './Display.css';
 
@@ -46,4 +47,10 @@ class Display extends Component {
     }
 };
 
-export default withRouter(Display);
+function mapStateToProps(state, ownProps) {
+    return {
+        display: state.admin.groups[ownProps.groupIndex].displays[ownProps.displayKey]
+    };
+}
+
+export default withRouter(connect(mapStateToProps)(Display));

@@ -9,10 +9,10 @@ class Swap extends Component {
     render() {
         return (
             <div className={ this.props.className }>
-                <div hidden={ this.props.control }>
+                <div hidden={ !this.props.control }>
                     { this.props.children[0] }
                 </div>
-                <div hidden={ !this.props.control }>
+                <div hidden={ this.props.control }>
                     { this.props.children[1] }
                 </div>
             </div>

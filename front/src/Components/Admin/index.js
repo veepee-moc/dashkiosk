@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import Socket from './Socket';
 import Navbar from '../Navbar';
@@ -10,44 +11,35 @@ class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            socketConnected: false,
-            layoutSize: 3,
-            groups: {}
+            layoutSize: 3
         };
-        Socket(this);
     }
 
-    renderGroups() {
-        return Object.values(this.state.groups).map((group) =>
-            <li className="list-layout-item" key={group.id} style={{ width: 100 / this.state.layoutSize + '%' }}>
-                <Group group={group} />
-            </li>
-        );
+    componentDidMount() {
+        Socket();
     }
 
     renderSortableGroupList() {
         const SortableGroupItem = SortableElement(({value}) =>
-            <li className="list-layout-item" style={{width: 100 / this.state.layoutSize + '%'}}>
-                <Group group={ value } />
+            <li className="list-layout-item" style={{ width: 100 / this.state.layoutSize + '%' }}>
+                <Group groupIndex={ value } />
             </li>
         );
         const SortableGroupList = SortableContainer(({items}) => 
             <ul className="list-layout">
-                {
-                    Object.values(items).map((value, index) =>
-                        <SortableGroupItem key={ `group-${ index }` } index={ index } value={ value } />)
-                }
+                { items }
             </ul>
         );
-        return (
-            <SortableGroupList items={ Object.values(this.state.groups) } axis="xy" useDragHandle />
-        );
+        const groups = [];
+        for (var i = 0; i < this.props.gourpsNbr; i++)
+            groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } />);
+        return <SortableGroupList items={ groups } axis="xy" useDragHandle />
     }
 
     render() {
         return (
             <div>
-                <Navbar connected={ this.state.socketConnected } />
+                <Navbar />
                 <div className="container-fluid mt-3">
                     { this.renderSortableGroupList() }
                     <div className="mt-3 mb-3">
@@ -59,4 +51,10 @@ class Admin extends Component {
     }
 }
 
-export default withRouter(Admin);
+function mapStateToProps(state) {
+    return ({
+        gourpsNbr: state.admin.groups.length
+    });
+}
+
+export default withRouter(connect(mapStateToProps)(Admin));

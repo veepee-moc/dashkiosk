@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { SetStoreState } from '../../Actions';
+import { Types, action } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import socketio from './socketio';
@@ -25,7 +25,7 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<Swap control={!this.props.receiverConnected}>
+			<Swap control={ this.props.receiverConnected }>
 				<Display isPreview={ this.props.isPreview }/>
 				<Spinner className="centered" animation="grow" />
 			</Swap>
@@ -41,7 +41,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return ({
-		setStoreState: (payload) => dispatch(SetStoreState(payload))
+		setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
 	});
 }
 

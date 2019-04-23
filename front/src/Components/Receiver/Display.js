@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SetStoreState } from '../../Actions';
+import { Types, action } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner, Row, Col } from 'react-bootstrap';
 import Swap from '../Swap';
@@ -141,7 +141,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return ({
-    setStoreState: (payload) => dispatch(SetStoreState(payload))
+    setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
   });
 }
 
