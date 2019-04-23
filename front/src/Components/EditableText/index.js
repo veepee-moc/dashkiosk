@@ -60,7 +60,7 @@ class EditableText extends Component {
     render() {
         return (
             <div ref={(node) => { this.node = node }}>
-                <Swap control={ this.state.editable }>
+                <Swap control={ !this.state.editable }>
                     <div className={this.props.className} onClick={this.handleTextClick}>
                         {this.state.text}
                     </div>
