@@ -1,72 +1,40 @@
 import socketIO from 'socket.io-client';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 
-export default function (admin) {
+export default function () {
     const socket = socketIO.connect('/changes');
     socket.on('connect', function () {
         console.info('[Dashkiosk] connected to socket.io server');
-        admin.setState({
-            socketConnected: true
-        });
+        Store.dispatch(action(Types.SetAdminState, { socketConnected: true }));
     });
     socket.on('disconnect', function () {
         console.warn('[Dashkiosk] lost connection to socket.io server');
-        admin.setState({
-            socketConnected: false
-        });
+        Store.dispatch(action(Types.SetAdminState, { socketConnected: false }));
     });
     socket.on('snapshot', function (newGroups) {
         console.info('[Dashkiosk] received a full snapshot of all groups');
-        console.info(newGroups);
-        admin.setState({
-            groups: newGroups
-        });
+        Store.dispatch(action(Types.SetAllGroups, newGroups));
     });
     socket.on('group.created', function (group) {
         console.info('[Dashkiosk] received a new group', group);
-        admin.setState({
-            groups: Object.assign(admin.state.groups, { [group.id]: group })
-        });
+        Store.dispatch(action(Types.SetGroup, group));
     });
     socket.on('group.updated', function (group) {
         console.info('[Dashkiosk] updated group', group);
-        admin.setState({
-            groups: Object.assign(admin.state.groups, { [group.id]: group })
-        });
+        Store.dispatch(action(Types.SetGroup, group));
     });
     socket.on('group.deleted', function (group) {
         console.info('[Dashkiosk] deleted group', group);
-        const groups = admin.state.groups;
-        delete groups[group.id];
-        admin.setState({
-            groups: groups
-        });
+        Store.dispatch(action(Types.DeleteGroup, group));
     });
-    function removeFirstOccurence(objArr, obj) {
-        for (const index in objArr) {
-            if (objArr[index].id === obj.id)
-                delete objArr[index];
-        }
-    }
     socket.on('display.updated', function (display) {
         console.info('[Dashkiosk] updated display', display);
-        const groups = admin.state.groups;
-        for (const index in groups)
-            removeFirstOccurence(groups[index].displays, display);
-        const group = groups[display.group];
-        if (group)
-            group.displays[display.name] = display;
-        admin.setState({
-            groups: groups
-        });
+        Store.dispatch(action(Types.SetDisplay, display));
     });
     socket.on('display.deleted', function (display) {
         console.debug('[Dashkiosk] deleted display', display);
-        const groups = admin.state.groups;
-        for (const index in groups)
-            removeFirstOccurence(groups[index].displays, display);
-        admin.setState({
-            groups: groups
-        });
+        Store.dispatch(action(Types.DeleteDisplay, display));
     });
     return (socket);
 };

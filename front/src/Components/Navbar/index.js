@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 import ModalBroadcast from '../Modals/broadcast';
 import { Button } from 'react-bootstrap';
@@ -7,8 +8,7 @@ import { Button } from 'react-bootstrap';
 class Navbar extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     render() {
@@ -30,7 +30,7 @@ class Navbar extends Component {
                 <Button variant="secondary" onClick={() => { this.setState({ broadcast: true }) }}>broadcast</Button>
                 <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />
                 </div>
-                <div className="spinner-grow text-light" hidden={this.props.connected}>
+                <div className="spinner-grow text-light" hidden={ this.props.socketConnected }>
                     <span className="sr-only">Loading...</span>
                 </div>
             </nav>
@@ -38,4 +38,10 @@ class Navbar extends Component {
     }
 }
 
-export default withRouter(Navbar);
+function mapStateToProps(state) {
+    return ({
+        socketConnected: state.admin.socketConnected
+    });
+}
+
+export default withRouter(connect(mapStateToProps)(Navbar));
