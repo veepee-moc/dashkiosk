@@ -9,6 +9,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { SortableHandle } from 'react-sortable-hoc';
 import Droppable from '../DragAndDrop/Droppable';
 import ModalDashboard from '../Modals/dashboard';
+import Dashboard from '../Dashboard';
 
 const DragHandle = SortableHandle(() =>
     <button className="btn btn-noframe-dark p-1 pl-2 pr-2">
@@ -79,6 +80,9 @@ class Group extends Component {
                             </TransitionGroup>
                         </ul>
                     </div>
+                    <ul className="list-group list-group-flush">
+                        <Dashboard href="http://test.com" isActive={false} ></Dashboard>
+                    </ul>
                     <div className="btn-group btn-group-sm">
                         <button type="button" className="btn btn-light w-50 border-right rounded-0" onClick={ this.openModal }>
                             Add a new dashboard
