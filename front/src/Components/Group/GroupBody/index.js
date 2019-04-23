@@ -19,7 +19,7 @@ class GroupBody extends Component {
 
     renderDisplays() {
         return this.props.displays.map((key) =>
-            <li className="list-layout-item" key={ key } style={{ width: 100 / this.state.layoutSize + '%' }}>
+            <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.state.layoutSize + '%' }}>
                 <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
             </li>
         );
@@ -28,7 +28,7 @@ class GroupBody extends Component {
     render() {
         return (
             <div>
-                <div className="card-body pt-2 pb-2">
+                <div className="card-body p-1 pt-2 pb-2">
                     <ul className="list-layout">
                         { this.renderDisplays() }
                     </ul>
