@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SetStoreState } from '../../Actions';
 import { connect } from 'react-redux';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Row, Col } from 'react-bootstrap';
 import Swap from '../Swap';
 import IFrame from './IFrame';
 
@@ -83,14 +83,14 @@ class Display extends Component {
     } else {
       return (
         <>
-          <div hidden={this.state.displayed === 2}>
+          <div className={ this.state.displayed === 2 ? 'disp' : 'hide' }>
             <IFrame
               name='1'
               dashboard={this.state.screen1.dashboard}
               style={this.state.screen1.dashboardStyle}
             />
           </div>
-          <div hidden={this.state.displayed === 1}>
+          <div className={ this.state.displayed === 1 ? 'disp' : 'hide' }>
             <IFrame
               name='2'
               dashboard={this.state.screen2.dashboard}
@@ -110,8 +110,12 @@ class Display extends Component {
                   <span>Displaying screen size on receiver</span>
 
                   <>
-                    <span>{`Client size: ${this.state.clientWidth}x${this.state.clientHeight}`}</span>
-                    <span>{`Screen size: ${window.screen.width}x${window.screen.height}`}</span>
+                    <Row className='text-right'>
+                      <Col>{`Client size: ${this.state.clientWidth}x${this.state.clientHeight}`}</Col>
+                    </Row>
+                    <Row className='text-right'>
+                      <Col>{`Screen size: ${window.screen.width}x${window.screen.height}`}</Col>
+                    </Row>
                   </>
                 </Swap>
               </div>
