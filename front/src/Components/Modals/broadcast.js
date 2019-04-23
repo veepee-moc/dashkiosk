@@ -22,8 +22,8 @@ class ModalBroadcast extends Component {
     }
   }
 
-  shouldComponentUpdate (prevProps) {
-    if (this.props.show != prevProps.show)
+  shouldComponentUpdate (prevProps, prevState) {
+    if (this.props.show !== prevProps.show || prevState !== this.state)
       return true;
     return false;
   }
@@ -57,7 +57,7 @@ class ModalBroadcast extends Component {
   }
 
   handleInput = (inputName, inputValue) => {
-    if (inputName === 'Timeout' && inputValue <= 0 || inputName === 'Delay' && inputValue <= 0)
+    if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
       inputValue = '';
     this.setState({ [inputName]: inputValue });
   }
