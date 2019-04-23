@@ -25,19 +25,10 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<div>
-				<Swap control={ this.props.receiverConnected }>
-					<Display />
-					<Spinner className="centered" animation="grow" />
-				</Swap>
-				<div className="glow"></div>
-				<div className="osd text"></div>
-				<div className="osd technical"></div>
-				<div className="connecting"></div>
-				<div className="show loading" id="loading">
-					<div className="branding branding-{{ branding }}"></div>
-				</div>
-			</div>
+			<Swap control={ this.props.receiverConnected }>
+				<Display isPreview={ this.props.isPreview }/>
+				<Spinner className="centered" animation="grow" />
+			</Swap>
 		);
 	}
 }

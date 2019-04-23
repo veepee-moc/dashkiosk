@@ -88,10 +88,14 @@ export default function (receiver) {
   socket.on('osd', function (text) {
     if (text === undefined || text === null) {
       console.info('[Dashkiosk] hide OSD');
-      osd.hide();
+      receiver.props.setStoreState({
+        osd: ''
+      });
     } else {
       console.info('[Dashkiosk] display OSD');
-      osd.show(text);
+      receiver.props.setStoreState({
+        osd: text
+      });
     }
   });
 

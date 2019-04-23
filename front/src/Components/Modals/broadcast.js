@@ -10,8 +10,8 @@ class ModalBroadcast extends Component {
     super(props);
     this.state = {
       Groups: [{}],
-      Timeout: '0',
-      Delay: 0,
+      Timeout: '',
+      Delay: '',
       Url: '',
       Viewport:'',
       validated: false,
@@ -20,6 +20,12 @@ class ModalBroadcast extends Component {
       delayTime: 'sec',
       timeoutTime: 'sec'
     }
+  }
+
+  shouldComponentUpdate (prevProps, prevState) {
+    if (this.props.show !== prevProps.show || prevState !== this.state)
+      return true;
+    return false;
   }
 
   componentDidMount () {
@@ -40,17 +46,20 @@ class ModalBroadcast extends Component {
 
   reinitialise = () => {
     this.setState({
-      Timeout: '0',
+      Timeout: 1,
       Viewport:'',
       Delay: 0,
       Url: '',
       Description: '',
+      delayTime: 'sec',
+      timeoutTime: 'sec'
     });
   }
 
   handleInput = (inputName, inputValue) => {
-    var value = inputValue;
-    this.setState({ [inputName]: value });
+    if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
+      inputValue = '';
+    this.setState({ [inputName]: inputValue });
   }
 
   isValidUrl = () => {
@@ -106,7 +115,8 @@ class ModalBroadcast extends Component {
     return (time === 'hour' ? (value * 60 * 60) : (value * 60));
   }
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const dashboard = {
@@ -161,7 +171,7 @@ class ModalBroadcast extends Component {
         <Card.Body className="text-center">
           <Row className="mb-3">
             <Col>
-              <Button className="text-left col-md-6 col-sm-6" style={{}} variant= {this.state.enableAllGroup ? "info" : "light"}
+              <Button className="text-left col-md-6 col-sm-6" variant= {this.state.enableAllGroup ? "info" : "light"}
                 onClick={() => {this.toggleAll()}}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
@@ -172,8 +182,8 @@ class ModalBroadcast extends Component {
           </Row>
           <Row>
             {this.state.Groups.map((item, i) =>
-              <Col className="d-flex justify-content-around mb-3" md="3" sm="12">
-                <Button className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
+              <Col key={item.id} className="d-flex justify-content-around mb-3" md="3" sm="12">
+                <Button  className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>
@@ -189,6 +199,7 @@ class ModalBroadcast extends Component {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
+          onSubmit={this.handleSubmit}
           noValidate
         >
           <Modal.Header>
@@ -207,17 +218,17 @@ class ModalBroadcast extends Component {
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport}
                   placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout <= 0}
-                  placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
+                  placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number" value={this.state.Timeout}
                   dropdown={true}  time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0}
-                  placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
+                  placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number" value={this.state.Delay}
                   dropdown={true}  time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
               </Form.Row>
             </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="light" onClick={this.props.onHide}>Close</Button>
-            <Button disabled={this.handleError()} type="submit" onClick={this.handleSubmit}>Save</Button>
+            <Button disabled={this.handleError()} type="submit">Save</Button>
           </Modal.Footer>
         </Form>
       </Modal>
