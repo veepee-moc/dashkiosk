@@ -100,13 +100,13 @@ class Display extends Component {
           {this.props.connectionLost
             ? <Spinner className='right-bottom' animation='grow' size='lg' />
             : ''}
-          <Swap control={!this.props.osd}>
+          <Swap control={this.props.osd}>
             <div className='osd'>
               <div className='title'>
                 {this.props.osd}
               </div>
               <div className='size'>
-                <Swap control={!this.props.isPreview}>
+                <Swap control={this.props.isPreview}>
                   <span>Displaying screen size on receiver</span>
 
                   <>
