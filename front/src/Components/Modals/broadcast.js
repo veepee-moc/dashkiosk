@@ -22,6 +22,12 @@ class ModalBroadcast extends Component {
     }
   }
 
+  shouldComponentUpdate (prevProps) {
+    if (this.props.show != prevProps.show)
+      return true;
+    return false;
+  }
+
   componentDidMount () {
     var newGroups = [];
 
@@ -165,7 +171,7 @@ class ModalBroadcast extends Component {
         <Card.Body className="text-center">
           <Row className="mb-3">
             <Col>
-              <Button className="text-left col-md-6 col-sm-6" style={{}} variant= {this.state.enableAllGroup ? "info" : "light"}
+              <Button className="text-left col-md-6 col-sm-6" variant= {this.state.enableAllGroup ? "info" : "light"}
                 onClick={() => {this.toggleAll()}}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
@@ -176,8 +182,8 @@ class ModalBroadcast extends Component {
           </Row>
           <Row>
             {this.state.Groups.map((item, i) =>
-              <Col className="d-flex justify-content-around mb-3" md="3" sm="12">
-                <Button className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
+              <Col key={item.id} className="d-flex justify-content-around mb-3" md="3" sm="12">
+                <Button  className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>
