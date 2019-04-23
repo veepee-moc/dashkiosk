@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import osd from './osd';
 import localStorage from './localstorage';
 
 export default function (receiver) {
