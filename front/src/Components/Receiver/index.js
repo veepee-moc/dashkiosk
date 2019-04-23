@@ -26,7 +26,7 @@ class Receiver extends Component {
 	render() {
 		return (
 			<Swap control={!this.props.receiverConnected}>
-				<Display />
+				<Display isPreview={ this.props.isPreview }/>
 				<Spinner className="centered" animation="grow" />
 			</Swap>
 		);

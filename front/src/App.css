@@ -90,6 +90,19 @@ li.list-layout-item {
     position: absolute;
     bottom: 2%;
     left: 2%;
+    font-size: 60px;
+}
+
+@media(max-width: 479px) {
+    .osd > .title {
+        font-size: 40px;
+    }
+}
+
+@media(min-width: 1900px) {
+    .osd > .title {
+        font-size: 80px;
+    }
 }
 
 .osd > .size {

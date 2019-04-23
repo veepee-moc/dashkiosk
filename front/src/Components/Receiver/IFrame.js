@@ -8,6 +8,7 @@ export default class Display extends Component {
 				transformOrigin: '',
 				MozTransform: '',
 				WebkitTransform: '',
+				position: 'absolute',
 				overflow: 'hidden',
 				height: '100%',
 				width: '100%',
@@ -75,6 +76,7 @@ export default class Display extends Component {
 
 		return (
 			<iframe
+				id={`iframe${ this.props.name }`}
 				title={dashboard.description
 					? dashboard.desciption
 					: dashboard.url}

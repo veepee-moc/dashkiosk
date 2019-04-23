@@ -22,7 +22,7 @@ class Preview extends Component {
                 </button>
                 <Collapse in={this.state.opened}>
                     <div className="card-body embed-responsive embed-responsive-16by9" id="collapseIframe">
-                        <Receiver/>
+                        <Receiver isPreview={ true }/>
                     </div>
                 </Collapse>
             </div>

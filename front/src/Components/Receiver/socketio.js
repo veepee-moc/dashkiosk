@@ -91,7 +91,6 @@ export default function (receiver) {
       receiver.props.setStoreState({
         osd: ''
       });
-      //osd.hide();
     } else {
       console.info('[Dashkiosk] display OSD');
       receiver.props.setStoreState({
