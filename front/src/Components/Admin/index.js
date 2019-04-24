@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
@@ -16,7 +17,17 @@ class Admin extends Component {
         };
         this.Rest = new Rest();
         Socket();
+        this.setLayoutSize = this.setLayoutSize.bind(this);
         this.onSortEnd = this.onSortEnd.bind(this);
+    }
+
+    setLayoutSize(incr) {
+        var newLayoutSize = this.state.layoutSize + incr;
+        if (newLayoutSize < 1)
+            newLayoutSize = 1;
+        this.setState({
+            layoutSize: newLayoutSize
+        });
     }
 
     onSortEnd({ oldIndex, newIndex }) {
@@ -46,6 +57,17 @@ class Admin extends Component {
             <div>
                 <Navbar />
                 <div className="container-fluid mt-3">
+                    <div className="text-center mt-2">
+                        <span className="border rounded p-1">
+                            <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
+                                <IoMdRemove />
+                            </button>
+                            { this.state.layoutSize }
+                            <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
+                                <IoMdAdd />
+                            </button>
+                        </span>
+                    </div>
                     { this.renderSortableGroupList() }
                     <div className="mt-3 mb-3">
                         <Preview />

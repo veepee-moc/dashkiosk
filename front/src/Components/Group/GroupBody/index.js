@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
 import Draggable from '../../DragAndDrop/Draggable';
@@ -11,6 +12,16 @@ class GroupBody extends Component {
         this.state = {
             layoutSize: 3
         };
+        this.setLayoutSize = this.setLayoutSize.bind(this);
+    }
+
+    setLayoutSize(incr) {
+        var newLayoutSize = this.state.layoutSize + incr;
+        if (newLayoutSize < 1)
+            newLayoutSize = 1;
+        this.setState({
+            layoutSize: newLayoutSize
+        });
     }
 
     renderDashboard() {
@@ -36,6 +47,17 @@ class GroupBody extends Component {
     render() {
         return (
             <div>
+                <div className="text-center mt-2">
+                    <span className="border rounded p-1">
+                        <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
+                            <IoMdRemove />
+                        </button>
+                        { this.state.layoutSize }
+                        <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
+                            <IoMdAdd />
+                        </button>
+                    </span>
+                </div>
                 <div className="card-body p-1 pt-2 pb-2">
                     <ul className="list-layout">
                         <TransitionGroup>
