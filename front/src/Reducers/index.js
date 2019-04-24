@@ -5,12 +5,17 @@ import setGroup from './setGroup';
 import deleteGroup from './deleteGroup';
 import setDisplay from './setDisplay';
 import deleteDisplay from './deleteDisplay';
+import setDragAndDrop from './setDragAndDrop';
 import { Types } from '../Actions';
 
 const initialState = {
 	admin: {
 		socketConnected: false,
 		groups: []
+	},
+	dnd: {
+		type: null,
+		object: null
 	},
 	socketConnected: false,
 	receiverConnected: false,
@@ -36,6 +41,8 @@ function rootReducer(state = initialState, action) {
 			return setDisplay(state, action.payload);
 		case Types.DeleteDisplay:
 			return deleteDisplay(state, action.payload);
+		case Types.SetDragAndDrop:
+			return setDragAndDrop(state, action.payload);
 		default:
 			return (state);
 	}

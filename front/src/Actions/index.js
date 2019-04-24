@@ -5,7 +5,8 @@ const Types = {
     SetGroup: 3,
     DeleteGroup: 4,
     SetDisplay: 5,
-    DeleteDisplay: 6
+    DeleteDisplay: 6,
+    SetDragAndDrop: 7
 };
 
 function action(type, payload) {
