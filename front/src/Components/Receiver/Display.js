@@ -83,14 +83,14 @@ class Display extends Component {
     } else {
       return (
         <>
-          <div className={ this.state.displayed === 2 ? 'disp' : 'hide' }>
+          <div className={ this.state.displayed === 1 ? 'disp' : 'hide' }>
             <IFrame
               name='1'
               dashboard={this.state.screen1.dashboard}
               style={this.state.screen1.dashboardStyle}
             />
           </div>
-          <div className={ this.state.displayed === 1 ? 'disp' : 'hide' }>
+          <div className={ this.state.displayed === 2 ? 'disp' : 'hide' }>
             <IFrame
               name='2'
               dashboard={this.state.screen2.dashboard}
