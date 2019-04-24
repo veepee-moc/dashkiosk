@@ -17,7 +17,7 @@ class Droppable extends Component {
             this.setState({ over: 0 });
         for (const type of this.props.types) {
             if (type === this.props.dnd.type && this.props.onDrop)
-                this.props.onDrop(event, this.props.dnd.object);
+                this.props.onDrop(event, this.props.dnd);
         }
     }
 

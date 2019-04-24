@@ -14,8 +14,14 @@ class Group extends Component {
             layoutSize: 3
         };
         this.Rest = new Rest(this.props.groupIndex);
+        this.onDrop = this.onDrop.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
+    }
+
+    onDrop(event, dnd) {
+        if (dnd.type === "Display")
+            this.Rest.moveDisplay(dnd.object.props.displayKey);
     }
 
     closeModal() {
@@ -28,7 +34,7 @@ class Group extends Component {
 
     render() {
         return (
-            <Droppable types={["Display"]}>
+            <Droppable types={["Display"]} onDrop={ this.onDrop }>
                 <div className="card">
                     <GroupHeader groupIndex={ this.props.groupIndex } />
                     <GroupBody groupIndex={ this.props.groupIndex } />
