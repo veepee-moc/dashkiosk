@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
 import Draggable from '../../DragAndDrop/Draggable';
@@ -22,11 +23,13 @@ class GroupBody extends Component {
 
     renderDisplays() {
         return this.props.displays.map((key) =>
-            <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.state.layoutSize + '%' }}>
-                <Draggable type="Display">
-                    <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
-                </Draggable>
-            </li>
+            <CSSTransition key={ key } timeout={ 500 } classNames="fade">
+                <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.state.layoutSize + '%' }}>
+                    <Draggable type="Display">
+                        <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
+                    </Draggable>
+                </li>
+            </CSSTransition>
         );
     }
 
@@ -35,7 +38,9 @@ class GroupBody extends Component {
             <div>
                 <div className="card-body p-1 pt-2 pb-2">
                     <ul className="list-layout">
-                        { this.renderDisplays() }
+                        <TransitionGroup>
+                            { this.renderDisplays() }
+                        </TransitionGroup>
                     </ul>
                 </div>
                 <div>
