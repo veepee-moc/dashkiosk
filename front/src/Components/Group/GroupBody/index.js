@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
+import Draggable from '../../DragAndDrop/Draggable';
 
 class GroupBody extends Component {
     constructor(props) {
@@ -13,14 +14,16 @@ class GroupBody extends Component {
 
     renderDashboard() {
         return this.props.dashboards.map((key) =>
-            <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } />
+            <Dashboard groupIndex={ this.props.groupIndex } key={ key } dashboardKey={ key } />
         );
     }
 
     renderDisplays() {
         return this.props.displays.map((key) =>
             <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.state.layoutSize + '%' }}>
-                <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
+                <Draggable type="Display">
+                    <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
+                </Draggable>
             </li>
         );
     }

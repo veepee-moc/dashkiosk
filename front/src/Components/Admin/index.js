@@ -6,6 +6,7 @@ import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
 import Preview from '../Preview';
+import Rest from './Rest';
 
 class Admin extends Component {
     constructor(props) {
@@ -13,10 +14,14 @@ class Admin extends Component {
         this.state = {
             layoutSize: 3
         };
+        this.Rest = new Rest();
+        Socket();
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
-    componentDidMount() {
-        Socket();
+    onSortEnd({ oldIndex, newIndex }) {
+        if (oldIndex !== newIndex)
+            this.Rest.editRank(oldIndex, newIndex);
     }
 
     renderSortableGroupList() {
@@ -33,7 +38,7 @@ class Admin extends Component {
         const groups = [];
         for (var i = 0; i < this.props.gourpsNbr; i++)
             groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } />);
-        return <SortableGroupList items={ groups } axis="xy" useDragHandle />
+        return <SortableGroupList items={ groups } axis="xy" onSortEnd={ this.onSortEnd } useDragHandle />
     }
 
     render() {

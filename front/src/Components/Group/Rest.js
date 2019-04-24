@@ -69,6 +69,12 @@ class Rest {
             .then(() => toast.success('Successfully added dashboard.'))
             .catch(() => toast.error('Failed to add dashboard.'));
     }
+
+    moveDisplay(display) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.put(`/api/display/${display}/group/${group.id}`)
+            .catch(() => toast.error('Failed to move display.'));
+    }
 }
 
 export default Rest;
