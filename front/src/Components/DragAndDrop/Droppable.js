@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Droppable extends Component {
     constructor(props) {
@@ -11,29 +12,26 @@ class Droppable extends Component {
     }
 
     handleDrop(event) {
+        event.preventDefault();
         if (this.state.over)
             this.setState({ over: false });
-        event.preventDefault();
         for (const type of this.props.types) {
-            var data = event.dataTransfer.getData(type);
-            if (data && this.props.onDrop)
-                this.props.onDrop(event, data);
+            if (type === this.props.dnd.type && this.props.onDrop)
+                this.props.onDrop(event, this.props.dnd.object);
         }
     }
 
     handleDragOver(event) {
         event.preventDefault();
         for (const type of this.props.types) {
-            var data = event.dataTransfer.getData(type);
-            if (data && this.props.onDragOver)
-                this.props.onDragOver(event, data);
+            if (type === this.props.onDragOver && this.props.onDragOver)
+                this.props.onDragOver(event, this.props.dnd.object);
         }
     }
 
     handleDragEnter(event) {
         for (const type of this.props.types) {
-            var data = event.dataTransfer.getData(type);
-            if (data) {
+            if (type === this.props.dnd.type) {
                 this.setState({ over: true });
                 return;
             }
@@ -42,8 +40,7 @@ class Droppable extends Component {
 
     handleDragExit(event) {
         for (const type of this.props.types) {
-            var data = event.dataTransfer.getData(type);
-            if (data) {
+            if (type === this.props.dnd.type) {
                 this.setState({ over: false });
                 return;
             }
@@ -66,4 +63,10 @@ class Droppable extends Component {
     }
 };
 
-export default Droppable;
+function mapStateToProps(state) {
+    return {
+        dnd: state.dnd
+    };
+}
+
+export default connect(mapStateToProps)(Droppable);
