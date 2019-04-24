@@ -120,6 +120,14 @@ angular.module('dashkiosk.controllers')
       }
     };
 
+    $scope.check = function check() {
+      $scope.selection = $scope.formattedGroups.map(function (elem) { return elem.id; });
+    };
+
+    $scope.uncheck = function uncheck() {
+      $scope.selection = [];
+    };
+
     $scope.toggleDisplay = function toggleDisplay() {
       $scope.display = !$scope.display;
     };
