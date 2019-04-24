@@ -19,15 +19,15 @@ class Group extends Component {
         this.openModal = this.openModal.bind(this);
     }
 
-    onDrop(event, dnd) {
+    onDrop(dropEffect, dnd) {
         switch (dnd.type) {
             case "Display":
                 this.Rest.moveDisplay(dnd.object.props.displayKey);
                 return;
             case "Dashboard":
-                if (event.dataTransfer.dropEffect === "move")
+                if (dropEffect === "move")
                     this.Rest.moveDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
-                else if (event.dataTransfer.dropEffect === "copy")
+                else if (dropEffect === "copy")
                     this.Rest.copyDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
                 return;
             default:

@@ -79,3 +79,17 @@ li.list-layout-item {
     padding: 10px;
     display: inline-table;
 }
+
+.bg-color-transition {
+    -webkit-transition: background-color 300ms ease-in !important;
+    -moz-transition: background-color 300ms ease-in !important;
+    -o-transition: background-color 300ms ease-in !important;
+    transition: background-color 300ms ease-in !important;
+}
+
+.color-transition {
+    -webkit-transition: color 300ms ease-in !important;
+    -moz-transition: color 300ms ease-in !important;
+    -o-transition: color 300ms ease-in !important;
+    transition: color 300ms ease-in !important;
+}

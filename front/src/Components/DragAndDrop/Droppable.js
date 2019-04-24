@@ -16,8 +16,12 @@ class Droppable extends Component {
         if (this.state.hover)
             this.setState({ hover: 0 });
         for (const type of this.props.types) {
-            if (type === this.props.dnd.type && this.props.onDrop)
-                this.props.onDrop(event, this.props.dnd);
+            if (type === this.props.dnd.type && this.props.onDrop) {
+                var dropEffect = event.dataTransfer.dropEffect;
+                if (dropEffect === 'none')
+                    dropEffect = event.altKey || event.ctrlKey ? 'copy' : 'move';
+                this.props.onDrop(dropEffect, this.props.dnd);
+            }
         }
     }
 
