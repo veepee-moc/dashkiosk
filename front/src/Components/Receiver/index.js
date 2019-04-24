@@ -3,9 +3,11 @@ import { withRouter } from 'react-router-dom';
 import { Types, action } from '../../Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
+import './Receiver.css';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
+import Unassigned from './Unassigned';
 import Display from './Display';
 import Swap from '../Swap';
 
@@ -25,11 +27,12 @@ class Receiver extends Component {
 
 	render() {
 		return (
-			<Swap control={ this.props.receiverConnected }>
-				<Display isPreview={ this.props.isPreview }/>
+			<Swap control={this.props.receiverConnected}>
+				<Display isPreview={this.props.isPreview} />
 				<Spinner className="centered" animation="grow" />
 			</Swap>
 		);
+		return (<Unassigned />)
 	}
 }
 
