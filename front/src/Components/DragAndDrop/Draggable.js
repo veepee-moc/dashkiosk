@@ -9,15 +9,15 @@ class Draggable extends Component {
     }
 
     handleDragStart(event) {
-        event.dataTransfer.setData(this.props.type, this.props.draggableId);
+        event.dataTransfer.setData('text/plain', null);
         Store.dispatch(action(Types.SetDragAndDrop, { type: this.props.type, object: this.props.children }));
     }
 
     render() {
         return (
-            <span draggable="true" onDragStart={ this.handleDragStart }>
+            <div draggable="true" onDragStart={ this.handleDragStart }>
                 { this.props.children }
-            </span>
+            </div>
         );
     }
 };
