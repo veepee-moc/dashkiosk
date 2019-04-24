@@ -14,7 +14,9 @@ class GroupBody extends Component {
 
     renderDashboard() {
         return this.props.dashboards.map((key) =>
-            <Dashboard groupIndex={ this.props.groupIndex } key={ key } dashboardKey={ key } />
+            <Draggable type="Dashboard" key={ key }>
+                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } />
+            </Draggable>
         );
     }
 

@@ -20,8 +20,19 @@ class Group extends Component {
     }
 
     onDrop(event, dnd) {
-        if (dnd.type === "Display")
-            this.Rest.moveDisplay(dnd.object.props.displayKey);
+        switch (dnd.type) {
+            case "Display":
+                this.Rest.moveDisplay(dnd.object.props.displayKey);
+                return;
+            case "Dashboard":
+                if (event.dataTransfer.dropEffect === "move")
+                    this.Rest.moveDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                else if (event.dataTransfer.dropEffect === "copy")
+                    this.Rest.copyDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                return;
+            default:
+                return;
+        }
     }
 
     closeModal() {
@@ -34,7 +45,7 @@ class Group extends Component {
 
     render() {
         return (
-            <Droppable types={["Display"]} onDrop={ this.onDrop }>
+            <Droppable types={["Display", "Dashboard"]} onDrop={ this.onDrop }>
                 <div className="card">
                     <GroupHeader groupIndex={ this.props.groupIndex } />
                     <GroupBody groupIndex={ this.props.groupIndex } />
