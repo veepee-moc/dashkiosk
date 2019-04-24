@@ -1,7 +1,10 @@
 <div data-ui-element="dk-group"
      class="panel panel-default"
+     dk-draggable="{{ group.id }}"
+     data-drag-type="text/vnd.dashkiosk.group"
      dk-droppable="{ 'text/vnd.dashkiosk.display': attachDisplay,
-                     'text/vnd.dashkiosk.dashboard': copyDashboard }">
+                     'text/vnd.dashkiosk.dashboard': copyDashboard,
+                     'text/vnd.dashkiosk.group': moveGroupBefore }">
   <div class="panel-heading">
     <div class="actions">
       <span class="glyphicon glyphicon-trash"
