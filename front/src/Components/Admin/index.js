@@ -58,7 +58,7 @@ class Admin extends Component {
                 <Navbar />
                 <div className="container-fluid mt-3">
                     <div className="text-center mt-2">
-                        <span className="border rounded p-1">
+                        <span className="bg-white border rounded p-1">
                             <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
                                 <IoMdRemove />
                             </button>
