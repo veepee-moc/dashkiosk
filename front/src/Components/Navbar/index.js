@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import config from '../../config';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 import ModalBroadcast from '../Modals/broadcast';
 import Rest from './Rest';
@@ -22,7 +23,7 @@ class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
                 <a className="navbar-brand" href="#">
-                    <img src={dashkioskIcon} width="50" height="50" alt="" />
+                    <img src={dashkioskIcon} width="50" height="50" alt="dashkiosk icon" />
                     Dashkiosk
                 </a>
                 <div className="collapse navbar-collapse" >
@@ -31,7 +32,7 @@ class Navbar extends Component {
                             <a className="nav-link" href="#">History</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Documentation</a>
+                            <a className="nav-link" href="https://dashkiosk.readthedocs.io/en/v2.7.3/usage.html#administration">Documentation</a>
                         </li>
                     </ul>
                 </div>
@@ -54,6 +55,10 @@ class Navbar extends Component {
                         <li className={ `nav-item spinner-grow text-light ${ this.props.socketConnected ? 'invisible' : 'visible' }`}>
                             <span className="sr-only">Loading...</span>
                         </li>
+                        { config.branding !== 'default' &&
+                            <li className="navbar-brand">
+                                <img src={config.stamp} width="auto" height="40" alt={`logo-${config.branding}`} />
+                        </li> }
                     </ul>
                 </div>
                 <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />

@@ -16,6 +16,7 @@ const image_path = './Resources/Images/';
     You can modify the timezone of the displayed clock on unassigned display
     Just modify what is between ''
     All valid entries are the one in the 'TZ database name' on this page: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    Default is 'Europe/Paris'
 */
 const timezone = 'Europe/Paris';
 
