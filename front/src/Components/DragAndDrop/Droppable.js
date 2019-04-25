@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class Droppable extends Component {
     constructor(props) {
         super(props);
-        this.state = { over: 0 };
+        this.state = { hover: 0 };
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.handleDragEnter = this.handleDragEnter.bind(this);
@@ -13,11 +13,15 @@ class Droppable extends Component {
 
     handleDrop(event) {
         event.preventDefault();
-        if (this.state.over)
-            this.setState({ over: 0 });
+        if (this.state.hover)
+            this.setState({ hover: 0 });
         for (const type of this.props.types) {
-            if (type === this.props.dnd.type && this.props.onDrop)
-                this.props.onDrop(event, this.props.dnd.object);
+            if (type === this.props.dnd.type && this.props.onDrop) {
+                var dropEffect = event.dataTransfer.dropEffect;
+                if (dropEffect === 'none')
+                    dropEffect = event.altKey || event.ctrlKey ? 'copy' : 'move';
+                this.props.onDrop(dropEffect, this.props.dnd);
+            }
         }
     }
 
@@ -28,7 +32,7 @@ class Droppable extends Component {
     handleDragEnter(event) {
         for (const type of this.props.types) {
             if (type === this.props.dnd.type) {
-                this.setState({ over: this.state.over + 1 });
+                this.setState({ hover: this.state.hover + 1 });
                 return;
             }
         }
@@ -37,7 +41,7 @@ class Droppable extends Component {
     handleDragLeave(event) {
         for (const type of this.props.types) {
             if (type === this.props.dnd.type) {
-                this.setState({ over: this.state.over - 1 });
+                this.setState({ hover: this.state.hover - 1 });
                 return;
             }
         }
@@ -51,7 +55,7 @@ class Droppable extends Component {
                 onDragOver={ this.handleDragOver }
                 onDragEnter={ this.handleDragEnter }
                 onDragLeave={ this.handleDragLeave }
-                style={ Object.assign({}, this.props.style, this.state.over ? { boxShadow: "0px 0px 8px rgb(25, 200, 25)" } : { }) }
+                style={ Object.assign({}, this.props.style, this.state.hover ? { boxShadow: "0px 0px 8px rgb(25, 200, 25)" } : { }) }
             >
                 { this.props.children }
             </div>

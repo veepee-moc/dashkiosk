@@ -38,6 +38,8 @@ class Rest {
         const promises = Object.values(group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
+            else
+                return null;
         });
         Promise.all(promises)
             .then(() => toast.success('Successfully reloaded all displays.'))
@@ -51,6 +53,8 @@ class Rest {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action',
                     { action: 'osd', text: enable || !display.osd ? display.name : null });
+            else
+                return null;
         });
         Promise.all(promises)
             .then(() => toast.success('Successfully set OSD on all displays.'))
@@ -68,6 +72,33 @@ class Rest {
         Axios.post('/api/group/' + group.id + "/dashboard", inputs)
             .then(() => toast.success('Successfully added dashboard.'))
             .catch(() => toast.error('Failed to add dashboard.'));
+    }
+
+    moveDisplay(display) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.put(`/api/display/${display}/group/${group.id}`)
+            .catch(() => toast.error('Failed to move display.'));
+    }
+
+    moveDashboard(srcGroupIndex, dashboardKey) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        const srcGroup = Store.getState().admin.groups[srcGroupIndex];
+        const dashboard = srcGroup.dashboards[dashboardKey];
+        const dashboardId = dashboard.id;
+        if (dashboard.group === group.id)
+            return;
+        Axios.post(`/api/group/${group.id}/dashboard`, dashboard)
+            .then(() => Axios.delete(`/api/group/${srcGroup.id}/dashboard/${dashboardId}`))
+            .catch((err) => toast.error(`Failed to move dashboard: ${err.message}`));
+    }
+
+    copyDashboard(srcGroupIndex, dashboardKey) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        const dashboard = Store.getState().admin.groups[srcGroupIndex].dashboards[dashboardKey];
+        if (dashboard.group === group.id)
+            return;
+        Axios.post(`/api/group/${group.id}/dashboard`, dashboard)
+            .catch((err) => toast.error(`Failed to copy dashboard: ${err.message}`));
     }
 }
 

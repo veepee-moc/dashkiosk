@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { IoMdCreate } from 'react-icons/io';
 import { connect } from 'react-redux';
 import './Dashboard.css';
@@ -12,11 +11,11 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <li className={`list-group-item p-0 ${ this.props.dashboard.active ? "active light-blue" : "" }`}>
-                <a className={`ml-1 name ${ this.props.dashboard.active ? "text-white" : "text-dark" }`} href={ this.props.dashboard.url } target="_blank">
+            <li className={`bg-color-transition list-group-item p-0 ${ this.props.dashboard.active ? "active light-blue" : "" }`}>
+                <a className={`color-transition ml-1 name ${ this.props.dashboard.active ? "text-white" : "text-dark" }`} href={ this.props.dashboard.url } target="_blank">
                     { this.props.dashboard.description ? this.props.dashboard.description : this.props.dashboard.url }
                 </a>
-                <button className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 pl-2 pr-2 float-right`}>
+                <button className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 pl-2 pr-2 float-right color-transition`}>
                     <IoMdCreate />
                 </button>
             </li>

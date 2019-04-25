@@ -14,8 +14,25 @@ class Group extends Component {
             layoutSize: 3
         };
         this.Rest = new Rest(this.props.groupIndex);
+        this.onDrop = this.onDrop.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
+    }
+
+    onDrop(dropEffect, dnd) {
+        switch (dnd.type) {
+            case "Display":
+                this.Rest.moveDisplay(dnd.object.props.displayKey);
+                return;
+            case "Dashboard":
+                if (dropEffect === "move")
+                    this.Rest.moveDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                else if (dropEffect === "copy")
+                    this.Rest.copyDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                return;
+            default:
+                return;
+        }
     }
 
     closeModal() {
@@ -28,7 +45,7 @@ class Group extends Component {
 
     render() {
         return (
-            <Droppable types={["Display"]}>
+            <Droppable types={["Display", "Dashboard"]} onDrop={ this.onDrop }>
                 <div className="card">
                     <GroupHeader groupIndex={ this.props.groupIndex } />
                     <GroupBody groupIndex={ this.props.groupIndex } />
