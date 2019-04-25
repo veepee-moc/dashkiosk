@@ -20,7 +20,7 @@ class Navbar extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+            <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
                 <a className="navbar-brand" href="#">
                     <img src={dashkioskIcon} width="50" height="50" alt="" />
                     Dashkiosk
