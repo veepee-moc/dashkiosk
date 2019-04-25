@@ -7,7 +7,8 @@ class EditableText extends Component {
         super(props);
         this.state = {
             text: '',
-            editable: false
+            editable: false,
+            showButton: true
         };
         this.handleTextClick = this.handleTextClick.bind(this);
         this.handleAcceptClick = this.handleAcceptClick.bind(this);
@@ -19,6 +20,8 @@ class EditableText extends Component {
         document.addEventListener('click', this.handleDocumentClick);
         if (this.props.text)
             this.setState({ text: this.props.text });
+        if (this.props.showButton !== undefined)
+            this.setState({ showButton: this.props.showButton });
     }
 
     componentWillUnmount() {
@@ -28,6 +31,8 @@ class EditableText extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.text !== prevProps.text)
             this.setState({ text: this.props.text });
+        if (this.props.showButton !== undefined && this.props.showButton !== prevProps.showButton)
+            this.setState({ showButton: this.props.showButton });
     }
 
     handleTextClick() {
@@ -59,24 +64,24 @@ class EditableText extends Component {
 
     render() {
         return (
-            <div ref={(node) => { this.node = node }}>
+            <span ref={(node) => { this.node = node }}>
                 <Swap control={ !this.state.editable }>
-                    <div className={this.props.className} onClick={this.handleTextClick}>
+                    <span className={this.props.className} onClick={this.handleTextClick}>
                         {this.state.text}
-                    </div>
-                    <form className="form-inline" onSubmit={this.handleAcceptClick}>
-                        <input ref={(input) => { this.input = input; }} type="text" className="form-control form-control-sm w-50 m-1" />
-                        <div className="btn-group ml-1">
-                            <button type="submit" className="btn btn-outline-success btn-sm">
+                    </span>
+                    <form className="form-inline m-0" onSubmit={this.handleAcceptClick}>
+                        <input ref={(input) => { this.input = input; }} type="text" className="form-control form-control-sm" />
+                        <span className="btn-group ml-1" hidden={ !this.state.showButton }>
+                            <button type="submit" className="btn btn-outline-success btn-sm ml-1">
                                 <IoMdCheckmark />
                             </button>
                             <button className="btn btn-outline-danger btn-sm" onClick={this.handleRejectClick}>
                                 <IoMdClose />
                             </button>
-                        </div>
+                        </span>
                     </form>
                 </Swap>
-            </div>
+            </span>
         );
     }
 };
