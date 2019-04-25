@@ -2,11 +2,13 @@ const Types = {
     SetStoreState: 0,
     SetAdminState: 1,
     SetAllGroups: 2,
-    SetGroup: 3,
-    DeleteGroup: 4,
-    SetDisplay: 5,
-    DeleteDisplay: 6,
-    SetDragAndDrop: 7
+    SortGroups: 3,
+    SetGroup: 4,
+    SwapGroup: 5,
+    DeleteGroup: 6,
+    SetDisplay: 7,
+    DeleteDisplay: 8,
+    SetDragAndDrop: 9
 };
 
 function action(type, payload) {

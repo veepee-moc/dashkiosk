@@ -40,10 +40,14 @@ class GroupHeader extends Component {
                     </Swap>
                     <DragHandle />
                 </div>
-                <EditableText className="card-title mb-0" text={ this.props.group.name }
-                    onSubmit={ this.Rest.updateGroupName } />
-                <EditableText className="card-subtitle text-muted m-0 mb-1" text={ this.props.group.description }
-                    onSubmit={ this.Rest.updateGroupDescription } />
+                <div className="card-title mb-0">
+                    <EditableText text={ this.props.group.name }
+                        onSubmit={ this.Rest.updateGroupName } />
+                </div>
+                <div className="card-subtitle text-muted m-0 mb-1">
+                    <EditableText text={ this.props.group.description }
+                        onSubmit={ this.Rest.updateGroupDescription } />
+                </div>
             </div>
         );
     }

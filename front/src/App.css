@@ -13,6 +13,10 @@
     right: 2%;
 }
 
+.my-nav li {
+    line-height: 50px;
+}
+
 .btn:focus, .btn:active {
     box-shadow: none !important;
 }
