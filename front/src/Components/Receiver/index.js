@@ -7,7 +7,6 @@ import './Receiver.css';
 import socketio from './socketio';
 import supervisor from './supervisor';
 import errors from './errors';
-import Unassigned from './Unassigned';
 import Display from './Display';
 import Swap from '../Swap';
 
@@ -32,7 +31,6 @@ class Receiver extends Component {
 				<Spinner className="centered" animation="grow" />
 			</Swap>
 		);
-		return (<Unassigned />)
 	}
 }
 

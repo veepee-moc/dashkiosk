@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Swap from '../Swap';
+import Unassigned from './Unassigned';
 
 export default class Display extends Component {
 	constructor(props) {
@@ -75,18 +77,21 @@ export default class Display extends Component {
 		const dashboard = this.props.dashboard;
 
 		return (
-			<iframe
-				id={`iframe${ this.props.name }`}
-				title={dashboard.description
-					? dashboard.desciption
-					: dashboard.url}
-				src={dashboard.url}
-				style={this.state.style}
-				frameBorder='0'
-				scrolling='no'
-				width='100%'
-				height='100%'
-			/>
+			<Swap control={dashboard.url === '/unassigned'} >
+				<Unassigned />
+				<iframe
+					id={`iframe${this.props.name}`}
+					title={dashboard.description
+						? dashboard.desciption
+						: dashboard.url}
+					src={dashboard.url}
+					style={this.state.style}
+					frameBorder='0'
+					scrolling='no'
+					width='100%'
+					height='100%'
+				/>
+			</Swap>
 		);
 	}
 }
