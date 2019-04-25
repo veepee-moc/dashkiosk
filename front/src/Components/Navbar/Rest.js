@@ -2,6 +2,10 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 
 class Rest {
+    constructor(parent) {
+        this.parent = parent;
+    }
+
     addNewGroup() {
         const random = (function(length) {
             var bits = 36,
@@ -18,6 +22,12 @@ class Rest {
             description: 'Newly created group'
         })
             .catch((err) => toast.error(`Failed to create a new group: ${err.message}`));
+    }
+
+    getKeycloakLogout() {
+        Axios.get('/api/keycloak')
+            .then((res) => this.parent.setState({ keycloak: res.data.logout }))
+            .catch(() => this.parent.setState({ keycloak: null }));
     }
 };
 

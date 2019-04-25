@@ -80,3 +80,27 @@
     -o-transition: opacity 1s;
     transition: opacity 1s;
 }
+
+.logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-animation: spin 10s infinite linear;
+    -ms-animation: spin 10s infinite linear;
+    animation: spin 10s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    from {-webkit-transform:translate(-50%, -50%) rotate(0deg);}
+    to {-webkit-transform:translate(-50%, -50%) rotate(360deg);}
+}
+
+@-ms-keyframes spin {
+    from {-ms-transform:translate(-50%, -50%) rotate(0deg);}
+    to {-ms-transform:translate(-50%, -50%) rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform:translate(-50%, -50%) rotate(0deg);}
+    to {transform:translate(-50%, -50%) rotate(360deg);}
+}

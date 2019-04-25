@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import config from '../../config';
 import './Receiver.css';
+import Swap from '../Swap';
 import Clock from 'react-live-clock';
 
 class Unassigned extends Component {
@@ -56,19 +57,39 @@ class Unassigned extends Component {
   }
 
   render() {
-    return (
-      <>
-        <div style={{
+    const style = config.background_choice !== 'image'
+      ? { backgroundColor: config.background,
+          height: '100vh',
+          width: '100vw' }
+      : { backgroundImage: `url(${config.background})`,
           top: '0',
           left: '0',
           position: 'absolute',
-          width: '100vw',
           height: '100vh',
-          backgroundImage: `url(${this.state.shuffledImages[this.state.image]})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transition: 'background-image 1s, opacity 1s',
-        }} />
+          width: '100vw',
+          backgroundSize: 'cover' };
+    return (
+      <>
+        <Swap control={config.branding !== 'default'}>
+          <div style={style}>
+            <img 
+              className='logo'
+              src={config.loading} 
+              alt={`${config.branding}-logo`}
+              />
+          </div>
+          <div style={{
+            top: '0',
+            left: '0',
+            position: 'absolute',
+            width: '100vw',
+            height: '100vh',
+            backgroundImage: `url(${this.state.shuffledImages[this.state.image]})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            transition: 'background-image 1s, opacity 1s',
+          }} />
+        </Swap>
         <div className='right-bottom clock'>
           <Clock format={'HH:mm'} ticking={true} timezone={config.timezone} />
         </div>
