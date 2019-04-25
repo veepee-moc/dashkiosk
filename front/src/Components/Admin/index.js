@@ -10,6 +10,7 @@ import Preview from '../Preview';
 import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
+import './Admin.css';
 
 class Admin extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ class Admin extends Component {
         return (
             <div>
                 <Navbar />
-                <div className="container-fluid mt-3">
+                <div className="container-fluid handle-fixed-navbar">
                     <div className="text-center mt-2">
                         <span className="border rounded p-1 bg-white">
                             <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
