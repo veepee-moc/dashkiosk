@@ -3,10 +3,16 @@ import { toast } from 'react-toastify';
 import Store from '../../Store';
 
 class Rest {
-    editRank(groupIndex, newRank) {
+    editRank(groupIndex) {
         const group = Store.getState().admin.groups[groupIndex];
-        Axios.put(`/api/group/rank/${group.id}`, { rank: newRank })
-            .catch(() => toast.error('Failed to edit group rank.'))
+        return new Promise((resolve, reject) => {
+            Axios.put(`/api/group/rank/${group.id}`, { rank: groupIndex })
+                .then(() => resolve())
+                .catch(() => {
+                    toast.error('Failed to edit group rank.')
+                    reject();
+                });
+        });
     }
 };
 

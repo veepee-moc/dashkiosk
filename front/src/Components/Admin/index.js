@@ -8,6 +8,8 @@ import Navbar from '../Navbar';
 import Group from '../Group';
 import Preview from '../Preview';
 import Rest from './Rest';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 
 class Admin extends Component {
     constructor(props) {
@@ -31,8 +33,11 @@ class Admin extends Component {
     }
 
     onSortEnd({ oldIndex, newIndex }) {
-        if (oldIndex !== newIndex)
-            this.Rest.editRank(oldIndex, newIndex);
+        if (oldIndex !== newIndex) {
+            Store.dispatch(action(Types.SwapGroup, { src: oldIndex, dst: newIndex }));
+            this.Rest.editRank(newIndex)
+                .catch(() => Store.dispatch(action(Types.SortGroups)));
+        }
     }
 
     renderSortableGroupList() {
@@ -69,7 +74,7 @@ class Admin extends Component {
                         </span>
                     </div>
                     { this.renderSortableGroupList() }
-                    <div className="mt-3 mb-3">
+                    <div className="my-3">
                         <Preview />
                     </div>
                 </div>

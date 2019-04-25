@@ -1,7 +1,9 @@
 import setStoreState from './setStoreState';
 import setAdminState from './setAdminState';
 import setAllGroups from './setAllGroups';
+import sortGroups from './sortGroups';
 import setGroup from './setGroup';
+import swapGroup from './swapGroup';
 import deleteGroup from './deleteGroup';
 import setDisplay from './setDisplay';
 import deleteDisplay from './deleteDisplay';
@@ -33,8 +35,12 @@ function rootReducer(state = initialState, action) {
 			return setAdminState(state, action.payload);
 		case Types.SetAllGroups:
 			return setAllGroups(state, action.payload);
+		case Types.SortGroups:
+			return sortGroups(state);
 		case Types.SetGroup:
 			return setGroup(state, action.payload);
+		case Types.SwapGroup:
+			return swapGroup(state, action.payload);
 		case Types.DeleteGroup:
 			return deleteGroup(state, action.payload);
 		case Types.SetDisplay:
