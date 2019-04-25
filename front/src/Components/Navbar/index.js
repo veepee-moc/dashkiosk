@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 import ModalBroadcast from '../Modals/broadcast';
@@ -8,8 +8,14 @@ import Rest from './Rest';
 class Navbar extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
-        this.Rest = new Rest();
+        this.state = {
+            keycloak: null
+        };
+        this.Rest = new Rest(this);
+    }
+
+    componentDidMount() {
+        this.Rest.getKeycloakLogout();
     }
 
     render() {
@@ -31,6 +37,9 @@ class Navbar extends Component {
                 </div>
                 <div>
                     <ul className="navbar-nav">
+                        <li className="nav-item" hidden={ !this.state.keycloak }>
+                            <a href={ this.state.keycloak } className="btn btn-outline-light mr-2">Logout</a>
+                        </li>
                         <li className="nav-item">
                             <button
                                 className="btn btn-outline-light mr-2"
