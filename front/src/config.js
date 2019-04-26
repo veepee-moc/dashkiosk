@@ -82,7 +82,7 @@ const unassigned_images = [
     /!\ If you use an image, make sure to put it in the images folder.
     Default is 'color'
 */
-const background_choice = 'color';
+const background_choice = 'image';
 
 
 /*
