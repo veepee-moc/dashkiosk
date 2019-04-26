@@ -13,6 +13,9 @@ class Rest {
         this.toggleOSD = this.toggleOSD.bind(this);
         this.preview = this.preview.bind(this);
         this.addDashboard = this.addDashboard.bind(this);
+        this.editDashboard = this.editDashboard.bind(this);
+        this.editDisplay = this.editDisplay.bind(this);
+        this.deleteDisplay = this.deleteDisplay.bind(this);
     }
 
     updateGroupName(newName) {
@@ -69,15 +72,41 @@ class Rest {
 
     addDashboard(inputs) {
         const group = Store.getState().admin.groups[this.groupIndex];
-        Axios.post('/api/group/' + group.id + "/dashboard", inputs)
+        Axios.post(`/api/group/${group.id}/dashboard`, inputs)
             .then(() => toast.success('Successfully added dashboard.'))
             .catch(() => toast.error('Failed to add dashboard.'));
+    }
+
+    deleteDashboard(dashboardId) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.delete(`/api/group/${group.id}/dashboard/${dashboardId}`)
+            .then(() => toast.success('Successfully removed dashboard.'))
+            .catch(() => toast.error('Failed to remove display.'));
+    }
+
+    editDashboard(inputs, dashboardId) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.put(`/api/group/${group.id}/dashboard/${dashboardId}`, inputs)
+        .then(() => toast.success('Successfully edited dashboard.'))
+        .catch(() => toast.error('Failed to edit dashboard.'));
     }
 
     moveDisplay(display) {
         const group = Store.getState().admin.groups[this.groupIndex];
         Axios.put(`/api/display/${display}/group/${group.id}`)
             .catch(() => toast.error('Failed to move display.'));
+    }
+
+    editDisplay(inputs, displayName) {
+        Axios.put(`/api/display/${displayName}`, inputs)
+            .then(() => toast.success('Successfully edited display.'))
+            .catch(() => toast.error('Failed to edit display.'));
+    }
+
+    deleteDisplay(displayName) {
+        Axios.delete(`/api/display/${displayName}`)
+            .then(() => toast.success('Successfully deleted display.'))
+            .catch(() => toast.error('Failed to delete display.'));
     }
 
     moveDashboard(srcGroupIndex, dashboardKey) {

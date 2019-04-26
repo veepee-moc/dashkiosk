@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form } from 'react-bootstrap';
 import FormInput from './formInput';
+import { IoIosTrash } from 'react-icons/io'
 
-class ModalDashboard extends Component {
+class ModalEditDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       validated: false,
-      Timeout: '',
-      Viewport:'',
-      Delay: '',
-      Url: '',
-      Available: '',
-      Description: '',
+      Timeout: this.props.dashboard.timeout || '',
+      Viewport: this.props.dashboard.viewport || '',
+      Delay: this.props.dashboard.delay || '',
+      Url: this.props.dashboard.url,
+      Available: this.props.dashboard.available || '',
+      Description: this.props.dashboard.description || '',
       delayTime: 'sec',
       timeoutTime: 'sec'
     }
     this.Rest = this.props.rest;
-  }
-
-  reinitialise = () => {
-    this.setState({
-      Timeout: '',
-      Viewport:'',
-      Delay: 0,
-      Url: '',
-      Available: '',
-      Description: '',
-      delayTime: 'sec',
-      timeoutTime: 'sec'
-    });
   }
 
   shouldComponentUpdate(prevProps, prevState) {
@@ -44,6 +32,11 @@ class ModalDashboard extends Component {
     this.setState({ [inputName]: inputValue });
   }
 
+  deleteDashboard = () => {
+    this.Rest.deleteDashboard(this.props.dashboard.id);
+    this.props.onHide();
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
@@ -56,8 +49,7 @@ class ModalDashboard extends Component {
       viewport: this.state.Viewport,
       available: this.state.Available
     };
-    this.Rest.addDashboard(body);
-    this.reinitialise();
+    this.Rest.editDashboard(body, this.props.dashboard.id);
     this.props.onHide();
   }
 
@@ -101,7 +93,6 @@ class ModalDashboard extends Component {
     return ret;
   }
 
-
   render() {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
@@ -111,13 +102,13 @@ class ModalDashboard extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Add a new dashboard to group {this.props.group.name}
+              Edit dashboard { this.props.dashboard.description ? this.props.dashboard.description : this.props.dashboard.url }
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container>
               <Form.Row>
-                <FormInput md={12} sm={12} required={true} isInvalid={!this.isValidUrl()} placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
+                <FormInput md={12} sm={12} required={true} value={this.state.Url} isInvalid={!this.isValidUrl()} placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}
@@ -130,8 +121,9 @@ class ModalDashboard extends Component {
               </Form.Row>
             </Container>
           </Modal.Body>
-          <Modal.Footer>
-            <Button disabled={this.handleError()} type="submit">Save</Button>
+          <Modal.Footer className="d-flex justify-content-between">
+              <Button variant="danger" onClick={this.deleteDashboard}><IoIosTrash/></Button>
+              <Button disabled={this.handleError()} type="submit">Save</Button>
           </Modal.Footer>
         </Form>
       </Modal>
@@ -139,4 +131,4 @@ class ModalDashboard extends Component {
   }
 }
 
-export default ModalDashboard;
+export default ModalEditDashboard;

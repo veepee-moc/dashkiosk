@@ -3,11 +3,24 @@ import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync } from 'react-icons/io';
 import { connect } from 'react-redux';
 import './Dashboard.css';
 import EditableText from '../EditableText';
+import ModalEditDashboard from '../Modals/editDashboard'
+import Rest from '../Group/Rest'
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.rest = new Rest(this.props.groupIndex);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+    }
+
+    closeModal() {
+        this.setState({ showModal: false });
+    }
+
+    openModal() {
+        this.setState({ showModal: true });
     }
 
     render() {
@@ -47,11 +60,16 @@ class Dashboard extends Component {
                     <span className="col-md-auto color-transition pl-0 pr-1" hidden={ this.props.dashboard.delay === null ? true : false }>
                         s
                     </span>
-
-                    <button className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} py-1 pl-2 pr-2 color-transition col-md-auto`}>
+                    <button
+                    onClick={ this.openModal }
+                    className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} py-1 pl-2 pr-2 color-transition col-md-auto`}>
                         <IoMdCreate />
                     </button>
                 </span>
+                <ModalEditDashboard
+                dashboard={this.props.dashboard}
+                show={this.state.showModal} rest={this.rest}
+                group={{ id: this.props.groupIndex }} onHide={this.closeModal} />
             </li>
         );
     }
