@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Col, DropdownButton, Dropdown, InputGroup, Form } from 'react-bootstrap';
-import { IoMdLink, IoMdTime, IoMdHourglass, IoMdResize, IoMdDocument, IoMdCalendar } from 'react-icons/io'
+import { IoIosDesktop, IoMdLink, IoMdTime, IoMdHourglass, IoMdResize, IoMdDocument, IoMdCalendar } from 'react-icons/io'
 
 const styles = {
   borderTopRightRadius: '0.3em',
@@ -16,7 +16,9 @@ class FormInput extends Component {
   putIcon = () => {
     switch (this.props.name) {
       default:
-        return ;
+        return;
+      case 'Ip':
+        return <IoIosDesktop />;
       case 'Url':
         return <IoMdLink />;
       case 'Delay':
@@ -62,6 +64,7 @@ class FormInput extends Component {
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
+            disabled={this.props.disabled}
             as={this.props.hasTextArea ? "textarea" : "input"}
             value={this.props.value}
             size='lg'

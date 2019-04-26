@@ -182,7 +182,7 @@ class ModalBroadcast extends Component {
           </Row>
           <Row>
             {this.state.Groups.map((item, i) =>
-              <Col key={item.id} className="d-flex justify-content-around mb-3" md="3" sm="12">
+              <Col key={i} className="d-flex justify-content-around mb-3" md="3" sm="12">
                 <Button  className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
@@ -202,7 +202,7 @@ class ModalBroadcast extends Component {
           onSubmit={this.handleSubmit}
           noValidate
         >
-          <Modal.Header>
+          <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Send a broadcast
             </Modal.Title>
@@ -227,7 +227,6 @@ class ModalBroadcast extends Component {
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="light" onClick={this.props.onHide}>Close</Button>
             <Button disabled={this.handleError()} type="submit">Save</Button>
           </Modal.Footer>
         </Form>
