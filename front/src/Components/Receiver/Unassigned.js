@@ -59,14 +59,17 @@ class Unassigned extends Component {
   render() {
     const style = config.background_choice !== 'image'
       ? { backgroundColor: config.background,
-          height: '100vh',
-          width: '100vw' }
+          top: '0',
+          left: '0',
+          position: 'absolute',
+          height: '100%',
+          width: '100%' }
       : { backgroundImage: `url(${config.background})`,
           top: '0',
           left: '0',
           position: 'absolute',
-          height: '100vh',
-          width: '100vw',
+          height: '100%',
+          width: '100%',
           backgroundSize: 'cover' };
     return (
       <>
