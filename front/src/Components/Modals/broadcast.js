@@ -22,13 +22,7 @@ class ModalBroadcast extends Component {
     }
   }
 
-  shouldComponentUpdate (prevProps, prevState) {
-    if (this.props.show !== prevProps.show || prevState !== this.state)
-      return true;
-    return false;
-  }
-
-  componentDidMount () {
+  getGroup = () => {
     var newGroups = [];
 
     Axios.get('/api/group').then((res) => {
@@ -39,8 +33,19 @@ class ModalBroadcast extends Component {
           enabled: true
         })
       });
-      this.setState({ Groups: newGroups });
+      if (this.state.Groups !== newGroups)
+        this.setState({ Groups: newGroups });
     });
+  }
+
+  componentDidMount() {
+    this.getGroup();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState === this.state) {
+      this.getGroup();
+    }
   }
 
   reinitialise = () => {
