@@ -38,20 +38,10 @@ class Display extends Component {
     }
 
     componentDidMount() {
-        console.log('mount');
         this.updateDisplay();
     }
 
-    componentWillUnmount() {
-        console.log('unmount');
-    }
-
-    componentDidUpdate(prevProps, prevStates) {
-        console.log(prevProps);
-        console.log(prevStates);
-        console.log('UPDATE');
-        console.log(this.props);
-        console.log(this.state);
+    componentDidUpdate(prevProps) {
         if (this.props.display !== prevProps.display) {
             this.updateDisplay();
         }
@@ -59,14 +49,16 @@ class Display extends Component {
 
     render() {
         return (
-            <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
-                <div className="embed-responsive-item content">
-                    <p className="text-monospace text-light mb-0">{ this.state.name }</p>
-                    <p className="text-monospace text-light font-italic" style={{fontSize: 13}}>{ this.state.description }</p>
+            <>
+                <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
+                    <div className="embed-responsive-item content">
+                        <p className="text-monospace text-light mb-0">{this.state.name}</p>
+                        <p className="text-monospace text-light font-italic" style={{ fontSize: 13 }}>{this.state.description}</p>
+                    </div>
                 </div>
                 <ModalEditDisplay rest={this.Rest} display={this.props.display}
-                show={this.state.showModal} onHide={this.closeModal} />
-            </div>
+                    show={this.state.showModal} onHide={this.closeModal} />
+            </>
         );
     }
 };

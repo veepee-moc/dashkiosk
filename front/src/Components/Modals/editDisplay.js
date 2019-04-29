@@ -69,7 +69,6 @@ class ModalEditDisplay extends Component {
             <Modal.Footer className="d-flex justify-content-between pl-5 pr-5">
               <Button disabled={this.props.display.connected} variant="danger" onClick={this.deleteDisplay}><IoIosTrash /></Button>
               <Button disabled={!this.isValidViewport()} type="submit">Save</Button>
-              <Button onClick={ () => this.props.onHide }>fake save</Button>
             </Modal.Footer>
           </Form>
         </Modal>
