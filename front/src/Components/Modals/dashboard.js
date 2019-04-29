@@ -32,6 +32,19 @@ class ModalDashboard extends Component {
     });
   }
 
+  unassigned = () => {
+    const body = {
+      url: '/unassigned',
+      description: 'Dashboard for unassigned display',
+      timeout: null,
+      delay: null,
+      viewport: null,
+      available: null
+    };
+    this.Rest.addDashboard(body);
+    this.props.onHide();
+  }
+
   shouldComponentUpdate(prevProps, prevState) {
     if (this.props.show !== prevProps.show || prevState !== this.state)
       return true;
@@ -131,6 +144,7 @@ class ModalDashboard extends Component {
             </Container>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="info" onClick={this.unassigned}>Default dashboard</Button>
             <Button disabled={this.handleError()} type="submit">Save</Button>
           </Modal.Footer>
         </Form>
