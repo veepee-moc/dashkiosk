@@ -30,35 +30,22 @@ class Dashboard extends Component {
                     <a className={`col color-transition ml-1 name ${ this.props.dashboard.active ? "text-white" : "text-dark" }`} href={ this.props.dashboard.url } target="_blank" rel="noopener noreferrer">
                         { this.props.dashboard.description ? this.props.dashboard.description : this.props.dashboard.url }
                     </a>
-                    <span className="col-md-auto px-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
-                        <IoMdResize/>
-                    </span>
-                    <span className="col-md-auto color-transition pl-1 pr-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
-                        <span>
-                            <EditableText showButton={ false } text={ this.props.dashboard.viewport } onSubmit={ () => console.log("YO") } />
+                    <span className="col-md-auto pr-1">
+                        <span className="px-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
+                            <IoMdResize/>
                         </span>
-                    </span>
-                    <span className="col-md-auto color-transition px-1" hidden={ this.props.dashboard.timeout === null ? true : false }>
-                        <IoMdSync/>
-                    </span>
-                    <span className="col-md-auto color-transition pl-1 pr-0" hidden={ this.props.dashboard.timeout === null ? true : false }>
-                        <span>
-                            <EditableText showButton={ false } text={ this.props.dashboard.timeout } onSubmit={ () => console.log("YO") } />
+                        <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
+                            { this.props.dashboard.viewport }
                         </span>
-                    </span>
-                    <span className="col-md-auto color-transition pl-0 pr-1" hidden={ this.props.dashboard.timeout === null ? true : false }>
-                        s
-                    </span>
-                    <span className="col-md-auto color-transition px-1" hidden={ this.props.dashboard.delay === null ? true : false }>
-                        <IoMdTimer/>
-                    </span>
-                    <span className="col-md-auto color-transition pl-1 pr-0" hidden={ this.props.dashboard.delay === null ? true : false }>
-                        <span>
-                            <EditableText showButton={ false } text={ this.props.dashboard.delay } onSubmit={ () => console.log("YO") } />
+                        <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.timeout === null ? true : false }>
+                            <IoMdSync/> { this.props.dashboard.timeout }s
                         </span>
-                    </span>
-                    <span className="col-md-auto color-transition pl-0 pr-1" hidden={ this.props.dashboard.delay === null ? true : false }>
-                        s
+                        <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.delay === null ? true : false }>
+                            <IoMdTimer/>
+                        </span>
+                        <span className="color-transition px-0" hidden={ this.props.dashboard.delay === null ? true : false }>
+                            { this.props.dashboard.delay }s
+                        </span>
                     </span>
                     <button
                     onClick={ this.openModal }
