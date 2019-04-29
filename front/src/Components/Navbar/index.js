@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import config from '../../config';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
