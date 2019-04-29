@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ModalEditDisplay from '../Modals/editDisplay';
+import Rest from '../Group/Rest';
 import './Display.css';
 
 class Display extends Component {
@@ -9,8 +11,12 @@ class Display extends Component {
         this.state = {
             name: 'UNKNOWN',
             description: '',
-            on: true
+            on: true,
+            showModal: false,
         };
+        this.Rest = new Rest(this.props.groupIndex);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
     }
 
     updateDisplay() {
@@ -23,23 +29,36 @@ class Display extends Component {
         }
     }
 
+    closeModal() {
+        this.setState({ showModal: false });
+    }
+
+    openModal() {
+        this.setState({ showModal: true });
+    }
+
     componentDidMount() {
         this.updateDisplay();
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.display !== prevProps.display)
+        if (this.props.display !== prevProps.display) {
             this.updateDisplay();
+        }
     }
 
     render() {
         return (
-            <div className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
-                <div className="embed-responsive-item content">
-                    <p className="text-monospace text-light mb-0">{ this.state.name }</p>
-                    <p className="text-monospace text-light font-italic" style={{fontSize: 13}}>{ this.state.description }</p>
+            <>
+                <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
+                    <div className="embed-responsive-item content">
+                        <p className="text-monospace text-light mb-0">{this.state.name}</p>
+                        <p className="text-monospace text-light font-italic" style={{ fontSize: 13 }}>{this.state.description}</p>
+                    </div>
                 </div>
-            </div>
+                <ModalEditDisplay rest={this.Rest} display={this.props.display}
+                    show={this.state.showModal} onHide={this.closeModal} />
+            </>
         );
     }
 };

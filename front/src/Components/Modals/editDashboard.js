@@ -44,9 +44,9 @@ class ModalEditDashboard extends Component {
     const body = {
       url: this.state.Url,
       description: this.state.Description,
-      timeout: timeout,
-      delay: delay,
-      viewport: this.state.Viewport,
+      timeout: (timeout === 0 || timeout === '' ? null : timeout),
+      delay: (delay === 0 || delay === '' ? null : delay),
+      viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
       available: this.state.Available
     };
     this.Rest.editDashboard(body, this.props.dashboard.id);
@@ -108,7 +108,7 @@ class ModalEditDashboard extends Component {
           <Modal.Body>
             <Container>
               <Form.Row>
-                <FormInput md={12} sm={12} required={true} value={this.state.Url} isInvalid={!this.isValidUrl()} placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
+                <FormInput md={12} sm={12} required={true} value={this.state.Url} isInvalid={!this.isValidUrl()} placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="url" />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}

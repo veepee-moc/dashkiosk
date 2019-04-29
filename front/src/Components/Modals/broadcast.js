@@ -22,33 +22,37 @@ class ModalBroadcast extends Component {
     }
   }
 
-  shouldComponentUpdate (prevProps, prevState) {
-    if (this.props.show !== prevProps.show || prevState !== this.state)
-      return true;
-    return false;
-  }
-
-  componentDidMount () {
+  getGroup = () => {
     var newGroups = [];
 
     Axios.get('/api/group').then((res) => {
       Object.keys(res.data).forEach(item => {
-        console.log(item);
         newGroups.push({
           title: res.data[item].name,
           id: res.data[item].id,
           enabled: true
         })
       });
-      this.setState({ Groups: newGroups });
+      if (this.state.Groups !== newGroups)
+        this.setState({ Groups: newGroups });
     });
+  }
+
+  componentDidMount() {
+    this.getGroup();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState === this.state) {
+      this.getGroup();
+    }
   }
 
   reinitialise = () => {
     this.setState({
-      Timeout: 1,
+      Timeout: '',
       Viewport:'',
-      Delay: 0,
+      Delay: '',
       Url: '',
       Description: '',
       delayTime: 'sec',
@@ -121,10 +125,10 @@ class ModalBroadcast extends Component {
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const dashboard = {
       timeout: timeout,
+      delay: (delay === 0 || delay === '' ? null : delay),
       url: this.state.Url,
       description: this.state.Description,
-      viewport: this.state.Viewport,
-      delay: delay
+      viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
     }
     let groups = [];
     let body;
