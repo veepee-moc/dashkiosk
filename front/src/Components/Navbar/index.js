@@ -57,7 +57,7 @@ class Navbar extends Component {
                         </li>
                         { config.branding !== 'default' &&
                             <li className="navbar-brand">
-                                <img src={config.stamp} width="auto" height="40" alt={`logo-${config.branding}`} />
+                                <img src={config.stamp} width="auto" height="50" alt={`logo-${config.branding}`} />
                         </li> }
                     </ul>
                 </div>

@@ -31,7 +31,7 @@ const timezone = 'Europe/Paris';
     If you DO use branding, you can personalize your unassigned displays in the second part bellow
     And don't forget to add a 'stamp-{ your branding }.{ your extension}' and a 'loading-{ your branding }.{ your extension}' images in the images folder
 */
-const branding = 'vente-privee';
+const branding = 'veepee';
 
 
 
@@ -82,7 +82,7 @@ const unassigned_images = [
     /!\ If you use an image, make sure to put it in the images folder.
     Default is 'color'
 */
-const background_choice = 'image';
+const background_choice = 'color';
 
 
 /*

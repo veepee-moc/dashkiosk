@@ -75,11 +75,11 @@ class Unassigned extends Component {
       <>
         <Swap control={config.branding !== 'default'}>
           <div style={style}>
-            <img 
+            { config.loading && <img 
               className='logo'
               src={config.loading} 
               alt={`${config.branding}-logo`}
-              />
+              /> }
           </div>
           <div style={{
             top: '0',
