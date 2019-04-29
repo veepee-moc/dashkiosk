@@ -44,9 +44,9 @@ class ModalEditDashboard extends Component {
     const body = {
       url: this.state.Url,
       description: this.state.Description,
-      timeout: timeout,
-      delay: delay,
-      viewport: this.state.Viewport,
+      timeout: (timeout === 0 || timeout === '' ? null : timeout),
+      delay: (delay === 0 || delay === '' ? null : delay),
+      viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
       available: this.state.Available
     };
     this.Rest.editDashboard(body, this.props.dashboard.id);
