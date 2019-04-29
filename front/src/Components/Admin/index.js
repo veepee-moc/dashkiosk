@@ -10,6 +10,7 @@ import Preview from '../Preview';
 import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
+import SideMenu from '../SideMenu';
 import './Admin.css';
 
 class Admin extends Component {
@@ -61,8 +62,9 @@ class Admin extends Component {
     render() {
         return (
             <div>
+                <SideMenu />
                 <Navbar />
-                <div className="container-fluid handle-fixed-navbar">
+                <div className={ `container-fluid handle-fixed-navbar handle-side-menu px-1 ${ this.props.toggleMenu ? "handle-side-menu-active" : "" }` }>
                     <div className="text-center mt-2">
                         <span className="border rounded p-1 bg-white">
                             <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
@@ -86,7 +88,8 @@ class Admin extends Component {
 
 function mapStateToProps(state) {
     return ({
-        gourpsNbr: state.admin.groups.length
+        gourpsNbr: state.admin.groups.length,
+        toggleMenu: state.admin.toggleMenu
     });
 }
 

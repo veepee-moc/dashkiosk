@@ -13,7 +13,8 @@ import { Types } from '../Actions';
 const initialState = {
 	admin: {
 		socketConnected: false,
-		groups: []
+		groups: [],
+		toggleMenu: false
 	},
 	dnd: {
 		type: null,

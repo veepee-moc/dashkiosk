@@ -1,3 +1,12 @@
 .handle-fixed-navbar {
     margin-top: 90px;
 }
+
+.handle-side-menu {
+    padding-left: 0% !important;
+    transition: padding-left .4s ease-out;
+}
+
+.handle-side-menu.handle-side-menu-active {
+    padding-left: 20% !important;
+}
