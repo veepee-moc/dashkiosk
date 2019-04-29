@@ -45,9 +45,9 @@ class ModalBroadcast extends Component {
 
   reinitialise = () => {
     this.setState({
-      Timeout: 1,
+      Timeout: '',
       Viewport:'',
-      Delay: 0,
+      Delay: '',
       Url: '',
       Description: '',
       delayTime: 'sec',
@@ -120,10 +120,10 @@ class ModalBroadcast extends Component {
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const dashboard = {
       timeout: timeout,
+      delay: (delay === 0 || delay === '' ? null : delay),
       url: this.state.Url,
       description: this.state.Description,
-      viewport: this.state.Viewport,
-      delay: delay
+      viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
     }
     let groups = [];
     let body;
