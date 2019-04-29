@@ -2,6 +2,7 @@
     background-color: black;
     border: ridge 3px gray;
     padding: 0px;
+    cursor: pointer;
 }
 
 .display.on {

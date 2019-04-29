@@ -33,7 +33,6 @@ class ModalBroadcast extends Component {
 
     Axios.get('/api/group').then((res) => {
       Object.keys(res.data).forEach(item => {
-        console.log(item);
         newGroups.push({
           title: res.data[item].name,
           id: res.data[item].id,
