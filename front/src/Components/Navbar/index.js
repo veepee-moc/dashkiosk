@@ -33,20 +33,11 @@ class Navbar extends Component {
             <nav className="navbar navbar-expand-sm navbar-light bg-white fixed-top border-bottom">
                 <a className="navbar-brand navbar-logo-centered" href="#" draggable="false">
                     <img src={dashkioskIcon} width="50" height="50" alt="dashkiosk icon" draggable="false" />
-                    <span className="font-weight-bold">Dashkiosk</span>
                 </a>
                 <button className="btn btn-noframe-light navbar-brand mr-0" style={{ fontSize: "30px", marginTop: "-3px" }} onClick={ this.handleMenuOpen }>
                     <IoMdMenu />
                 </button>
                 <div className="collapse navbar-collapse">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link" href="#" draggable="false">History</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="https://dashkiosk.readthedocs.io/en/v2.7.3/usage.html#administration" draggable="false">Documentation</a>
-                        </li>
-                    </ul>
                 </div>
                 <div>
                     <ul className="navbar-nav">

@@ -17,9 +17,9 @@
     -webkit-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
-    -webkit-transition: -webkit-transform .4s ease-in-out .4s;
-    -ms-transition: -ms-transform .4s ease-in-out .4s;
-    transition: transform .4s ease-in-out .4s;
+    -webkit-transition: -webkit-transform .4s ease-in-out .2s;
+    -ms-transition: -ms-transform .4s ease-in-out .2s;
+    transition: transform .4s ease-in-out .2s;
 }
 
 .side-menu-btn.side-menu-btn-active {
