@@ -22,12 +22,22 @@ class SideMenu extends Component {
                     style={{ fontSize: "30px" }} onClick={ this.closeSideMenu }>
                     <IoMdArrowBack className={ `side-menu-btn ${ this.props.toggleMenu ? 'side-menu-btn-active' : '' }` } />
                 </button>
-                <ul className="container list-group px-3">
-                    <li className="list-group-item">
-                        <button className="btn">Broadcast</button>
+                <ul className="container nav flex-column" aria-orientation="vertical">
+                    <li className="nav-item">
+                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>History</button>
                     </li>
-                    <li className="list-group-item">
-                        <button className="btn">Add new group</button>
+                    <li className="nav-item">
+                        <a className="btn btn-outline-light my-2" style={{ width: "80%", marginLeft: "10%" }}
+                            href="https://dashkiosk.readthedocs.io/en/v2.7.3/usage.html#administration">
+                            Documentation
+                        </a>
+                    </li>
+                    <hr className="border-bottom w-50"/>
+                    <li className="nav-item">
+                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>Broadcast</button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>Add new group</button>
                     </li>
                 </ul>
             </div>
