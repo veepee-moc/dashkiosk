@@ -97,3 +97,11 @@ li.list-layout-item {
     -o-transition: color 300ms ease-in !important;
     transition: color 300ms ease-in !important;
 }
+
+.w-40 {
+    width: 40% !important;
+}
+
+.w-90 {
+    width: 90% !important;
+}

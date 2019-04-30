@@ -4,3 +4,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.navbar-spinner-size {
+    width: 30px !important;
+    height: 30px !important;
+}

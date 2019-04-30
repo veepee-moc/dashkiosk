@@ -8,13 +8,16 @@ import deleteGroup from './deleteGroup';
 import setDisplay from './setDisplay';
 import deleteDisplay from './deleteDisplay';
 import setDragAndDrop from './setDragAndDrop';
+import incrLayoutSize from './incrLayoutSize';
+import decrLayoutSize from './decrLayoutSize';
 import { Types } from '../Actions';
 
 const initialState = {
 	admin: {
 		socketConnected: false,
 		groups: [],
-		toggleMenu: false
+		toggleMenu: false,
+		layoutSize: 3
 	},
 	dnd: {
 		type: null,
@@ -50,6 +53,10 @@ function rootReducer(state = initialState, action) {
 			return deleteDisplay(state, action.payload);
 		case Types.SetDragAndDrop:
 			return setDragAndDrop(state, action.payload);
+		case Types.IncrLayoutSize:
+			return incrLayoutSize(state);
+		case Types.DecrLayoutSize:
+			return decrLayoutSize(state);
 		default:
 			return (state);
 	}

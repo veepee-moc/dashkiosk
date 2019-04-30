@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IoMdArrowBack } from 'react-icons/io';
+import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid } from 'react-icons/io';
+import Collapse from '../Collapse';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import './SideMenu.css';
@@ -8,6 +9,9 @@ import './SideMenu.css';
 class SideMenu extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            layoutSizeCollapsed: true
+        };
         this.closeSideMenu = this.closeSideMenu.bind(this);
     }
 
@@ -17,27 +21,53 @@ class SideMenu extends Component {
 
     render() {
         return (
-            <div className={ `bg-dark side-menu ${ this.props.toggleMenu ? 'side-menu-active' : '' }` }>
+            <div ref={ (elem) => this.node = elem } className={ `bg-dark side-menu ${ this.props.toggleMenu ? 'side-menu-active' : '' }` }>
                 <button className={ `float-right btn btn-noframe-light m-1` }
                     style={{ fontSize: "30px" }} onClick={ this.closeSideMenu }>
                     <IoMdArrowBack className={ `side-menu-btn ${ this.props.toggleMenu ? 'side-menu-btn-active' : '' }` } />
                 </button>
-                <ul className="container nav flex-column" aria-orientation="vertical">
+                <ul className="container nav flex-column px-0">
                     <li className="nav-item">
-                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>History</button>
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                            <IoMdTime width="20" height="20" /> History
+                        </button>
                     </li>
                     <li className="nav-item">
-                        <a className="btn btn-outline-light my-2" style={{ width: "80%", marginLeft: "10%" }}
+                        <a className="btn btn-noframe-light d-block w-100 rounded-0 text-left"
                             href="https://dashkiosk.readthedocs.io/en/v2.7.3/usage.html#administration">
-                            Documentation
+                            <IoMdBook width="20" height="20" /> Documentation
                         </a>
                     </li>
-                    <hr className="border-bottom w-50"/>
+                    <hr className="border-bottom w-90 my-2" />
                     <li className="nav-item">
-                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>Broadcast</button>
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                            <IoMdWifi width="20" height="20" /> Broadcast
+                        </button>
                     </li>
                     <li className="nav-item">
-                        <button className="btn btn-outline-light mt-2" style={{ width: "80%", marginLeft: "10%" }}>Add new group</button>
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                            <IoMdAdd width="20" height="20" /> Add new group
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left p-relative"
+                            data-toggle="collapse" data-target="#layoutSizeCollapse"
+                            onClick={ () => this.setState({ layoutSizeCollapsed: !this.state.layoutSizeCollapsed }) }>
+                            <IoMdGrid width="20" height="20" /> Layout Size
+                            <IoMdArrowBack width="20px" height="20px"
+                                className={ `sidem-dd-arrow ${ this.state.layoutSizeCollapsed ? '' : 'active' }` } />
+                        </button>
+                        <Collapse collapsed={ this.state.layoutSizeCollapsed }>
+                            <div className="w-40 bg-light mx-auto p-relative" style={{ height: "40px", boxShadow: "0px 0px 3px black inset" }}>
+                                <button className="btn btn-noframe-dark absolute-left" onClick={ () => this.props.decrLayoutSize() }>
+                                    <IoMdRemove />
+                                </button>
+                                <span className="absolute-center">{ this.props.layoutSize }</span>
+                                <button className="btn btn-noframe-dark absolute-right" onClick={ () => this.props.incrLayoutSize() }>
+                                    <IoMdAdd />
+                                </button>
+                            </div>
+                        </Collapse>
                     </li>
                 </ul>
             </div>
@@ -47,8 +77,16 @@ class SideMenu extends Component {
 
 function mapStateWithProps(state) {
     return {
-        toggleMenu: state.admin.toggleMenu
+        toggleMenu: state.admin.toggleMenu,
+        layoutSize: state.admin.layoutSize
     };
 }
 
-export default connect(mapStateWithProps)(SideMenu);
+function mapDispatchWithProps(dispatch) {
+    return {
+        incrLayoutSize: () => dispatch(action(Types.IncrLayoutSize)),
+        decrLayoutSize: () => dispatch(action(Types.DecrLayoutSize))
+    };
+}
+
+export default connect(mapStateWithProps, mapDispatchWithProps)(SideMenu);

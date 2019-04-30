@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
@@ -16,22 +15,9 @@ import './Admin.css';
 class Admin extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            layoutSize: 3
-        };
         this.Rest = new Rest();
         Socket();
-        this.setLayoutSize = this.setLayoutSize.bind(this);
         this.onSortEnd = this.onSortEnd.bind(this);
-    }
-
-    setLayoutSize(incr) {
-        var newLayoutSize = this.state.layoutSize + incr;
-        if (newLayoutSize < 1)
-            newLayoutSize = 1;
-        this.setState({
-            layoutSize: newLayoutSize
-        });
     }
 
     onSortEnd({ oldIndex, newIndex }) {
@@ -44,7 +30,7 @@ class Admin extends Component {
 
     renderSortableGroupList() {
         const SortableGroupItem = SortableElement(({value}) =>
-            <li className="list-layout-item" style={{ width: 100 / this.state.layoutSize + '%' }}>
+            <li className="list-layout-item" style={{ width: 100 / this.props.layoutSize + '%' }}>
                 <Group groupIndex={ value } />
             </li>
         );
@@ -65,17 +51,6 @@ class Admin extends Component {
                 <SideMenu />
                 <Navbar />
                 <div className={ `container-fluid handle-fixed-navbar handle-side-menu px-1 ${ this.props.toggleMenu ? "handle-side-menu-active" : "" }` }>
-                    <div className="text-center mt-2">
-                        <span className="border rounded p-1 bg-white">
-                            <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
-                                <IoMdRemove />
-                            </button>
-                            { this.state.layoutSize }
-                            <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
-                                <IoMdAdd />
-                            </button>
-                        </span>
-                    </div>
                     { this.renderSortableGroupList() }
                     <div className="my-3">
                         <Preview />
@@ -89,7 +64,8 @@ class Admin extends Component {
 function mapStateToProps(state) {
     return ({
         gourpsNbr: state.admin.groups.length,
-        toggleMenu: state.admin.toggleMenu
+        toggleMenu: state.admin.toggleMenu,
+        layoutSize: state.admin.layoutSize
     });
 }
 

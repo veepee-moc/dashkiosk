@@ -1,5 +1,5 @@
 .handle-fixed-navbar {
-    margin-top: 90px;
+    margin-top: 75px;
 }
 
 .handle-side-menu {
@@ -8,5 +8,5 @@
 }
 
 .handle-side-menu.handle-side-menu-active {
-    padding-left: 20% !important;
+    padding-left: 15% !important;
 }
