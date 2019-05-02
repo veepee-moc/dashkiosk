@@ -17,7 +17,8 @@ const initialState = {
 		socketConnected: false,
 		groups: [],
 		toggleMenu: false,
-		layoutSize: 3
+		layoutSize: 3,
+		sideMenuWidth: 0
 	},
 	dnd: {
 		type: null,

@@ -1,0 +1,35 @@
+.absolute {
+    position: absolute;
+}
+
+.absolute.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.absolute.hcenter {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.absolute.vcenter {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.absolute.left {
+    left: 0px;
+}
+
+.absolute.right {
+    right: 0px;
+}
+
+.absolute.top {
+    top: 0px;
+}
+
+.absolute.bottom {
+    bottom: 0px;
+}
