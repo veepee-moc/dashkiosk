@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IoMdMenu } from 'react-icons/io';
+import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import config from '../../config';
@@ -15,6 +16,7 @@ class Navbar extends Component {
         this.state = {
             keycloak: null
         };
+        this.Rest = new Rest(this);
         this.handleMenuOpen = this.handleMenuOpen.bind(this);
     }
 
