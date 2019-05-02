@@ -30,7 +30,7 @@ class SideMenu extends Component {
                 this.mainDiv.animate([
                     { transform: 'translateX(-100%)' },
                     { transform: 'translateX(0%)' }
-                ], { duration: 400 });
+                ], { duration: 400, easing: 'ease-out' });
                 this.mainDiv.style.transform = 'translateX(0%)';
                 return;
             case 'Close':
