@@ -49,11 +49,10 @@ class Display extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <>
                 <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
-                    <IoIosWifi hidden={this.props.display.chromecast === null ? true : false} className="ml-2 chromecastIcon"/>
+                    <IoIosWifi hidden={(this.props.display && this.props.display.chromecast === null ? true : false)} className="ml-2 chromecastIcon" />
                     <div className="embed-responsive-item content">
                         <p className="text-monospace text-light mb-0 innerDisplay">{this.state.name}</p>
                         <p className="text-monospace text-light font-italic displayName">{this.state.description}</p>
