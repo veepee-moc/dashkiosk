@@ -33,17 +33,17 @@ class Admin extends Component {
         switch (action) {
             case 'Open':
                 this.container.animate([
-                    { paddingLeft: '5px' },
-                    { paddingLeft: '15%' }
+                    { transform: 'scale(1)' },
+                    { transform: 'scale(0.85)' }
                 ], { duration: 400, easing: 'ease-out' });
-                this.container.style.paddingLeft = '15%';
+                this.container.style.transform = 'scale(0.85)';
                 return;
             case 'Close':
                 this.container.animate([
-                    { paddingLeft: '15%' },
-                    { paddingLeft: '5px' }
+                    { transform: 'scale(0.85)' },
+                    { transform: 'scale(1)' }
                 ], { duration: 400, easing: 'ease-out' });
-                this.container.style.paddingLeft = '5px';
+                this.container.style.transform = 'scale(1)';
                 return;
             default:
                 return;

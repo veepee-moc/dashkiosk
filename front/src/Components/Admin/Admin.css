@@ -5,8 +5,6 @@
 .handle-side-menu {
     padding-left: 5px;
     padding-right: 5px;
-}
-
-.handle-side-menu.handle-side-menu-active {
-    padding-left: 15% !important;
+    transform-origin: top right;
+    will-change: transform;
 }
