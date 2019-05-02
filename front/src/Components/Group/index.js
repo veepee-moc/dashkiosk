@@ -47,8 +47,9 @@ class Group extends Component {
         return (
             <Droppable types={["Display", "Dashboard"]} onDrop={ this.onDrop }>
                 <div className="card">
-                    <GroupHeader groupIndex={ this.props.groupIndex } />
-                    <GroupBody groupIndex={ this.props.groupIndex } />
+                    <GroupHeader groupIndex={ this.props.groupIndex }
+                        onToggleGroupMenu={ (toggle) => this.setState({ toggleGroupMenu: toggle }) } />
+                    <GroupBody groupIndex={ this.props.groupIndex } toggleGroupMenu={ this.state.toggleGroupMenu } />
                     <div className="btn-group btn-group-sm">
                         <button type="button" className="btn btn-light w-50 border-right rounded-0" onClick={ this.openModal }>
                             Add a new dashboard

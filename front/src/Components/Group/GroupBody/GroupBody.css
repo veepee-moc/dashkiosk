@@ -1,9 +1,4 @@
-.gp-body-collapse-arrow {
-    font-size: 16px;
-    transform: rotate(0deg);
-    transition: transform .4s ease-in-out;
-}
-
-.gp-body-collapse-arrow.active {
-    transform: rotate(180deg);
+.gp-body-collapse-container {
+    width: 100%;
+    box-shadow: 0px 0px 2px gray inset;
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { IoMdAdd, IoMdRemove, IoMdArrowDown } from 'react-icons/io';
+import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import Collapse from '../../Collapse';
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
@@ -50,12 +50,8 @@ class GroupBody extends Component {
     render() {
         return (
             <div>
-                <button className="btn btn-noframe-dark btn-sm w-100 rounded-0"
-                    onClick={ () => this.setState({ toggleMenu: !this.state.toggleMenu }) }>
-                    <IoMdArrowDown className={ `gp-body-collapse-arrow ${ this.state.toggleMenu ? 'active' : '' }` } />
-                </button>
-                <Collapse className="border-bottom" collapsed={ this.state.toggleMenu }>
-                    <div className="w-100">
+                <Collapse collapsed={ this.props.toggleGroupMenu }>
+                    <div className="gp-body-collapse-container">
                         <div className="text-center p-2">
                             Layout Size
                             <span className="border rounded p-1 ml-1">

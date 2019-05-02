@@ -1,0 +1,8 @@
+.gp-header-collapse-arrow {
+    transform: rotate(0deg);
+    transition: transform .4s ease-in-out;
+}
+
+.gp-header-collapse-arrow.active {
+    transform: rotate(180deg);
+}
