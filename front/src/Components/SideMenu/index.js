@@ -15,13 +15,43 @@ class SideMenu extends Component {
         this.closeSideMenu = this.closeSideMenu.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.toggleMenu !== this.props.toggleMenu) {
+            if (this.props.toggleMenu)
+                this.animateSideMenu('Open');
+            else
+                this.animateSideMenu('Close');
+        }
+    }
+
+    animateSideMenu(action) {
+        switch (action) {
+            case 'Open':
+                this.mainDiv.animate([
+                    { transform: 'translateX(-100%)' },
+                    { transform: 'translateX(0%)' }
+                ], { duration: 400 });
+                this.mainDiv.style.transform = 'translateX(0%)';
+                return;
+            case 'Close':
+                this.mainDiv.animate([
+                    { transform: 'translateX(0%)' },
+                    { transform: 'translateX(-100%)' }
+                ], { duration: 400, easing: 'ease-out' });
+                this.mainDiv.style.transform = 'translateX(-100%)';
+                return;
+            default:
+                return;
+        }
+    }
+
     closeSideMenu() {
         Store.dispatch(action(Types.SetAdminState, { toggleMenu: false }));
     }
 
     render() {
         return (
-            <div ref={ (elem) => this.node = elem } className={ `bg-dark side-menu ${ this.props.toggleMenu ? 'side-menu-active' : '' }` }>
+            <div ref={ (elem) => this.mainDiv = elem } className={ `bg-dark side-menu` }>
                 <button className={ `float-right btn btn-noframe-light m-1` }
                     style={{ fontSize: "30px" }} onClick={ this.closeSideMenu }>
                     <IoMdArrowBack className={ `side-menu-btn ${ this.props.toggleMenu ? 'side-menu-btn-active' : '' }` } />

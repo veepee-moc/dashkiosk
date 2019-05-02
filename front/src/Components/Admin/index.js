@@ -20,6 +20,36 @@ class Admin extends Component {
         this.onSortEnd = this.onSortEnd.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.toggleMenu !== this.props.toggleMenu) {
+            if (this.props.toggleMenu)
+                this.animateSideMenu('Open');
+            else
+                this.animateSideMenu('Close');
+        }
+    }
+
+    animateSideMenu(action) {
+        switch (action) {
+            case 'Open':
+                this.container.animate([
+                    { paddingLeft: '5px' },
+                    { paddingLeft: '15%' }
+                ], { duration: 400, easing: 'ease-out' });
+                this.container.style.paddingLeft = '15%';
+                return;
+            case 'Close':
+                this.container.animate([
+                    { paddingLeft: '15%' },
+                    { paddingLeft: '5px' }
+                ], { duration: 400, easing: 'ease-out' });
+                this.container.style.paddingLeft = '5px';
+                return;
+            default:
+                return;
+        }
+    }
+
     onSortEnd({ oldIndex, newIndex }) {
         if (oldIndex !== newIndex) {
             Store.dispatch(action(Types.SwapGroup, { src: oldIndex, dst: newIndex }));
@@ -50,7 +80,7 @@ class Admin extends Component {
             <div>
                 <SideMenu />
                 <Navbar />
-                <div className={ `container-fluid handle-fixed-navbar handle-side-menu px-1 ${ this.props.toggleMenu ? "handle-side-menu-active" : "" }` }>
+                <div ref={ (elem) => this.container = elem } className={ `container-fluid handle-fixed-navbar handle-side-menu` }>
                     { this.renderSortableGroupList() }
                     <div className="my-3">
                         <Preview />
