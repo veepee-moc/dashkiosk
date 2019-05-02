@@ -25,26 +25,20 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <li className={`container float-right bg-color-transition list-group-item py-0 pl-1 ${ this.props.dashboard.active ? "active light-blue" : "" }`}>
+            <li className={`container-fluid bg-color-transition list-group-item py-0 pl-1 ${ this.props.dashboard.active ? "active light-blue" : "" }`}>
                 <span className="row align-items-center">
                     <a className={`col color-transition ml-1 name ${ this.props.dashboard.active ? "text-white" : "text-dark" }`} href={ this.props.dashboard.url } target="_blank" rel="noopener noreferrer">
                         { this.props.dashboard.description ? this.props.dashboard.description : this.props.dashboard.url }
                     </a>
                     <span className="col-md-auto pr-1">
                         <span className="px-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
-                            <IoMdResize/>
-                        </span>
-                        <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.viewport === null ? true : false }>
-                            { this.props.dashboard.viewport }
+                            <IoMdResize/>{ this.props.dashboard.viewport }
                         </span>
                         <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.timeout === null ? true : false }>
-                            <IoMdSync/> { this.props.dashboard.timeout }s
+                            <IoMdSync/>{ this.props.dashboard.timeout }s
                         </span>
                         <span className="color-transition pl-1 pr-0" hidden={ this.props.dashboard.delay === null ? true : false }>
-                            <IoMdTimer/>
-                        </span>
-                        <span className="color-transition px-0" hidden={ this.props.dashboard.delay === null ? true : false }>
-                            { this.props.dashboard.delay }s
+                            <IoMdTimer/>{ this.props.dashboard.delay }s
                         </span>
                     </span>
                     <button
