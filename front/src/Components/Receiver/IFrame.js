@@ -49,6 +49,10 @@ export default class Display extends Component {
 		el.height = dashboard.viewport
 			? dashboard.viewport.split('x')[1]
 			: window.innerHeight;
+		if (this.props.displayViewport && this.props.displayViewport.split('x').length === 2) {
+			el.width = this.props.displayViewport.split('x')[0];
+			el.height = this.props.displayViewport.split('x')[1];
+		}
 		var clientWidth = window.innerWidth,
 			clientHeight = window.innerHeight,
 			thisWidth = el.width || el.height * clientWidth / clientHeight,
@@ -75,7 +79,6 @@ export default class Display extends Component {
 
 	render() {
 		const dashboard = this.props.dashboard;
-
 		return (
 			<Swap control={dashboard.url === '/unassigned'} >
 				<Unassigned />

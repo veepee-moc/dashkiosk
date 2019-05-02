@@ -29,7 +29,8 @@ const initialState = {
 	connectionLost: false,
 	reloadRequired: false,
 	dashboardToDisplay: {},
-	osd: ''
+	osd: '',
+	displayViewport: '',
 };
 
 function rootReducer(state = initialState, action) {

@@ -57,7 +57,7 @@ class ModalEditDisplay extends Component {
             <Modal.Body>
               <Container>
                 <Form.Row>
-                  <FormInput md={12} sm={12} required={false} value={this.props.display.ip} disabled={true}
+                  <FormInput md={12} sm={12} required={false} value={this.props.display.ip || ''} disabled={true}
                     name='Ip' updateValue={this.handleInput} type="text" />
                   <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description"
                     name='Description' updateValue={this.handleInput} type="text" />
