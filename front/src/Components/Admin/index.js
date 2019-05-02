@@ -15,9 +15,22 @@ import './Admin.css';
 class Admin extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            animationScale: 1
+        };
         this.Rest = new Rest();
         Socket();
         this.onSortEnd = this.onSortEnd.bind(this);
+        this.setAnimationScale = this.setAnimationScale.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.setAnimationScale);
+        this.setAnimationScale();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.setAnimationScale);
     }
 
     componentDidUpdate(prevProps) {
@@ -27,6 +40,15 @@ class Admin extends Component {
             else
                 this.animateSideMenu('Close');
         }
+        if (prevProps.sideMenuWidth !== this.props.sideMenuWidth)
+            this.setAnimationScale();
+    }
+
+    setAnimationScale() {
+        const width = window.innerWidth;
+        this.setState({
+            animationScale: (width - this.props.sideMenuWidth) / width
+        });
     }
 
     animateSideMenu(action) {
@@ -34,13 +56,13 @@ class Admin extends Component {
             case 'Open':
                 this.container.animate([
                     { transform: 'scale(1)' },
-                    { transform: 'scale(0.85)' }
+                    { transform: `scale(${ this.state.animationScale })` }
                 ], { duration: 400, easing: 'ease-out' });
-                this.container.style.transform = 'scale(0.85)';
+                this.container.style.transform = `scale(${ this.state.animationScale })`;
                 return;
             case 'Close':
                 this.container.animate([
-                    { transform: 'scale(0.85)' },
+                    { transform: `scale(${ this.state.animationScale })` },
                     { transform: 'scale(1)' }
                 ], { duration: 400, easing: 'ease-out' });
                 this.container.style.transform = 'scale(1)';
@@ -95,7 +117,8 @@ function mapStateToProps(state) {
     return ({
         gourpsNbr: state.admin.groups.length,
         toggleMenu: state.admin.toggleMenu,
-        layoutSize: state.admin.layoutSize
+        layoutSize: state.admin.layoutSize,
+        sideMenuWidth: state.admin.sideMenuWidth
     });
 }
 

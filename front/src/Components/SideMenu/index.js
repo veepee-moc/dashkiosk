@@ -20,6 +20,10 @@ class SideMenu extends Component {
         this.addNewGroup = this.addNewGroup.bind(this);
     }
 
+    componentDidMount() {
+        Store.dispatch(action(Types.SetAdminState, { sideMenuWidth: this.mainDiv.clientWidth }));
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.toggleMenu !== this.props.toggleMenu) {
             if (this.props.toggleMenu)
@@ -65,10 +69,9 @@ class SideMenu extends Component {
 
     render() {
         return (
-            <div ref={ (elem) => this.mainDiv = elem } className={ `bg-dark side-menu` }>
-                <button className={ `float-right btn btn-noframe-light m-1` }
-                    style={{ fontSize: "30px" }} onClick={ this.closeSideMenu }>
-                    <IoMdArrowBack className={ `side-menu-btn ${ this.props.toggleMenu ? 'side-menu-btn-active' : '' }` } />
+            <div ref={ (elem) => this.mainDiv = elem } className="bg-dark sb">
+                <button className="btn btn-noframe-light m-1 sb-arrow-btn" onClick={ this.closeSideMenu }>
+                    <IoMdArrowBack className={ `sb-arrow-icon ${ this.props.toggleMenu ? 'active' : '' }` } />
                 </button>
                 <ul className="container nav flex-column px-0">
                     <li className="nav-item">
@@ -96,20 +99,20 @@ class SideMenu extends Component {
                         </button>
                     </li>
                     <li className="nav-item">
-                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left p-relative"
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left position-relative"
                             data-toggle="collapse" data-target="#layoutSizeCollapse"
                             onClick={ () => this.setState({ layoutSizeCollapsed: !this.state.layoutSizeCollapsed }) }>
                             <IoMdGrid width="20" height="20" /> Layout Size
                             <IoMdArrowBack width="20px" height="20px"
-                                className={ `sidem-dd-arrow ${ this.state.layoutSizeCollapsed ? '' : 'active' }` } />
+                                className={ `sb-layoutsize-arrow mr-2 ${ this.state.layoutSizeCollapsed ? '' : 'active' }` } />
                         </button>
                         <Collapse collapsed={ this.state.layoutSizeCollapsed }>
-                            <div className="w-40 bg-light mx-auto p-relative" style={{ height: "40px", boxShadow: "0px 0px 3px black inset" }}>
-                                <button className="btn btn-noframe-dark absolute-left" onClick={ () => this.props.decrLayoutSize() }>
+                            <div className="bg-light mx-auto position-relative sb-container-layoutsize">
+                                <button className="btn btn-noframe-dark absolute vcenter left" onClick={ () => this.props.decrLayoutSize() }>
                                     <IoMdRemove />
                                 </button>
-                                <span className="absolute-center">{ this.props.layoutSize }</span>
-                                <button className="btn btn-noframe-dark absolute-right" onClick={ () => this.props.incrLayoutSize() }>
+                                <span className="absolute center">{ this.props.layoutSize }</span>
+                                <button className="btn btn-noframe-dark absolute vcenter right" onClick={ () => this.props.incrLayoutSize() }>
                                     <IoMdAdd />
                                 </button>
                             </div>
