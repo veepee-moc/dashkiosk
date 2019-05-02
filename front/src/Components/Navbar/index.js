@@ -7,7 +7,6 @@ import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import config from '../../config';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
-import ModalBroadcast from '../Modals/broadcast';
 import Swap from '../Swap';
 import './Navbar.css';
 
@@ -56,7 +55,6 @@ class Navbar extends Component {
                         </li>
                     </ul>
                 </div>
-                <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />
             </nav>
         );
     }
