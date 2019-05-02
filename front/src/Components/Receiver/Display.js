@@ -88,6 +88,7 @@ class Display extends Component {
               name='1'
               dashboard={this.state.screen1.dashboard}
               style={this.state.screen1.dashboardStyle}
+              displayViewport={ this.props.displayViewport}
             />
           </div>
           <div className={ this.state.displayed === 2 ? 'disp' : 'hide' }>
@@ -95,12 +96,12 @@ class Display extends Component {
               name='2'
               dashboard={this.state.screen2.dashboard}
               style={this.state.screen2.dashboardStyle}
+              displayViewport={ this.props.displayViewport}
             />
           </div>
-          {this.props.connectionLost
-            ? <Spinner className='right-bottom' animation='grow' size='lg' />
-            : ''}
-          <Swap control={this.props.osd}>
+          {this.props.connectionLost && 
+            <Spinner className='right-bottom' animation='grow' size='lg' />}
+          { this.props.osd && 
             <div className='osd'>
               <div className='title'>
                 {this.props.osd}
@@ -120,10 +121,7 @@ class Display extends Component {
                 </Swap>
               </div>
             </div>
-
-            <>
-            </>
-          </Swap>
+          }
         </>
       );
     }
@@ -136,6 +134,7 @@ function mapStateToProps(state) {
     connectionLost: state.connectionLost,
     reloadRequired: state.reloadRequired,
     osd: state.osd,
+    displayViewport: state.displayViewport,
   });
 }
 

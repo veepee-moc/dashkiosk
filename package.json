@@ -44,6 +44,7 @@
     "mustache": "^2.2.1",
     "mustache-express": "^1.2.2",
     "nconf": "~0.7.2",
+    "nodecastor": "^0.1.8",
     "postal": "~1.0.6",
     "postal.diagnostics": "~0.7.3",
     "sequelize": "~1.7.0",
@@ -54,7 +55,6 @@
   "optionalDependencies": {
     "fsevents": "*",
     "mysql": "~2.8.0",
-    "nodecastor": "~0.1.7",
     "pg": "~4.4.1",
     "respawn": "~2.0.0",
     "sqlite3": "~4.0.6"

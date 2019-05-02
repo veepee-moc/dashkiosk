@@ -98,10 +98,12 @@ export default function (receiver) {
     }
   });
 
-  /*socket.on('viewport', function (vp) {
+  socket.on('viewport', function (vp) {
     console.info('[Dashkiosk] viewport change to ' + (vp || 'default') + ' requested');
-    new Viewport(vp).update();
-  });*/
+    receiver.props.setStoreState({
+      displayViewport: vp
+    });
+  });
 
   return socket;
 }
