@@ -23,7 +23,7 @@ module.exports = function(grunt) {
           watch: [
             'server.js', 'lib/*', 'migration/*.js'
           ],
-          nodeArgs: ['--inspect'],
+          nodeArgs: ['--inspect=1337'],
           env: {
             LIVERELOAD_PORT: PORTS.livereload
           },
@@ -43,47 +43,12 @@ module.exports = function(grunt) {
 
     // Watching changes
     watch: {
-      html: {
-        files: [ 'app/*.html' ],
-        tasks: [ 'copy:html' ]
-      },
-      templates: {
-        files: [ 'app/views/*.html' ],
-        tasks: [ 'build:templates' ]
-      },
-      images: {
-        files: [ 'app/images/{,*/,*/*/}*.*' ],
-        tasks: [ 'build:images' ]
-      },
-      fonts: {
-        files: [ 'app/fonts/*.{ttf,otf,woff,eot,svg}' ],
-        tasks: [ 'build:fonts' ]
-      },
-      webapp: {
-        files: [ 'app/*.webapp' ],
-        tasks: [ 'build:webapp' ]
-      },
-      scripts: {
-        files: [ 'app/scripts/{,*/}*.js' ],
-        tasks: [ 'build:scripts' ]
-      },
-      livereload: {
-        options: {
-          livereload: PORTS.livereload
-        },
-        files: [
-          'build/*.html',
-          'build/images/{,*/,*/*/}*.*',
-          'build/fonts/*.{ttf,otf,woff,eot,svg}',
-          'build/*.webapp',
-          'build/scripts/{,*/}*.js' // Including templates
-        ]
-      },
       server: {           // nodemon will write this file
         files: [ '.rebooted' ],
         tasks: [ 'newer:jshint:server' ],
         options: {
-          livereload: true
+          livereload: true,
+          spawn: false
         }
       },
       test: {
@@ -132,52 +97,21 @@ module.exports = function(grunt) {
           jshintrc: 'test/.jshintrc'
         },
         src: [ 'test/**/*.js' ]
-      },
-      all: [
-        'app/scripts/{,*/}*.js'
-      ]
+      }
     },
 
-    // JS minification
     uglify: {
-      options: {
-        sourceMap: true,
-        sourceMapIncludeSources: true
-      }
-    },
-
-    // Rename files for browser caching purposes
-    filerev: {
-      dist: {
+      my_target: {
         files: [{
+          expand: true,
+          cwd: 'dist/',
           src: [
-            'dist/public/scripts/{,*/}*.js',
-            'dist/public/fonts/*.{ttf,otf,woff,eot,svg}',
-            'dist/public/images/{,*/,*/*/}*.*'
-          ]
+            '*.js',
+            'lib/*/*.js',
+            'lib/*.js'
+          ],
+          dest: 'dist/'
         }]
-      }
-    },
-    filerev_assets: {
-      dist: {
-        options: {
-          dest: 'dist/assets.json',
-          cwd: 'dist/public/'
-        }
-      }
-    },
-
-    // Perform rewrites based on rev
-    useminPrepare: {
-      html: 'build/*.html',
-      options: {
-        dest: 'dist/public'
-      }
-    },
-    usemin: {
-      html: [ 'dist/public/*.html' ],
-      options: {
-        assetsDirs: [ 'dist/public', 'dist/public/images', 'dist/public/fonts' ]
       }
     },
 
@@ -189,9 +123,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: 'build/images',
-          src: '{,*/,*/*/}*.{png,jpg,gif}',
-          dest: 'dist/public/images'
+          cwd: 'dist/front/static/media/',
+          src: '*.{png,jpg,gif}',
+          dest: 'dist/front/static/media'
         }]
       }
     },
@@ -199,22 +133,10 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: 'build/images',
-          src: '{,*/,*/*/}*.svg',
-          dest: 'dist/public/images'
+          cwd: 'dist/front/static/media/',
+          src: '*.svg',
+          dest: 'dist/front/static/media'
         }]
-      }
-    },
-    
-    // browserify
-    browserify: {
-      scripts: {
-        files: {
-          'build/scripts/admin.js': [ 'app/scripts/admin.js' ],
-          'build/scripts/unassigned.js': [ 'app/scripts/unassigned.js' ],
-          'build/scripts/chromecast.js': [ 'app/scripts/chromecast.js' ],
-          'build/scripts/receiver.js': [ 'app/scripts/receiver.js' ]
-        }
       }
     },
 
@@ -251,56 +173,8 @@ module.exports = function(grunt) {
 
     // Copy files
     copy: {
-      images: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          dest: 'build',
-          src: [
-            'images/{,*/}*.*'
-          ]
-        }]
-      },
-      webapp: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          dest: 'build',
-          src: [
-            '*.webapp'
-          ]
-        }]
-      },
-      fonts: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          dest: 'build',
-          src: [
-            'fonts/*.{ttf,otf,woff,eot,svg}'
-          ]
-        }]
-      },
-      html: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          dest: 'build',
-          src: [ '*.html' ]
-        }]
-      },
       dist: {
         files: [{
-          expand: true,
-          cwd: 'build',
-          dest: 'dist/public',
-          src: [
-            '*.html',
-            '*.webapp',
-            'images/*.ico',
-            'fonts/*.{ttf,otf,woff,eot,svg}'
-          ]
-        }, {
           expand: true,
           dest: 'dist',
           src: [
@@ -312,9 +186,9 @@ module.exports = function(grunt) {
         }, {
           expand: true,
           cwd: 'front/build',
-          dest: 'dist/front/build',
+          dest: 'dist/front',
           src: [
-            '*'
+            '**'
           ]
         }]
       }
@@ -332,30 +206,16 @@ module.exports = function(grunt) {
     case 'react':
       grunt.task.run('exec:react');
     case 'scripts':
-      grunt.task.run('jshint', 'browserify:scripts');
-      break;
-    case 'images':
-      grunt.task.run('copy:images');
-      break;
-    case 'fonts':
-      grunt.task.run('copy:fonts');
+      grunt.task.run('jshint');
       break;
     case 'server':
       grunt.task.run('jshint:server');
       break;
-    case 'webapp':
-      grunt.task.run('copy:webapp');
-      break;
     case undefined:
       grunt.task.run(
         'clean:build',
-        'copy:html',
         'build:react',
-        'build:scripts',
-        'build:images',
-        'build:fonts',
-        'build:server',
-        'build:webapp'
+        'build:server'
       );
       break;
     default:
@@ -366,15 +226,10 @@ module.exports = function(grunt) {
   grunt.registerTask('dist', [
     'clean:dist',
     'build',
-    'useminPrepare',
+    'copy:dist',
     'imagemin',
     'svgmin',
-    'copy:dist',
-    'concat',
-    'uglify',
-    'filerev',
-    'filerev_assets',
-    'usemin'
+    'uglify'
   ]);
 
   grunt.registerTask('test', [

@@ -2,9 +2,6 @@
 
 var http     = require('http'),
     socketio = require('socket.io'),
-    path     = require('path'),
-    util     = require('util'),
-    glob     = require('glob'),
     logger   = require('./lib/logger'),
     config   = require('./lib/config'),
     chromecast = require('./lib/chromecast');

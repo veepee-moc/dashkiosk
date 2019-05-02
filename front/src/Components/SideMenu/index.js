@@ -4,6 +4,8 @@ import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdG
 import Collapse from '../Collapse';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
+import Rest from './Rest';
+import ModalBroadcast from '../Modals/broadcast';
 import './SideMenu.css';
 
 class SideMenu extends Component {
@@ -12,7 +14,10 @@ class SideMenu extends Component {
         this.state = {
             layoutSizeCollapsed: true
         };
+        this.Rest = new Rest(this);
         this.closeSideMenu = this.closeSideMenu.bind(this);
+        this.openBroadcast = this.openBroadcast.bind(this);
+        this.addNewGroup = this.addNewGroup.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -22,6 +27,15 @@ class SideMenu extends Component {
             else
                 this.animateSideMenu('Close');
         }
+    }
+
+    openBroadcast() {
+        this.setState({ broadcast: true });
+        this.closeSideMenu();
+    }
+
+    addNewGroup() {
+        this.Rest.addNewGroup();
     }
 
     animateSideMenu(action) {
@@ -70,12 +84,14 @@ class SideMenu extends Component {
                     </li>
                     <hr className="border-bottom w-90 my-2" />
                     <li className="nav-item">
-                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                        <button onClick={this.openBroadcast}
+                        className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
                             <IoMdWifi width="20" height="20" /> Broadcast
                         </button>
                     </li>
                     <li className="nav-item">
-                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                        <button onClick={this.addNewGroup}
+                        className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
                             <IoMdAdd width="20" height="20" /> Add new group
                         </button>
                     </li>
@@ -100,6 +116,7 @@ class SideMenu extends Component {
                         </Collapse>
                     </li>
                 </ul>
+                <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />
             </div>
         );
     }
