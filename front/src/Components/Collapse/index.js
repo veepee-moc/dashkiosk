@@ -45,7 +45,7 @@ class Collapse extends Component {
 
     render() {
         return (
-            <div ref={ (elem) => this.mainDiv = elem } style={{ overflow: "hidden" }}>
+            <div ref={ (elem) => this.mainDiv = elem } className={ this.props.className } style={{ overflow: "hidden" }}>
                 { this.props.children }
             </div>
         );

@@ -54,8 +54,8 @@ class GroupBody extends Component {
                     onClick={ () => this.setState({ toggleMenu: !this.state.toggleMenu }) }>
                     <IoMdArrowDown className={ `gp-body-collapse-arrow ${ this.state.toggleMenu ? 'active' : '' }` } />
                 </button>
-                <Collapse collapsed={ this.state.toggleMenu }>
-                    <div className="w-100" style={{ boxShadow: "0px 0px 2px black inset" }}>
+                <Collapse className="border-bottom" collapsed={ this.state.toggleMenu }>
+                    <div className="w-100">
                         <div className="text-center p-2">
                             Layout Size
                             <span className="border rounded p-1 ml-1">
