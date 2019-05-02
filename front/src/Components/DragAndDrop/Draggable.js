@@ -15,7 +15,7 @@ class Draggable extends Component {
 
     render() {
         return (
-            <div draggable="true" onDragStart={ this.handleDragStart }>
+            <div className={ this.props.className } draggable="true" onDragStart={ this.handleDragStart }>
                 { this.props.children }
             </div>
         );
