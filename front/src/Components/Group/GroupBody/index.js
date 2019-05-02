@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { IoMdAdd, IoMdRemove } from 'react-icons/io';
+import { IoMdAdd, IoMdRemove, IoMdArrowDown } from 'react-icons/io';
+import Collapse from '../../Collapse';
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
 import Draggable from '../../DragAndDrop/Draggable';
+import './GroupBody.css';
 
 class GroupBody extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            layoutSize: 3
+            layoutSize: 3,
+            toggleMenu: false
         };
         this.setLayoutSize = this.setLayoutSize.bind(this);
     }
@@ -47,17 +50,26 @@ class GroupBody extends Component {
     render() {
         return (
             <div>
-                <div className="text-center mt-2">
-                    <span className="border rounded p-1">
-                        <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
-                            <IoMdRemove />
-                        </button>
-                        { this.state.layoutSize }
-                        <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
-                            <IoMdAdd />
-                        </button>
-                    </span>
-                </div>
+                <button className="btn btn-noframe-dark btn-sm w-100 rounded-0"
+                    onClick={ () => this.setState({ toggleMenu: !this.state.toggleMenu }) }>
+                    <IoMdArrowDown className={ `gp-body-collapse-arrow ${ this.state.toggleMenu ? 'active' : '' }` } />
+                </button>
+                <Collapse collapsed={ this.state.toggleMenu }>
+                    <div className="w-100" style={{ boxShadow: "0px 0px 2px black inset" }}>
+                        <div className="text-center p-2">
+                            Layout Size
+                            <span className="border rounded p-1 ml-1">
+                                <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
+                                    <IoMdRemove />
+                                </button>
+                                { this.state.layoutSize }
+                                <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
+                                    <IoMdAdd />
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </Collapse>
                 <div className="card-body p-1 pt-2 pb-2">
                     <ul className="list-layout">
                         <TransitionGroup>
