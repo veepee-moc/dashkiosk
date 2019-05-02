@@ -48,3 +48,29 @@
     background: linear-gradient(to bottom,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%);
     z-index: 5;
 }
+
+.innerDisplay {
+    font-size: 16px;
+    color:white;
+}
+
+.displayName {
+    font-size: 14px;
+}
+
+.chromecastIcon {
+    font-size: 18px;
+    color:white;
+}
+
+@media (max-width: 769px) {
+    .innerDisplay {
+        font-size: 11px;
+    }
+    .displayName {
+        font-size: 9px;
+    }
+    .chromecastIcon {
+        font-size: 13px;
+    }
+}

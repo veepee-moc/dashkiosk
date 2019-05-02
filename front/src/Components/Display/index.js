@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ModalEditDisplay from '../Modals/editDisplay';
 import Rest from '../Group/Rest';
 import './Display.css';
+import {IoIosWifi} from 'react-icons/io';
 
 class Display extends Component {
     constructor(props) {
@@ -48,12 +49,14 @@ class Display extends Component {
     }
 
     render() {
+        console.log(this.props);
         return (
             <>
                 <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
+                    <IoIosWifi hidden={this.props.display.chromecast === null ? true : false} className="ml-2 chromecastIcon"/>
                     <div className="embed-responsive-item content">
-                        <p className="text-monospace text-light mb-0">{this.state.name}</p>
-                        <p className="text-monospace text-light font-italic" style={{ fontSize: 13 }}>{this.state.description}</p>
+                        <p className="text-monospace text-light mb-0 innerDisplay">{this.state.name}</p>
+                        <p className="text-monospace text-light font-italic displayName">{this.state.description}</p>
                     </div>
                 </div>
                 <ModalEditDisplay rest={this.Rest} display={this.props.display}
