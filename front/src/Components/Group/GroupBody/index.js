@@ -51,10 +51,10 @@ class GroupBody extends Component {
         return (
             <div>
                 <Collapse collapsed={ this.props.toggleGroupMenu }>
-                    <div className="gp-body-collapse-container">
+                    <div className="gp-body-collapse-container bg-light">
                         <div className="text-center p-2">
                             Layout Size
-                            <span className="border rounded p-1 ml-1">
+                            <span className="border rounded p-1 ml-1 bg-white text-dark">
                                 <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
                                     <IoMdRemove />
                                 </button>

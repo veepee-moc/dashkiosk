@@ -1,4 +1,10 @@
 .gp-body-collapse-container {
-    width: 100%;
+    overflow: hidden;
+    width: calc(100% + 4px);
     box-shadow: 0px 0px 2px gray inset;
+    margin-left: -2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
 }
