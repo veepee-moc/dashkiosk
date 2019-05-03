@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button, Container, Form, Collapse, Card } from 'react-bootstrap';
 import { IoMdAddCircle, IoMdCloseCircle } from 'react-icons/io'
+import Swap from '../Swap';
 import FormInput from './formInput';
+import UploadImage from '../UploadImage';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -13,12 +15,14 @@ class ModalBroadcast extends Component {
       Timeout: '',
       Delay: '',
       Url: '',
-      Viewport:'',
+      Viewport: '',
       validated: false,
       opened: false,
       enableAllGroup: true,
       delayTime: 'sec',
-      timeoutTime: 'sec'
+      timeoutTime: 'sec',
+      source: 'URL',
+      file: [],
     }
   }
 
@@ -51,7 +55,7 @@ class ModalBroadcast extends Component {
   reinitialise = () => {
     this.setState({
       Timeout: '',
-      Viewport:'',
+      Viewport: '',
       Delay: '',
       Url: '',
       Description: '',
@@ -153,7 +157,7 @@ class ModalBroadcast extends Component {
     this.setState({ Groups: tmp });
   }
 
-  toggleAll= () => {
+  toggleAll = () => {
     let tmp = this.state.Groups;
 
     tmp.forEach((item, i) => {
@@ -175,11 +179,11 @@ class ModalBroadcast extends Component {
         <Card.Body className="text-center">
           <Row className="mb-3">
             <Col>
-              <Button className="text-left col-md-6 col-sm-6" variant= {this.state.enableAllGroup ? "info" : "light"}
-                onClick={() => {this.toggleAll()}}>
+              <Button className="text-left col-md-6 col-sm-6" variant={this.state.enableAllGroup ? "info" : "light"}
+                onClick={() => { this.toggleAll() }}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
-                {this.state.enableAllGroup ? 'Disable all' : 'Enable all'}
+                  {this.state.enableAllGroup ? 'Disable all' : 'Enable all'}
                 </span>
               </Button>
             </Col>
@@ -187,7 +191,7 @@ class ModalBroadcast extends Component {
           <Row>
             {this.state.Groups.map((item, i) =>
               <Col key={i} className="d-flex justify-content-around mb-3" md="3" sm="12">
-                <Button  className=" col-md-12 col-sm-12"  variant={item.enabled ? "info" : "light"}
+                <Button className=" col-md-12 col-sm-12" variant={item.enabled ? "info" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>
@@ -197,6 +201,10 @@ class ModalBroadcast extends Component {
         </Card.Body>
       </Collapse>
     </Card>
+  }
+
+  uploadFile = (file) => {
+    this.setState({ file });
   }
 
   render() {
@@ -214,19 +222,52 @@ class ModalBroadcast extends Component {
           <Modal.Body>
             <Container>
               {this.allGroups()}
+                <Form.Check 
+                  inline={true}
+                  type='radio'
+                  id='url'
+                  label='Dashboard an URL'
+                  onChange={() => this.setState({ source: 'URL'})}
+                  checked={ this.state.source === 'URL' }
+                  className='pb-3'
+                />
+                <Form.Check 
+                  inline={true}
+                  type='radio'
+                  id='image'
+                  label='Dashboard an image'
+                  onChange={() => this.setState({ source: 'IMG'})}
+                  checked={ this.state.source === 'IMG' }
+                  className='pb-3'
+                />
+              <Swap control={this.state.source === 'URL'}>
+                <Form.Row>
+                  <FormInput sm={12} 
+                    required={true} 
+                    isInvalid={!this.isValidUrl()}
+                    placeholder="Url" 
+                    name='Url' 
+                    updateValue={this.handleInput} 
+                    onError='insert an URL' 
+                    type="text" 
+                  />
+                </Form.Row>
+                <UploadImage
+                  uploadFile={this.uploadFile}
+                  files={ this.state.file }
+                />
+              </Swap>
               <Form.Row>
-                <FormInput md={12} sm={12} required={true} isInvalid={!this.isValidUrl()}
-                  placeholder="Url" name='Url' updateValue={this.handleInput} onError='insert an URL' type="text" />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description}
                   placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport}
                   placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout <= 0}
                   placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number" value={this.state.Timeout}
-                  dropdown={true}  time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
+                  dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
                 <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0}
                   placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number" value={this.state.Delay}
-                  dropdown={true}  time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
+                  dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
               </Form.Row>
             </Container>
           </Modal.Body>
