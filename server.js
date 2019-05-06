@@ -4,13 +4,17 @@ var http     = require('http'),
     socketio = require('socket.io'),
     logger   = require('./lib/logger'),
     config   = require('./lib/config'),
-    chromecast = require('./lib/chromecast');
+    chromecast = require('./lib/chromecast'),
+    cors = require('cors');
 
 var app = require('./lib/express'),
     server = http.createServer(app),
     io = socketio.listen(server, {
       logger: logger
     });
+
+// Cors
+app.use(cors());
 
 // Static files
 app.get('/', function(req, res) { res.redirect('/receiver'); });
@@ -34,7 +38,7 @@ db
     throw err;
   })
   .then(function() {
-    if (config.get('chromecast:enabled')) {
+      if (config.get('chromecast:enabled')) {
       chromecast();
     }
     server.listen(config.get('port'), function() {
