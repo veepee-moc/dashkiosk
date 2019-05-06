@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form } from 'react-bootstrap';
-import Swap from '../Swap';
 import FormInput from './formInput';
-import UploadImage from '../UploadImage';
 
 class ModalDashboard extends Component {
   constructor(props) {
