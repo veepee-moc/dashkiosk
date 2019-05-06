@@ -32,7 +32,7 @@ class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-sm navbar-light bg-white fixed-top border-bottom">
                 <Swap className="navbar-brand navbar-logo-centered" control={ this.props.socketConnected }>
-                    <a className="navbar-brand navbar-logo-centered" href="#" draggable="false">
+                    <a className="navbar-brand navbar-logo-centered" href="/receiver" draggable="false">
                         <img src={dashkioskIcon} width="50" height="50" alt="dashkiosk icon" draggable="false" />
                     </a>
                     <div className="nav-item spinner-grow text-dark navbar-spinner-size">
@@ -45,15 +45,9 @@ class Navbar extends Component {
                 <div className="collapse navbar-collapse">
                 </div>
                 <div>
-                    <ul className="navbar-nav">
-                        { /*config.branding !== 'default' &&
-                            <li className="nav-item">
-                                <img src={config.stamp} width="auto" height="50" alt={`logo-${config.branding}`} draggable="false" />
-                        </li>*/ }
-                        <li className="nav-item" hidden={ config.branding === 'default' }>
-                            <img src={config.stamp} width="auto" height="50" alt={`logo-${config.branding}`} draggable="false" />
-                        </li>
-                    </ul>
+                    <div hidden={ config.branding === 'default' }>
+                        <img src={config.stamp} width="auto" height="50" alt={`logo-${config.branding}`} draggable="false" />
+                    </div>
                 </div>
             </nav>
         );
