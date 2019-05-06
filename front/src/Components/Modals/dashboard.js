@@ -17,8 +17,6 @@ class ModalDashboard extends Component {
       Description: '',
       delayTime: 'sec',
       timeoutTime: 'sec',
-      source: 'URL',
-      file: [],
     }
     this.Rest = this.props.rest;
   }
@@ -118,10 +116,6 @@ class ModalDashboard extends Component {
     return ret;
   }
 
-  uploadFile = (file) => {
-    this.setState({ file });
-  }
-
   render() {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
@@ -136,44 +130,19 @@ class ModalDashboard extends Component {
           </Modal.Header>
           <Modal.Body>
             <Container>
-            <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='url'
-                  label='Dashboard an URL'
-                  onChange={() => this.setState({ source: 'URL'})}
-                  checked={ this.state.source === 'URL' }
-                  className='pb-3'
-                />
-                <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='image'
-                  label='Dashboard an image'
-                  onChange={() => this.setState({ source: 'IMG'})}
-                  checked={ this.state.source === 'IMG' }
-                  className='pb-3'
-                />
-              <Swap control={this.state.source === 'URL'}>
                 <Form.Row>
                 <FormInput 
                   md={12} 
                   sm={12} 
                   required={true} 
                   isInvalid={!this.isValidUrl()} 
+                  value={this.state.Url}
                   placeholder="Url" 
                   name='Url' 
                   updateValue={this.handleInput} 
-                  onError='insert an URL' 
-                  type="url" 
+                  onError='insert an URL or upload an image' 
+                  type='url'
                 />
-                </Form.Row>
-                <UploadImage
-                  uploadFile={this.uploadFile}
-                  files={ this.state.file }
-                />
-              </Swap>
-              <Form.Row>
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}

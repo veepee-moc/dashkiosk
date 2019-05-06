@@ -3,7 +3,6 @@ import { Modal, Row, Col, Button, Container, Form, Collapse, Card } from 'react-
 import { IoMdAddCircle, IoMdCloseCircle } from 'react-icons/io'
 import Swap from '../Swap';
 import FormInput from './formInput';
-import UploadImage from '../UploadImage';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -21,8 +20,6 @@ class ModalBroadcast extends Component {
       enableAllGroup: true,
       delayTime: 'sec',
       timeoutTime: 'sec',
-      source: 'URL',
-      file: [],
     }
   }
 
@@ -203,10 +200,6 @@ class ModalBroadcast extends Component {
     </Card>
   }
 
-  uploadFile = (file) => {
-    this.setState({ file });
-  }
-
   render() {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
@@ -222,41 +215,18 @@ class ModalBroadcast extends Component {
           <Modal.Body>
             <Container>
               {this.allGroups()}
-                <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='url'
-                  label='Dashboard an URL'
-                  onChange={() => this.setState({ source: 'URL'})}
-                  checked={ this.state.source === 'URL' }
-                  className='pb-3'
-                />
-                <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='image'
-                  label='Dashboard an image'
-                  onChange={() => this.setState({ source: 'IMG'})}
-                  checked={ this.state.source === 'IMG' }
-                  className='pb-3'
-                />
-              <Swap control={this.state.source === 'URL'}>
-                <Form.Row>
+                 <Form.Row>
                   <FormInput sm={12} 
                     required={true} 
                     isInvalid={!this.isValidUrl()}
                     placeholder="Url" 
                     name='Url' 
+                    value={this.state.Url}
                     updateValue={this.handleInput} 
-                    onError='insert an URL' 
-                    type="text" 
+                    onError='insert an URL or upload an image' 
+                    type="url"
                   />
                 </Form.Row>
-                <UploadImage
-                  uploadFile={this.uploadFile}
-                  files={ this.state.file }
-                />
-              </Swap>
               <Form.Row>
                 <FormInput md={12} sm={12} required={false} value={this.state.Description}
                   placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
