@@ -50,6 +50,7 @@
     "nodecastor": "^0.1.8",
     "postal": "~1.0.6",
     "postal.diagnostics": "~0.7.3",
+    "pug": "^2.0.3",
     "sequelize": "~1.7.0",
     "serve-static": "^1.13.2",
     "socket.io": "^2.2.0",
