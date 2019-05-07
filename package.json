@@ -14,7 +14,7 @@
     "clean": "rm -rf dist && mkdir dist",
     "dist": "yarn --silent clean && yarn --silent build-react && yarn --silent build-server && yarn --silent imagemin",
     "build-react": "cd front && yarn install && yarn build && cd ../ && yarn --silent copy-react",
-    "build-server": "yarn --silent lint && yarn --silent copy-server",
+    "build-server": "yarn --silent copy-server",
     "copy-react": "cp -r front/build/ dist/front",
     "copy-server": "cp package.json dist/ && cp server.js dist/ && cp forever.js dist/ && cp -r lib/ dist && mkdir -p dist/db/migrations && cp -r db/migrations dist/db",
     "lint": "eslint server.js && eslint lib/",

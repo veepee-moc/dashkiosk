@@ -74,7 +74,7 @@ class Rest {
         const group = Store.getState().admin.groups[this.groupIndex];
         if (inputs.template.name !== 'None')
             Axios.post(`/api/multi-dashboards`, { urls: inputs.url, template: inputs.template })
-                .then((res) => Axios.post(`/api/group/${group.id}/dashboard`, Object.assign(inputs, { url: res.data })))
+                .then((res) => Axios.post(`/api/group/${group.id}/dashboard`, Object.assign(inputs, { url: res.data.url })))
                 .then(() => toast.success('Successfully added dashboard.'))
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
         else
