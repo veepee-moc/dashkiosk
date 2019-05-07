@@ -67,7 +67,7 @@ class FormInput extends Component {
         headers: { 'content-type': 'multipart/form-data' }
     })
         .then(json => { 
-          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`)
+          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`, { target: this.input })
          })
         .catch((err) => { console.log(err) });
   }
@@ -127,6 +127,7 @@ class FormInput extends Component {
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
+            ref={(elem) => this.input = elem}
             index={this.props.index}
             disabled={this.props.disabled}
             as={this.props.hasTextArea ? "textarea" : "input"}
