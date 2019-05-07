@@ -58,7 +58,7 @@ class FormInput extends Component {
 
   render() {
     return (
-      <Form.Group as={Col} md={this.props.md} sm={this.props.sm}>
+      <Form.Group className={ this.props.className } as={Col} md={this.props.md} sm={this.props.sm}>
         <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>

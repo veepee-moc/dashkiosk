@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form } from 'react-bootstrap';
-import Swap from '../Swap';
+import { toast } from 'react-toastify';
+import Axios from 'axios';
 import FormInput from './formInput';
-import UploadImage from '../UploadImage';
 
 class ModalDashboard extends Component {
   constructor(props) {
@@ -12,15 +12,26 @@ class ModalDashboard extends Component {
       Timeout: '',
       Viewport: '',
       Delay: '',
-      Url: '',
+      Url: [''],
       Available: '',
       Description: '',
       delayTime: 'sec',
       timeoutTime: 'sec',
       source: 'URL',
       file: [],
+      templates: [],
+      chosedTemplate: {
+        name: 'None',
+        url: 1
+      }
     }
     this.Rest = this.props.rest;
+  }
+
+  componentDidMount() {
+    Axios.get('/api/multi-dashboards')
+      .then((res) => this.setState({ templates: res.data }))
+      .catch((err) => toast.error(`Failed to get dashboard templates:\n${err.message}`));
   }
 
   reinitialise = () => {
@@ -28,11 +39,16 @@ class ModalDashboard extends Component {
       Timeout: '',
       Viewport: '',
       Delay: '',
-      Url: '',
+      Url: [''],
       Available: '',
       Description: '',
       delayTime: 'sec',
-      timeoutTime: 'sec'
+      timeoutTime: 'sec',
+      templates: [],
+      chosedTemplate: {
+        name: 'None',
+        url: 1
+      }
     });
   }
 
@@ -66,7 +82,7 @@ class ModalDashboard extends Component {
     const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const body = {
-      url: this.state.Url,
+      url: this.state.Url.length <= 1 ? this.state.Url[0] : this.state.Url,
       description: this.state.Description,
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
@@ -82,8 +98,8 @@ class ModalDashboard extends Component {
     return (time === 'hour' ? (value * 60 * 60) : (value * 60));
   }
 
-  isValidUrl = () => {
-    var url = this.state.Url;
+  isValidUrl = (index) => {
+    var url = this.state.Url[index];
 
     if (url.length < 7)
       return false;
@@ -122,13 +138,43 @@ class ModalDashboard extends Component {
     this.setState({ file });
   }
 
+  handleTemplateChanged = (event) => {
+    const template = this.state.templates.find((obj) => obj.name === event.target.value);
+    if (template) {
+      const url = [];
+      for (var i = 0; i < template.url; i++)
+        url.push('');
+      this.setState({ Url: url, chosedTemplate: template });
+    }
+    else
+      this.setState({ Url: [''], chosedTemplate: { name: 'None', url: 1 } });
+  }
+
+  renderUrlInput() {
+    const arr = [];
+    for (var i = 0; i < this.state.chosedTemplate.url; i++)
+      arr.push(<FormInput
+        className="pl-4"
+        md={12}
+        sm={12}
+        required={true}
+        value={this.state.Url[i]}
+        isInvalid={!this.isValidUrl(i)}
+        placeholder="Url"
+        name='Url'
+        updateValue={this.handleInput}
+        onError='insert an URL or upload an image'
+        type="url"
+        rest={ this.props.rest }
+        key={ i }
+      />);
+    return arr;
+  }
+
   render() {
     return (
       <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
-        <Form
-          onSubmit={this.handleSubmit}
-          noValidate
-        >
+        <Form onSubmit={this.handleSubmit} noValidate>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
               Add a new dashboard to group {this.props.group.name}
@@ -136,43 +182,19 @@ class ModalDashboard extends Component {
           </Modal.Header>
           <Modal.Body>
             <Container>
-            <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='url'
-                  label='Dashboard an URL'
-                  onChange={() => this.setState({ source: 'URL'})}
-                  checked={ this.state.source === 'URL' }
-                  className='pb-3'
-                />
-                <Form.Check 
-                  inline={true}
-                  type='radio'
-                  id='image'
-                  label='Dashboard an image'
-                  onChange={() => this.setState({ source: 'IMG'})}
-                  checked={ this.state.source === 'IMG' }
-                  className='pb-3'
-                />
-              <Swap control={this.state.source === 'URL'}>
-                <Form.Row>
-                <FormInput 
-                  md={12} 
-                  sm={12} 
-                  required={true} 
-                  isInvalid={!this.isValidUrl()} 
-                  placeholder="Url" 
-                  name='Url' 
-                  updateValue={this.handleInput} 
-                  onError='insert an URL' 
-                  type="url" 
-                />
-                </Form.Row>
-                <UploadImage
-                  uploadFile={this.uploadFile}
-                  files={ this.state.file }
-                />
-              </Swap>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text">Template</label>
+                </div>
+                <select className="custom-select" onChange={ this.handleTemplateChanged }>
+                  <option defaultValue>None</option>
+                  { this.state.templates.map((tp, index) =>
+                      <option key={index} value={tp.name}>{tp.name}</option>) }
+                </select>
+              </div>
+              <Form.Row>
+                { this.renderUrlInput() }
+              </Form.Row>
               <Form.Row>
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
