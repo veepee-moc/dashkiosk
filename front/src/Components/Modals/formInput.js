@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, DropdownButton, Dropdown, InputGroup, Form } from 'react-bootstrap';
+import { Col, DropdownButton, Dropdown, InputGroup, Form, Row } from 'react-bootstrap';
 import Axios from 'axios';
 import { 
   IoIosDesktop, 
@@ -24,7 +24,9 @@ const styles = {
 
 const uploadStyle = {
   ...styles,
-  minWidth: '50px'
+  minWidth: '110px',
+  textAlign: 'center',
+  cursor: 'pointer'
 }
 
 class FormInput extends Component {
@@ -58,13 +60,12 @@ class FormInput extends Component {
     data.append('dashkiosk', file);
     Axios({
         method: 'post',
-        url: 'http://10.138.11.150:8080/api/upload',
+        url: '/api/upload',
         data: data,
         headers: { 'content-type': 'multipart/form-data' }
     })
         .then(json => { 
-          console.log('coucou');
-          this.props.updateValue(this.props.name, `http://10.138.11.150:8080/api/${json.data.filepath}`)
+          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`)
          })
         .catch((err) => { console.log(err) });
   }
@@ -97,12 +98,21 @@ class FormInput extends Component {
   uploadFile() {
     if (this.props.type === 'url') {
       return (
+        <div className='align-items-center' style={uploadStyle}>
           <input
             title='file'
-            style={uploadStyle}
+            style={{ display: 'none'}}
+            id='fileUpload'
             type='file'
             onChange={event => this.uploadImage(event)}
           />
+          <label 
+            for='fileUpload'
+            style={{ height:'100%', cursor:'pointer'}}
+          >
+            <Col className='d-flex align-items-center pt-2'>Select a file...</Col>
+          </label>
+        </div>
       );
     }
   }
