@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Swap from '../Swap';
 import Unassigned from './Unassigned';
+import DashboardImage from './DashboardImage';
 
 export default class Display extends Component {
 	constructor(props) {
@@ -78,22 +79,30 @@ export default class Display extends Component {
 	}
 
 	render() {
+		const backendFile = new RegExp('^https?:\/\/((([0-9]{1,3}\.){1,3}[0-9]{1,3})|(localhost)):[0-9]{4}\/api\/public\/dashkiosk[a-z0-9_]+(\.[a-z]*)?$');
 		const dashboard = this.props.dashboard;
 		return (
 			<Swap control={dashboard.url === '/unassigned'} >
 				<Unassigned />
-				<iframe
-					id={`iframe${this.props.name}`}
-					title={dashboard.description
-						? dashboard.desciption
-						: dashboard.url}
-					src={dashboard.url}
-					style={this.state.style}
-					frameBorder='0'
-					scrolling='no'
-					width='100%'
-					height='100%'
-				/>
+				<Swap control={backendFile.test(dashboard.url)} >
+					<DashboardImage
+						src={dashboard.url}
+						style={this.state.style}
+						viewport={ dashboard.viewport }
+					/>
+					<iframe
+						id={`iframe${this.props.name}`}
+						title={dashboard.description
+							? dashboard.desciption
+							: dashboard.url}
+						src={dashboard.url}
+						style={this.state.style}
+						frameBorder='0'
+						scrolling='no'
+						width='100%'
+						height='100%'
+					/>
+				</Swap>
 			</Swap>
 		);
 	}
