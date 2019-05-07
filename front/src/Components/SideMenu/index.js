@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid } from 'react-icons/io';
+import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid, IoMdSettings } from 'react-icons/io';
 import Collapse from '../Collapse';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import Rest from './Rest';
 import ModalBroadcast from '../Modals/broadcast';
+import ModalSettings from '../Settings';
 import './SideMenu.css';
 
 class SideMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            layoutSizeCollapsed: true
+            layoutSizeCollapsed: true,
+            settings: false,
         };
         this.Rest = new Rest(this);
         this.closeSideMenu = this.closeSideMenu.bind(this);
@@ -118,8 +120,18 @@ class SideMenu extends Component {
                             </div>
                         </Collapse>
                     </li>
+                    <li className="nav-item">
+                        <button onClick={() => { this.setState({ settings: true }); this.closeSideMenu() }}
+                        className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                            <IoMdSettings width="20" height="20" /> Open settings
+                        </button>
+                    </li>
                 </ul>
                 <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />
+                <ModalSettings
+                    show={this.state.settings} 
+                    onHide={() => { this.setState({ settings: false }) }} 
+                />
             </div>
         );
     }

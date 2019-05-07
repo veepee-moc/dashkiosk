@@ -9,6 +9,7 @@ import {
   IoMdResize, 
   IoMdDocument, 
   IoMdCalendar,
+  IoMdBriefcase
 } from 'react-icons/io';
 
 const styles = {
@@ -51,6 +52,8 @@ class FormInput extends Component {
         return <IoMdDocument />;
       case 'Available':
         return <IoMdCalendar />;
+      case 'branding':
+        return <IoMdBriefcase />;
     }
   }
 

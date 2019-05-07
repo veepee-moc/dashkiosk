@@ -31,6 +31,16 @@ const initialState = {
 	dashboardToDisplay: {},
 	osd: '',
 	displayViewport: '',
+	settings: {
+		timezone: 'Europe/Paris',
+		branding: 'default',
+		background_choice: 'color',
+		background_color: '#1c1a1f',
+		background_image: '',
+		loading_image: '',
+		stamp: '',
+		unassigned_images: []
+	}
 };
 
 function rootReducer(state = initialState, action) {
