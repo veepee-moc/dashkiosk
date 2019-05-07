@@ -17,8 +17,6 @@ class ModalDashboard extends Component {
       Description: '',
       delayTime: 'sec',
       timeoutTime: 'sec',
-      source: 'URL',
-      file: [],
       templates: [],
       chosedTemplate: {
         name: 'None',
@@ -32,6 +30,11 @@ class ModalDashboard extends Component {
     Axios.get('/api/multi-dashboards')
       .then((res) => this.setState({ templates: res.data }))
       .catch((err) => toast.error(`Failed to get dashboard templates:\n${err.message}`));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.show && !prevProps.show)
+      this.reinitialise();
   }
 
   reinitialise = () => {
@@ -50,6 +53,7 @@ class ModalDashboard extends Component {
         url: 1
       }
     });
+    this.componentDidMount();
   }
 
   unassigned = () => {
@@ -71,10 +75,16 @@ class ModalDashboard extends Component {
     return false;
   }
 
-  handleInput = (inputName, inputValue) => {
+  handleInput = (inputName, inputValue, event) => {
     if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
       inputValue = '';
-    this.setState({ [inputName]: inputValue });
+    if (inputName !== 'Url')
+      this.setState({ [inputName]: inputValue });
+    else {
+      const urls = [...this.state.Url];
+      urls[parseInt(event.target.attributes.index.value)] = inputValue;
+      this.setState({ Url: urls });
+    }
   }
 
   handleSubmit = (event) => {
@@ -83,6 +93,7 @@ class ModalDashboard extends Component {
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const body = {
       url: this.state.Url.length <= 1 ? this.state.Url[0] : this.state.Url,
+      template: this.state.chosedTemplate,
       description: this.state.Description,
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
@@ -120,22 +131,12 @@ class ModalDashboard extends Component {
   }
 
   handleError = () => {
-    var url = this.state.Url;
-    var ret = !this.isValidViewport();
-
-    if (url.length < 7)
-      return true;
-    if (ret === false) {
-      if (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://")
-        return false;
-      else
-        return true;
-    }
-    return ret;
-  }
-
-  uploadFile = (file) => {
-    this.setState({ file });
+    if (!this.isValidViewport)
+      return (true);
+    for (var i = 0; i < this.state.Url.length; i++)
+      if (!this.isValidUrl(i))
+        return (true);
+    return (false);
   }
 
   handleTemplateChanged = (event) => {
@@ -166,6 +167,7 @@ class ModalDashboard extends Component {
         onError='insert an URL or upload an image'
         type="url"
         rest={ this.props.rest }
+        index={ i }
         key={ i }
       />);
     return arr;

@@ -72,15 +72,15 @@ class Rest {
 
     addDashboard(inputs) {
         const group = Store.getState().admin.groups[this.groupIndex];
-        if (inputs.url.length)
-            Axios.post(`/api/multi-dashboards`, inputs)
+        if (inputs.template.name !== 'None')
+            Axios.post(`/api/multi-dashboards`, { urls: inputs.url, template: inputs.template })
                 .then((res) => Axios.post(`/api/group/${group.id}/dashboard`, Object.assign(inputs, { url: res.data })))
                 .then(() => toast.success('Successfully added dashboard.'))
-                .catch(() => toast.error('Failed to add dashboard.'));
+                .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
         else
             Axios.post(`/api/group/${group.id}/dashboard`, inputs)
                 .then(() => toast.success('Successfully added dashboard.'))
-                .catch(() => toast.error('Failed to add dashboard.'));
+                .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
     }
 
     deleteDashboard(dashboardId) {
