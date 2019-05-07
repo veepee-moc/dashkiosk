@@ -39,7 +39,7 @@ class Navbar extends Component {
                         <span className="sr-only">Loading...</span>
                     </div>
                 </Swap>
-                <button className="btn btn-noframe-light navbar-brand mr-0" style={{ fontSize: "30px", marginTop: "-3px" }} onClick={ this.handleMenuOpen }>
+                <button className="btn btn-noframe-dark navbar-brand mr-0" style={{ fontSize: "30px", marginTop: "-3px" }} onClick={ this.handleMenuOpen }>
                     <IoMdMenu />
                 </button>
                 <div className="collapse navbar-collapse">
