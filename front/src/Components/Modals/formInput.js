@@ -108,8 +108,8 @@ class FormInput extends Component {
             type='file'
             onChange={event => this.uploadImage(event)}
           />
-          <label 
-            for='fileUpload'
+          <label
+            htmlFor='fileUpload'
             style={{ height:'100%', cursor:'pointer'}}
           >
             <Col className='d-flex align-items-center pt-2'>Select a file...</Col>
@@ -121,12 +121,13 @@ class FormInput extends Component {
 
   render() {
     return (
-      <Form.Group as={Col} md={this.props.md} sm={this.props.sm}>
+      <Form.Group className={ this.props.className } as={Col} md={this.props.md} sm={this.props.sm}>
         <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
+            index={this.props.index}
             disabled={this.props.disabled}
             as={this.props.hasTextArea ? "textarea" : "input"}
             value={this.props.value}
@@ -134,7 +135,7 @@ class FormInput extends Component {
             type={this.props.type}
             placeholder={this.props.placeholder}
             aria-describedby="inputGroupPrepend"
-            onChange={(input) => { this.props.updateValue(this.props.name, input.target.value) }}
+            onChange={(event) => { this.props.updateValue(this.props.name, event.target.value, event) }}
             isInvalid={this.props.isInvalid}
           />
           <InputGroup.Append>

@@ -5,7 +5,9 @@ var http     = require('http'),
     logger   = require('./lib/logger'),
     config   = require('./lib/config'),
     chromecast = require('./lib/chromecast'),
-    cors = require('cors');
+    cors = require('cors'),
+    express = require('express'),
+    path = require('path');
 
 var app = require('./lib/express'),
     server = http.createServer(app),
@@ -60,6 +62,15 @@ if (config.get('demo')) {
     logger.info('End of demo mode, quitting');
     process.exit(5);
   }, end * 60 * 1000);
+}
+
+// React Routing
+if (app.get('env') !== 'development') {
+  app.use(express.static(path.join(__dirname, './front')));
+  app.get('/*', (req, res) => {
+    if (!res.headersSent)
+      res.sendFile(path.join(__dirname, './front', 'index.html'));
+  });
 }
 
 module.exports = app;
