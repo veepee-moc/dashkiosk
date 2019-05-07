@@ -41,6 +41,8 @@ class FormInput extends Component {
         return <IoMdLink />;
       case 'Delay':
         return <IoMdTime />;
+      case 'timezone':
+        return <IoMdTime />;
       case 'Timeout':
         return <IoMdHourglass />;
       case 'Viewport':
