@@ -24,9 +24,10 @@ class GroupBody extends Component {
     }
 
     renderDashboard() {
+        var nbDashboard = this.props.dashboards.length;
         return this.props.dashboards.map((key) =>
             <Draggable type="Dashboard" key={ key }>
-                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } />
+                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ nbDashboard }/>
             </Draggable>
         );
     }

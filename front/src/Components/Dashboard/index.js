@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync } from 'react-icons/io';
+import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync, IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io';
 import { connect } from 'react-redux';
 import './Dashboard.css';
 import EditableText from '../EditableText';
@@ -13,6 +13,16 @@ class Dashboard extends Component {
         this.rest = new Rest(this.props.groupIndex);
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
+        this.moveUp = this.moveUp.bind(this);
+        this.moveDown = this.moveDown.bind(this);
+    }
+
+    moveUp() {
+        this.rest.editDashboard({rank: parseInt(this.props.dashboardKey - 1)}, this.props.dashboard.id);
+    }
+
+    moveDown() {
+        this.rest.editDashboard({rank: parseInt(this.props.dashboardKey + 1)}, this.props.dashboard.id);
     }
 
     closeModal() {
@@ -46,6 +56,22 @@ class Dashboard extends Component {
                     className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} py-1 pl-2 pr-2 color-transition col-md-auto`}>
                         <IoMdCreate />
                     </button>
+                    <span className={`color-transition pl-1 pr-0`}>
+                        <button
+                        onClick={ this.moveUp }
+                        className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 color-transition col-md-auto ${ parseInt(this.props.dashboardKey) !== 0 ? "visible" : "invisible" } `}
+                        >
+                            <IoMdArrowDropup/>
+                        </button>
+                    </span>
+                    <span className={`color-transition pl-1 pr-0`}>
+                        <button
+                        onClick={ this.moveDown }
+                        className={`btn ${ this.props.dashboard.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 color-transition col-md-auto ${ parseInt(this.props.nbDashboard) !== (parseInt(this.props.dashboardKey) + 1) ? "visible" : "invisible" }`}
+                        >
+                            <IoMdArrowDropdown/>
+                        </button>
+                    </span>
                 </span>
                 <ModalEditDashboard
                 dashboard={this.props.dashboard}
