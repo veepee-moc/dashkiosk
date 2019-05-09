@@ -11,6 +11,7 @@ module.exports = {
   },
 
   down: function(migration, DataTypes, done) {
+    migration.removeColumn('Groups', 'layoutSize');
     done();
   }
 };
