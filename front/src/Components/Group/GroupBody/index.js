@@ -24,11 +24,10 @@ class GroupBody extends Component {
     }
 
     renderDashboard() {
-        var nbDashboard = this.props.dashboards.length;
         return this.props.dashboards.map((dashboard, key) =>
             <CSSTransition key={ key } timeout={ 500 } classNames="fade">
                 <Draggable type="Dashboard" key={ key }>
-                    <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ nbDashboard }/>
+                    <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ this.props.dashboards.length }/>
                 </Draggable>
             </CSSTransition>
         );
