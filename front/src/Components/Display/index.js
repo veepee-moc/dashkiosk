@@ -50,7 +50,7 @@ class Display extends Component {
 
     render() {
         return (
-            <>
+            <div>
                 <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
                     <IoIosWifi hidden={(this.props.display && this.props.display.chromecast === null ? true : false)} className="ml-2 chromecastIcon" />
                     <div className="embed-responsive-item content">
@@ -60,7 +60,7 @@ class Display extends Component {
                 </div>
                 <ModalEditDisplay rest={this.Rest} display={this.props.display}
                     show={this.state.showModal} onHide={this.closeModal} />
-            </>
+            </div>
         );
     }
 };
