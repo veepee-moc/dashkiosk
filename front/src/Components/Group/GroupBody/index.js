@@ -25,10 +25,12 @@ class GroupBody extends Component {
 
     renderDashboard() {
         var nbDashboard = this.props.dashboards.length;
-        return this.props.dashboards.map((key) =>
-            <Draggable type="Dashboard" key={ key }>
-                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ nbDashboard }/>
-            </Draggable>
+        return this.props.dashboards.map((dashboard, key) =>
+            <CSSTransition key={ key } timeout={ 500 } classNames="fade">
+                <Draggable type="Dashboard" key={ key }>
+                    <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ nbDashboard }/>
+                </Draggable>
+            </CSSTransition>
         );
     }
 
@@ -72,7 +74,9 @@ class GroupBody extends Component {
                 </div>
                 <div>
                     <ul className="list-group list-group-flush">
-                        { this.renderDashboard() }
+                        <TransitionGroup>
+                            { this.renderDashboard() }
+                        </TransitionGroup>
                     </ul>
                 </div>
             </div>
@@ -84,7 +88,7 @@ function mapStateToProps(state, ownProps) {
     const group = state.admin.groups[ownProps.groupIndex];
     return {
         displays: group ? Object.keys(group.displays) : null,
-        dashboards: group ? Object.keys(group.dashboards) : null,
+        dashboards: group ? group.dashboards : null,
         layoutSize: group ? group.layoutSize : null
     };
 }
