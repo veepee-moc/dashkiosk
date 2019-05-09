@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
 import FormInput from './formInput';
@@ -63,7 +63,7 @@ class ModalDashboard extends Component {
       timeout: null,
       delay: null,
       viewport: null,
-      available: null
+      availability: null
     };
     this.Rest.addDashboard(body);
     this.props.onHide();
@@ -98,7 +98,7 @@ class ModalDashboard extends Component {
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
       viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
-      available: this.state.Available
+      availability: this.state.Available
     };
     this.Rest.addDashboard(body);
     this.reinitialise();
@@ -166,9 +166,9 @@ class ModalDashboard extends Component {
         updateValue={this.handleInput}
         onError='insert an URL or upload an image'
         type="url"
-        rest={ this.props.rest }
-        index={ i }
-        key={ i }
+        rest={this.props.rest}
+        index={i}
+        key={i}
       />);
     return arr;
   }
@@ -179,7 +179,12 @@ class ModalDashboard extends Component {
         <Form onSubmit={this.handleSubmit} noValidate>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Add a new dashboard to group {this.props.group.name}
+              <Col sm={12} md={12}>
+                Add a new dashboard to group
+                </Col>
+              <Col sm={12} md={12} className="font-italic text-muted">
+                {this.props.group.name}
+              </Col>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

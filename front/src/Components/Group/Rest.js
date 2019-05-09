@@ -15,6 +15,7 @@ class Rest {
         this.addDashboard = this.addDashboard.bind(this);
         this.editDashboard = this.editDashboard.bind(this);
         this.editDisplay = this.editDisplay.bind(this);
+        this.deleteDashboard = this.deleteDashboard.bind(this);
         this.deleteDisplay = this.deleteDisplay.bind(this);
     }
 
@@ -83,8 +84,13 @@ class Rest {
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
     }
 
-    deleteDashboard(dashboardId) {
+    deleteDashboard(dashboardId, dashboardUrl) {
         const group = Store.getState().admin.groups[this.groupIndex];
+        const reg = new RegExp(/^https?:\/\/((([0-9]{1,3}\.){1,3}[0-9]{1,3})|(localhost)):[0-9]{4}\/api\/public\/dashkiosk[a-z0-9_]+(\.[a-z]*)?$/);
+        if (reg.test(dashboardUrl)) {
+            const image = dashboardUrl.split('/api/public/')[1];
+            Axios.delete(`/api/upload/${image}`);
+        }
         Axios.delete(`/api/group/${group.id}/dashboard/${dashboardId}`)
             .then(() => toast.success('Successfully removed dashboard.'))
             .catch(() => toast.error('Failed to remove display.'));
