@@ -30,6 +30,9 @@ class Group extends Component {
                 else if (dropEffect === "copy")
                     this.Rest.copyDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
                 return;
+            case "GroupTag":
+                this.Rest.addTagToGroup(dnd.object.props.value);
+                return;
             default:
                 return;
         }
@@ -45,7 +48,7 @@ class Group extends Component {
 
     render() {
         return (
-            <Droppable types={["Display", "Dashboard"]} onDrop={ this.onDrop }>
+            <Droppable types={["Display", "Dashboard", "GroupTag"]} onDrop={ this.onDrop }>
                 <div className="card">
                     <GroupHeader groupIndex={ this.props.groupIndex }
                         onToggleGroupMenu={ (toggle) => this.setState({ toggleGroupMenu: toggle }) } />

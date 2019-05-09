@@ -17,39 +17,6 @@
     line-height: 50px;
 }
 
-.btn:focus, .btn:active {
-    box-shadow: none !important;
-}
-
-.btn.btn-noframe-dark {
-    border: none;
-    color: black;
-}
-
-.btn.btn-noframe-dark:hover {
-    color: black;
-    background-color: rgb(100, 100, 100);
-    background-color: rgba(100, 100, 100, 0.3);
-}
-
-.btn.btn-noframe-light {
-    border: none;
-    color: white;
-}
-
-.btn.btn-noframe-light:hover {
-    color: white;
-    background-color: rgb(210, 210, 210);
-    background-color: rgba(210, 210, 210, 0.4);
-}
-
-.btn.btn-nostyle {
-    background: none;
-    border: none;
-    padding: 0px;
-    margin: 0px;
-}
-
 .btn.btn-nostyle:hover {
     background-color: rgb(100,100,100);
     background-color: rgba(200,200,200,0.1);
@@ -58,7 +25,6 @@
 a {
     outline: none !important;
 }
-
 
 .fade-enter {
     opacity: 0;
