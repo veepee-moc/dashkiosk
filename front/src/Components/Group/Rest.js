@@ -31,6 +31,16 @@ class Rest {
             .catch(() => toast.error('Failed to edit group\'s description.'));
     }
 
+    updadeGroupLayoutSize(newLayoutSize) {
+        if (newLayoutSize < 1)
+            newLayoutSize = 1;
+        else if (newLayoutSize > 10)
+            newLayoutSize = 10;
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.put(`/api/group/${group.id}`, { layoutSize: newLayoutSize })
+            .catch((err) => toast.error(`Failed to edit group's layout size: ${err.message}`))
+    }
+
     deleteGroup() {
         const group = Store.getState().admin.groups[this.groupIndex];
         Axios.delete('/api/group/'+ group.id)
