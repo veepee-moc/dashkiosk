@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, Row } from 'react-bootstrap';
 import Swap from '../Swap';
 import FormInput from './formInput';
 import { IoIosTrash } from 'react-icons/io'
@@ -13,7 +13,7 @@ class ModalEditDashboard extends Component {
       Viewport: this.props.dashboard.viewport || '',
       Delay: this.props.dashboard.delay || '',
       Url: this.props.dashboard.url,
-      Available: this.props.dashboard.available || '',
+      Available: this.props.dashboard.availability || '',
       Description: this.props.dashboard.description || '',
       delayTime: 'sec',
       timeoutTime: 'sec',
@@ -34,7 +34,7 @@ class ModalEditDashboard extends Component {
   }
 
   deleteDashboard = () => {
-    this.Rest.deleteDashboard(this.props.dashboard.id);
+    this.Rest.deleteDashboard(this.props.dashboard.id, this.props.dashboard.url);
     this.props.onHide();
   }
 
@@ -48,9 +48,9 @@ class ModalEditDashboard extends Component {
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
       viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
-      available: this.state.Available
+      availability: this.state.Available
     };
-    this.Rest.editDashboard(body, this.props.dashboard.id);
+    this.Rest.editDashboard(body, this.props.dashboard.id, this.props.url);
     this.props.onHide();
   }
 
@@ -94,8 +94,13 @@ class ModalEditDashboard extends Component {
           noValidate
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Edit dashboard {this.props.dashboard.description ? this.props.dashboard.description : this.props.dashboard.url}
+            <Modal.Title id="contained-modal-title-vcenter" >
+                <Col sm={12} md={12}>
+                  Edit dashboard
+                </Col>
+                <Col sm={12} md={12} className="font-italic text-muted">
+                  {this.props.dashboard.description}
+                </Col>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -120,7 +125,7 @@ class ModalEditDashboard extends Component {
                 <FormInput md={6} sm={12} required={false} value={this.state.Delay}
                   placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
-                <FormInput md={12} sm={12} required={false} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} value={this.state.Available} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
               </Form.Row>
             </Container>
           </Modal.Body>
