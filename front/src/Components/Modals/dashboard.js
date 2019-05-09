@@ -150,6 +150,8 @@ class ModalDashboard extends Component {
         updateValue={this.handleInput}
         onError='insert an URL or upload an image'
         type="url"
+        data-name='dashkiosk'
+        upload-route='/api/upload'
         rest={this.props.rest}
         index={i}
         key={i}

@@ -225,6 +225,8 @@ class ModalBroadcast extends Component {
                     updateValue={this.handleInput} 
                     onError='insert an URL or upload an image' 
                     type="url"
+                    data-name='dashkiosk'
+                    upload-route='/api/upload'
                   />
                 </Form.Row>
               <Form.Row>

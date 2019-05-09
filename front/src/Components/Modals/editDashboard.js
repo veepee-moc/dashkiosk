@@ -116,6 +116,8 @@ class ModalEditDashboard extends Component {
                   updateValue={this.handleInput}
                   onError='insert an URL or upload an image' 
                   type="url"
+                  data-name='dashkiosk'
+                  upload-route='/api/upload'
                 />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />

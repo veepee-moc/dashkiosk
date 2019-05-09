@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Types, action } from '../../Actions';
+import Axios from 'axios';
 import Swap from '../Swap';
-import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
-import { IoMdImage } from 'react-icons/io';
+import { IoMdImage, IoMdColorPalette } from 'react-icons/io';
 
 
 class ModalSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      useBranding: false,
-
+      useBranding: true,
       timezone: 'Europe/Paris',
-      branding: 'default',
+      //branding: 'default',
       background_choice: 'color',
       background_color: '#1c1a1f',
       background_image: '',
       loading_image: '',
       stamp: '',
       unassigned_images: [],
+      uploaded_images_format: 'cover',
     }
     this.Rest = this.props.rest;
   }
@@ -39,7 +40,10 @@ class ModalSettings extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
+    Axios.put('http://10.138.11.150:8080/api/settings/config', { config: this.state })
+      .then(ret => console.log(ret))
+      .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
+    /*const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
     const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
     const body = {
       url: this.state.Url,
@@ -51,7 +55,7 @@ class ModalSettings extends Component {
     };
     this.Rest.addDashboard(body);
     this.reinitialise();
-    this.props.onHide();
+    this.props.onHide();*/
   }
 
   handleError = () => {
@@ -61,16 +65,43 @@ class ModalSettings extends Component {
   brandingForm = () => {
     return (
       <>
-        <FormInput
+        {/*<FormInput
           sm={12}
           required={true}
+          label='Brand name'
           placeholder='Brand name'
           name='branding'
           updateValue={this.handleInput}
           type='text'
-        />
+        />*/}
 
-        <Form.Group as={Col} className='input-group-lg' sm={12}>
+        <FormInput
+          sm={12}
+          placeholder='Image url'
+          label='Branding loading image'
+          name='branding_loading'
+          updateValue={this.handleInput}
+          value={this.state.loading_image}
+          type='url'
+          data-name='unassignedImage'
+          upload-route='/api/settings/upload'
+        />
+        <FormInput
+          sm={12}
+          placeholder='Image url'
+          label='Branding stamp'
+          name='branding_stamp'
+          updateValue={this.handleInput}
+          value={this.state.stamp}
+          type='url'
+          data-name='unassignedImage'
+          upload-route='/api/settings/upload'
+        />
+        <Form.Group as={Col} sm={12}>
+          <Form.Label>Unassigned displays appearance</Form.Label>
+        <Form.Row className='input-group-lg' sm={12}>
+        
+        <Form.Group as={Col} sm={6}>
           <InputGroup>
             <InputGroup.Prepend style={{ width: '42px' }}>
               <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
@@ -87,11 +118,38 @@ class ModalSettings extends Component {
               <option value='image'>Use a background image</option>
             </Form.Control>
           </InputGroup>
-        </Form.Group>
+          </Form.Group>
 
         {this.state.background_choice === 'color'
-          ? <p>coucou color</p>
-          : <p> coucou image </p>}
+          ? 
+          <Form.Group as={Col} sm={6}>
+          <InputGroup>
+            <InputGroup.Prepend style={{ width: '42px' }}>
+              <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
+                <IoMdColorPalette />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control 
+              size='lg'
+                type='color'
+                value={this.state.background_color}
+                onChange={event => this.setState({ background_color: event.target.value })} />
+          </InputGroup>
+          </Form.Group>
+        
+          : <FormInput
+              sm={6}
+              required={true}
+              placeholder='Image url'
+              name='background_image'
+              updateValue={this.handleInput}
+              value={this.state.background_image}
+              type='url'
+              data-name='unassigned'
+              upload-route='/api/settings/upload'
+            />}
+        </Form.Row>
+        </Form.Group>
       </>
     );
   }
@@ -146,6 +204,7 @@ class ModalSettings extends Component {
             <Container>
               <Form.Row>
                 <FormInput
+                  label='Timezone'
                   sm={12}
                   required={false}
                   value={this.state.timezone}
@@ -155,6 +214,27 @@ class ModalSettings extends Component {
                   type='text'
                 />
                 <Form.Group as={Col} className='input-group-lg' sm={12}>
+                  <Form.Label>Uploaded images format</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Prepend style={{ width: '42px' }}>
+                      <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
+                        <IoMdImage />
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      size='lg'
+                      as='select'
+                      value={this.state.uploaded_images_format}
+                      onChange={event => this.setState({ uploaded_images_format: event.target.value })}
+                    >
+                      <option value='cover'>Zoom the image until full screen (possible loss)</option>
+                      <option value='contain'>Display all image (adds white borders to avoid loss)</option>
+                    </Form.Control>
+                  </InputGroup>
+                </Form.Group>
+
+                <Form.Group as={Col} className='input-group-lg' sm={12}>
+                  <Form.Label>Use branding logo and images</Form.Label>
                   <InputGroup>
                     <InputGroup.Prepend style={{ width: '42px' }}>
                       <InputGroup.Text id="inputGroupPrepend" style={{}}>
@@ -171,7 +251,7 @@ class ModalSettings extends Component {
                       onClick={() => this.setState({ useBranding: !this.state.useBranding })}
                       style={{ cursor: 'pointer' }}
                     >
-                      Use branding
+                      { this.state.useBranding ? 'Using branding' : 'Not using branding' }
                   </div>
                   </InputGroup>
                 </Form.Group>

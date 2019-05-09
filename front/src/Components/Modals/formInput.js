@@ -52,8 +52,8 @@ class FormInput extends Component {
         return <IoMdDocument />;
       case 'Available':
         return <IoMdCalendar />;
-      case 'branding':
-        return <IoMdBriefcase />;
+      case 'background_image':
+        return <IoMdLink />;
     }
   }
 
@@ -62,15 +62,15 @@ class FormInput extends Component {
     const file = event.target.files[0];
 
     event.preventDefault();
-    data.append('dashkiosk', file);
+    data.append('loading', file); // unassigned_image // branding
     Axios({
         method: 'post',
-        url: '/api/upload',
+        url: '/api/settings/upload/brand/loading',  //this.props['upload-route'], // /api/settings/upload || /api/settings/branding
         data: data,
         headers: { 'content-type': 'multipart/form-data' }
     })
         .then(json => { 
-          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`, { target: this.input })
+          this.props.updateValue(this.props.name, `http://10.138.11.150:8080/api/${json.data.filepath}`, { target: this.input })
          })
         .catch((err) => { console.log(err) });
   }
@@ -89,7 +89,7 @@ class FormInput extends Component {
           >
             <Dropdown.Item onClick={() => { this.props.selectTime('sec') }}>
               sec
-        </Dropdown.Item>
+            </Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => { this.props.selectTime('min') }}>min</Dropdown.Item>
             <Dropdown.Divider />
@@ -125,6 +125,7 @@ class FormInput extends Component {
   render() {
     return (
       <Form.Group className={ this.props.className } as={Col} md={this.props.md} sm={this.props.sm}>
+        { this.props.label ? <Form.Label>{ this.props.label }</Form.Label> : '' }
         <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>
