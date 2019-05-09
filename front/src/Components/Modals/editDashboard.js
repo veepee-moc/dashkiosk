@@ -80,18 +80,10 @@ class ModalEditDashboard extends Component {
   }
 
   handleError = () => {
-    var url = this.state.Url;
     var ret = !this.isValidViewport();
-
-    if (url.length < 7)
-      return true;
-    if (ret === false) {
-      if (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://")
-        return false;
-      else
-        return true;
-    }
-    return ret;
+    if (!this.isValidViewport())
+      return (true);
+    return (false);
   }
 
   render() {
@@ -119,7 +111,6 @@ class ModalEditDashboard extends Component {
                   sm={12}
                   required={true}
                   value={this.state.Url}
-                  isInvalid={!this.isValidUrl()}
                   placeholder="Url"
                   name='Url'
                   updateValue={this.handleInput}

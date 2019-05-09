@@ -109,18 +109,6 @@ class ModalDashboard extends Component {
     return (time === 'hour' ? (value * 60 * 60) : (value * 60));
   }
 
-  isValidUrl = (index) => {
-    var url = this.state.Url[index];
-
-    if (url.length < 7)
-      return false;
-    if (url.length > 0) {
-      if (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://")
-        return true;
-    }
-    return false;
-  }
-
   isValidViewport = () => {
     var reg = new RegExp("^[1-9]\\d*[x][1-9]\\d*$");
 
@@ -133,9 +121,6 @@ class ModalDashboard extends Component {
   handleError = () => {
     if (!this.isValidViewport)
       return (true);
-    for (var i = 0; i < this.state.Url.length; i++)
-      if (!this.isValidUrl(i))
-        return (true);
     return (false);
   }
 
@@ -160,7 +145,6 @@ class ModalDashboard extends Component {
         sm={12}
         required={true}
         value={this.state.Url[i]}
-        isInvalid={!this.isValidUrl(i)}
         placeholder="Url"
         name='Url'
         updateValue={this.handleInput}

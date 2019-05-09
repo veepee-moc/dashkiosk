@@ -31,6 +31,16 @@ class Rest {
             .catch(() => toast.error('Failed to edit group\'s description.'));
     }
 
+    updadeGroupLayoutSize(newLayoutSize) {
+        if (newLayoutSize < 1)
+            newLayoutSize = 1;
+        else if (newLayoutSize > 10)
+            newLayoutSize = 10;
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.put(`/api/group/${group.id}`, { layoutSize: newLayoutSize })
+            .catch((err) => toast.error(`Failed to edit group's layout size: ${err.message}`))
+    }
+
     deleteGroup() {
         const group = Store.getState().admin.groups[this.groupIndex];
         Axios.delete('/api/group/'+ group.id)
@@ -76,11 +86,9 @@ class Rest {
         if (inputs.template.name !== 'None')
             Axios.post(`/api/multi-dashboards`, { urls: inputs.url, template: inputs.template })
                 .then((res) => Axios.post(`/api/group/${group.id}/dashboard`, Object.assign(inputs, { url: res.data.url })))
-                .then(() => toast.success('Successfully added dashboard.'))
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
         else
             Axios.post(`/api/group/${group.id}/dashboard`, inputs)
-                .then(() => toast.success('Successfully added dashboard.'))
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
     }
 
@@ -92,15 +100,13 @@ class Rest {
             Axios.delete(`/api/upload/${image}`);
         }
         Axios.delete(`/api/group/${group.id}/dashboard/${dashboardId}`)
-            .then(() => toast.success('Successfully removed dashboard.'))
             .catch(() => toast.error('Failed to remove display.'));
     }
 
     editDashboard(inputs, dashboardId) {
         const group = Store.getState().admin.groups[this.groupIndex];
         Axios.put(`/api/group/${group.id}/dashboard/${dashboardId}`, inputs)
-        .then(() => toast.success('Successfully edited dashboard.'))
-        .catch(() => toast.error('Failed to edit dashboard.'));
+            .catch(() => toast.error('Failed to edit dashboard.'));
     }
 
     moveDisplay(display) {
@@ -111,13 +117,11 @@ class Rest {
 
     editDisplay(inputs, displayName) {
         Axios.put(`/api/display/${displayName}`, inputs)
-            .then(() => toast.success('Successfully edited display.'))
             .catch(() => toast.error('Failed to edit display.'));
     }
 
     deleteDisplay(displayName) {
         Axios.delete(`/api/display/${displayName}`)
-            .then(() => toast.success('Successfully deleted display.'))
             .catch(() => toast.error('Failed to delete display.'));
     }
 
@@ -140,6 +144,11 @@ class Rest {
             return;
         Axios.post(`/api/group/${group.id}/dashboard`, dashboard)
             .catch((err) => toast.error(`Failed to copy dashboard: ${err.message}`));
+    }
+
+    addTagToGroup(tag) {
+        Axios.post(`/api/grouptag/${tag}/group/${this.groupIndex}`)
+            .catch((err) => toast.error(`Failed to add tag to a group: ${err.message}`));
     }
 }
 

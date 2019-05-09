@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid, IoMdSettings } from 'react-icons/io';
-import Collapse from '../Collapse';
-import Store from '../../Store';
 import { Types, action } from '../../Actions';
+import Store from '../../Store';
 import Rest from './Rest';
+import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid, IoMdSettings, IoMdBookmark } from 'react-icons/io';
+import Collapse from '../Collapse';
 import ModalBroadcast from '../Modals/broadcast';
 import ModalSettings from '../Settings';
+import GroupTag from '../GroupTag';
 import './SideMenu.css';
 
 class SideMenu extends Component {
@@ -14,7 +15,8 @@ class SideMenu extends Component {
         super(props);
         this.state = {
             layoutSizeCollapsed: true,
-            settings: false,
+            groupTagsCollapsed: true,
+            settings: false
         };
         this.Rest = new Rest(this);
         this.closeSideMenu = this.closeSideMenu.bind(this);
@@ -102,11 +104,31 @@ class SideMenu extends Component {
                     </li>
                     <li className="nav-item">
                         <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left position-relative"
-                            data-toggle="collapse" data-target="#layoutSizeCollapse"
-                            onClick={ () => this.setState({ layoutSizeCollapsed: !this.state.layoutSizeCollapsed }) }>
+                            onClick={() => this.setState({ groupTagsCollapsed: !this.state.groupTagsCollapsed })}>
+                            <IoMdBookmark width="20" height="20" /> Group tags
+                            <IoMdArrowBack className={`sb-collapse-arrow mr-2 ${this.state.groupTagsCollapsed ? '' : 'active'}`} />
+                        </button>
+                        <Collapse collapsed={this.state.groupTagsCollapsed}>
+                            <div className="bg-light mx-auto sb-container-grouptags">
+                                <div className="m-1">
+                                    <GroupTag value="Télévision" />
+                                    <GroupTag value="Chromecast" />
+                                    <GroupTag value="Coucou" />
+                                    <GroupTag value="Hello World !" />
+                                    <GroupTag value="Bonsoir !" />
+                                    <GroupTag value="Praise the sun ! \[T]/" />
+                                </div>
+                                <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center">
+                                    <IoMdAdd style={{ fontSize: '20px' }} />
+                                </button>
+                            </div>
+                        </Collapse>
+                    </li>
+                    <li className="nav-item">
+                        <button className="btn btn-noframe-light d-block w-100 rounded-0 text-left position-relative"
+                            onClick={() => this.setState({ layoutSizeCollapsed: !this.state.layoutSizeCollapsed })}>
                             <IoMdGrid width="20" height="20" /> Layout Size
-                            <IoMdArrowBack width="20px" height="20px"
-                                className={ `sb-layoutsize-arrow mr-2 ${ this.state.layoutSizeCollapsed ? '' : 'active' }` } />
+                            <IoMdArrowBack className={`sb-collapse-arrow mr-2 ${this.state.layoutSizeCollapsed ? '' : 'active'}`} />
                         </button>
                         <Collapse collapsed={ this.state.layoutSizeCollapsed }>
                             <div className="bg-light mx-auto position-relative sb-container-layoutsize">
@@ -120,6 +142,7 @@ class SideMenu extends Component {
                             </div>
                         </Collapse>
                     </li>
+                    <hr className="border-bottom w-90 my-2" />
                     <li className="nav-item">
                         <button onClick={() => { this.setState({ settings: true }); this.closeSideMenu() }}
                         className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
