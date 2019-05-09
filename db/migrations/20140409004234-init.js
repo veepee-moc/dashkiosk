@@ -13,6 +13,7 @@ module.exports = {
       },
       layoutSize: {
         type: DataTypes.INTEGER,
+        defaultValue: 3,
         allowNull: false
       },
       name: {
