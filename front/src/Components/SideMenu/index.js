@@ -117,8 +117,10 @@ class SideMenu extends Component {
                                     <GroupTag value="Hello World !" />
                                     <GroupTag value="Bonsoir !" />
                                     <GroupTag value="Praise the sun ! \[T]/" />
+                                    <GroupTag value="New-Tag" />
                                 </div>
-                                <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center">
+                                <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center"
+                                    onClick={() => this.Rest.addNewTag()}>
                                     <IoMdAdd style={{ fontSize: '20px' }} />
                                 </button>
                             </div>
