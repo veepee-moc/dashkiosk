@@ -14,7 +14,6 @@ class ModalSettings extends Component {
     this.state = {
       useBranding: true,
       timezone: 'Europe/Paris',
-      //branding: 'default',
       background_choice: 'color',
       background_color: '#1c1a1f',
       background_image: '',
@@ -43,19 +42,6 @@ class ModalSettings extends Component {
     Axios.put('http://10.138.11.150:8080/api/settings/config', { config: this.state })
       .then(ret => console.log(ret))
       .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
-    /*const delay = (this.state.delayTime === 'sec' ? this.state.Delay : this.setTime(this.state.delayTime, this.state.Delay));
-    const timeout = (this.state.timeoutTime === 'sec' ? this.state.Timeout : this.setTime(this.state.timeoutTime, this.state.Timeout));
-    const body = {
-      url: this.state.Url,
-      description: this.state.Description,
-      timeout: (timeout === 0 || timeout === '' ? null : timeout),
-      delay: (delay === 0 || delay === '' ? null : delay),
-      viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
-      available: this.state.Available
-    };
-    this.Rest.addDashboard(body);
-    this.reinitialise();
-    this.props.onHide();*/
   }
 
   handleError = () => {
@@ -65,40 +51,30 @@ class ModalSettings extends Component {
   brandingForm = () => {
     return (
       <>
-        {/*<FormInput
-          sm={12}
-          required={true}
-          label='Brand name'
-          placeholder='Brand name'
-          name='branding'
-          updateValue={this.handleInput}
-          type='text'
-        />*/}
-
         <FormInput
           sm={12}
           placeholder='Image url'
           label='Branding loading image'
-          name='branding_loading'
+          name='loading_image'
           updateValue={this.handleInput}
           value={this.state.loading_image}
           type='url'
-          data-name='unassignedImage'
-          upload-route='/api/settings/upload'
+          data-name='brand'
+          upload-route='/api/settings/upload/brand'
         />
         <FormInput
           sm={12}
           placeholder='Image url'
           label='Branding stamp'
-          name='branding_stamp'
+          name='stamp'
           updateValue={this.handleInput}
           value={this.state.stamp}
           type='url'
-          data-name='unassignedImage'
-          upload-route='/api/settings/upload'
+          data-name='brand'
+          upload-route='/api/settings/upload/brand'
         />
         <Form.Group as={Col} sm={12}>
-          <Form.Label>Unassigned displays appearance</Form.Label>
+          <Form.Label>Unassigned displays background</Form.Label>
         <Form.Row className='input-group-lg' sm={12}>
         
         <Form.Group as={Col} sm={6}>
@@ -145,8 +121,8 @@ class ModalSettings extends Component {
               updateValue={this.handleInput}
               value={this.state.background_image}
               type='url'
-              data-name='unassigned'
-              upload-route='/api/settings/upload'
+              data-name='brand'
+              upload-route='/api/settings/upload/brand'
             />}
         </Form.Row>
         </Form.Group>
@@ -155,34 +131,37 @@ class ModalSettings extends Component {
   }
 
   defaultForm = () => {
+    /*const arr = [];
+    for (var i = 0; i < this.state.chosedTemplate.url; i++)
+      arr.push(<FormInput
+        sm={12}
+        required={true}
+        placeholder="Url"
+        name='Url'
+        value={ this.state.unassigned_images[i]}
+        updateValue={this.handleInput}
+        onError='insert an URL'
+        type='url'
+        data-name='unassigned'
+        upload-route='/api/settings/upload/unassigned'
+        index={i}
+        key={i}
+      />);
+
+    return arr;*/
     return (
       <>
         <FormInput
           sm={12}
           required={true}
           placeholder="Url"
-          name='Url'
+          name='unassigned_images'
           updateValue={this.handleInput}
+          value={ this.state.unassigned_images}
           onError='insert an URL'
           type='url'
-        />
-        <FormInput
-          sm={12}
-          required={true}
-          placeholder="Url"
-          name='Url'
-          updateValue={this.handleInput}
-          onError='insert an URL'
-          type='url'
-        />
-        <FormInput
-          sm={12}
-          required={true}
-          placeholder="Url"
-          name='Url'
-          updateValue={this.handleInput}
-          onError='insert an URL'
-          type='url'
+          data-name='unassigned'
+          upload-route='/api/settings/upload/unassigned'
         />
       </>
     );
