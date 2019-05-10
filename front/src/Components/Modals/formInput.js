@@ -77,7 +77,7 @@ class FormInput extends Component {
         headers: { 'content-type': 'multipart/form-data' }
     })
         .then(json => { 
-          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`, { target: this.input })
+          this.props.updateValue(this.props.name, `/api/${json.data.filepath}`, { target: this.input })
          })
         .catch((err) => { console.log(err) });
   }
