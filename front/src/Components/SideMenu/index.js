@@ -111,11 +111,9 @@ class SideMenu extends Component {
                         <Collapse collapsed={this.state.groupTagsCollapsed}>
                             <div className="bg-light mx-auto sb-container-grouptags">
                                 <div className="m-1">
-                                    <GroupTag value="Télévision" />
+                                    <GroupTag value="TV" />
                                     <GroupTag value="Chromecast" />
-                                    <GroupTag value="Coucou" />
                                     <GroupTag value="Hello World !" />
-                                    <GroupTag value="Bonsoir !" />
                                     <GroupTag value="Praise the sun ! \[T]/" />
                                     <GroupTag value="New-Tag" />
                                 </div>
