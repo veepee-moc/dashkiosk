@@ -29,6 +29,12 @@ class Rest {
             .then((res) => this.parent.setState({ keycloak: res.data.logout }))
             .catch(() => this.parent.setState({ keycloak: null }));
     }
+
+    addNewTag() {
+        Axios.put('/api/grouptag/New-Tag')
+            .then(() => toast.success('New tag created.'))
+            .catch((err) => toast.error(`Failed to create a new tag: ${err.message}`));
+    }
 };
 
 export default Rest;

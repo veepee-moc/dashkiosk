@@ -8,9 +8,8 @@
     transform: translate(-50%, -50%);
 }
 
-.absolute.hcenter {
-    left: 50%;
-    transform: translateX(-50%);
+.absolute.top {
+    top: 0px;
 }
 
 .absolute.vcenter {
@@ -18,18 +17,19 @@
     transform: translateY(-50%);
 }
 
+.absolute.bottom {
+    bottom: 0px;
+}
+
 .absolute.left {
     left: 0px;
 }
 
+.absolute.hcenter {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .absolute.right {
     right: 0px;
-}
-
-.absolute.top {
-    top: 0px;
-}
-
-.absolute.bottom {
-    bottom: 0px;
 }

@@ -11,11 +11,6 @@ module.exports = {
       rank: {
         type: DataTypes.INTEGER
       },
-      layoutSize: {
-        type: DataTypes.INTEGER,
-        defaultValue: 3,
-        allowNull: false
-      },
       name: {
         type: DataTypes.STRING,
         unique: true,

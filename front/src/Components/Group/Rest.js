@@ -147,7 +147,9 @@ class Rest {
     }
 
     addTagToGroup(tag) {
-        Axios.post(`/api/grouptag/${tag}/group/${this.groupIndex}`)
+        const group = Store.getState().admin.groups[this.groupIndex];
+        Axios.post(`/api/grouptag/${tag}/group/${group.id}`)
+            .then(() => toast.success('Add tag to group'))
             .catch((err) => toast.error(`Failed to add tag to a group: ${err.message}`));
     }
 }
