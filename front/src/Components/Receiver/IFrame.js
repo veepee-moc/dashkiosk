@@ -79,7 +79,7 @@ export default class Display extends Component {
 	}
 
 	render() {
-		const backendFile = new RegExp(/^http(s?):([:/|.|\w|\s|-])*\.(jpe?g|gif|png|svg)$/);
+		const backendFile = new RegExp(/.*\.(jpe?g|gif|png|svg)$/);
 		const dashboard = this.props.dashboard;
 		return (
 			<Swap control={dashboard.url === '/unassigned'} >
