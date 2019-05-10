@@ -10,7 +10,7 @@ import './App.css';
 
 class App extends Component {
   componentDidMount() {
-    Axios.get('http://10.138.11.150:8080/api/settings/config')
+    Axios.get('http://localhost:8080/api/settings/config')
       .then(ret => console.log(ret))
       .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
   }

@@ -8,8 +8,7 @@ import {
   IoMdHourglass, 
   IoMdResize, 
   IoMdDocument, 
-  IoMdCalendar,
-  IoMdBriefcase
+  IoMdCalendar
 } from 'react-icons/io';
 
 const styles = {
@@ -52,6 +51,14 @@ class FormInput extends Component {
         return <IoMdDocument />;
       case 'Available':
         return <IoMdCalendar />;
+      case 'background':
+        return <IoMdLink />;
+      case 'stamp':
+        return <IoMdLink />;
+      case 'loading_image':
+        return <IoMdLink />;
+      case 'unassigned_images':
+        return <IoMdLink />;
       case 'background_image':
         return <IoMdLink />;
     }
@@ -62,15 +69,15 @@ class FormInput extends Component {
     const file = event.target.files[0];
 
     event.preventDefault();
-    data.append('loading', file); // unassigned_image // branding
+    data.append(this.props['data-name'], file);
     Axios({
         method: 'post',
-        url: '/api/settings/upload/brand/loading',  //this.props['upload-route'], // /api/settings/upload || /api/settings/branding
+        url: this.props['upload-route'],
         data: data,
         headers: { 'content-type': 'multipart/form-data' }
     })
         .then(json => { 
-          this.props.updateValue(this.props.name, `http://10.138.11.150:8080/api/${json.data.filepath}`, { target: this.input })
+          this.props.updateValue(this.props.name, `http://localhost:8080/api/${json.data.filepath}`, { target: this.input })
          })
         .catch((err) => { console.log(err) });
   }
@@ -107,12 +114,12 @@ class FormInput extends Component {
           <input
             title='file'
             style={{ display: 'none'}}
-            id='fileUpload'
+            id={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
             type='file'
             onChange={event => this.uploadImage(event)}
           />
           <label
-            htmlFor='fileUpload'
+            htmlFor={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
             style={{ height:'100%', cursor:'pointer'}}
           >
             <Col className='d-flex align-items-center pt-2'>Select a file...</Col>
