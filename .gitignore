@@ -20,3 +20,7 @@
 
 # Credentials
 keycloak.json
+
+# Public dir
+/front/public/
+/public/
