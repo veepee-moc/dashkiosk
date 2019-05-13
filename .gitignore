@@ -2,7 +2,6 @@
 /build/
 /dist/
 /node_modules/
-/app/bower_components/
 /.tmp/
 /.rebooted
 

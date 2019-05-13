@@ -30,10 +30,14 @@ class Rest {
             .catch(() => this.parent.setState({ keycloak: null }));
     }
 
-    addNewTag() {
-        Axios.put('/api/grouptag/New-Tag')
-            .then(() => toast.success('New tag created.'))
+    addNewTag(name) {
+        Axios.put(`/api/grouptag/${name}`)
             .catch((err) => toast.error(`Failed to create a new tag: ${err.message}`));
+    }
+
+    deleteTag(id) {
+        Axios.delete(`/api/grouptag/${id}`)
+            .catch((err) => toast.error(`Failed to remove tag: ${err.message}`));
     }
 };
 

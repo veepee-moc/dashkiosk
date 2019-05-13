@@ -7,7 +7,8 @@ import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdG
 import Collapse from '../Collapse';
 import ModalBroadcast from '../Modals/broadcast';
 import ModalSettings from '../Settings';
-import GroupTag from '../GroupTag';
+import GroupTagsMenu from './GroupTagsMenu';
+import GroupTagsAdd from './GroupTagsAdd';
 import './SideMenu.css';
 
 class SideMenu extends Component {
@@ -110,17 +111,7 @@ class SideMenu extends Component {
                         </button>
                         <Collapse collapsed={this.state.groupTagsCollapsed}>
                             <div className="bg-light mx-auto sb-container-grouptags">
-                                <div className="m-1">
-                                    <GroupTag value="TV" />
-                                    <GroupTag value="Chromecast" />
-                                    <GroupTag value="Hello World !" />
-                                    <GroupTag value="Praise the sun ! \[T]/" />
-                                    <GroupTag value="New-Tag" />
-                                </div>
-                                <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center"
-                                    onClick={() => this.Rest.addNewTag()}>
-                                    <IoMdAdd style={{ fontSize: '20px' }} />
-                                </button>
+                                <GroupTagsMenu Rest={ this.Rest } />
                             </div>
                         </Collapse>
                     </li>

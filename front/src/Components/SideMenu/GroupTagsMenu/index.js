@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Draggable from '../DragAndDrop/Draggable';
-import { IoMdCheckmark } from 'react-icons/io';
-import Rest from '../SideMenu/Rest'
+import GroupTag from '../../GroupTag';
 
-class GroupTag extends Component {
+class GroupTagsMenu extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,11 +15,17 @@ class GroupTag extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        
+        this.props.Rest.addNewTag(this.state.inputValue);
     }
-
+    
     handleValueChanged = (event) => {
         this.setState({ inputValue: event.target.value });
+    }
+
+    renderGroupTags() {
+        return this.props.groupTags.map((tag, key) =>
+            <GroupTag value={ tag.name } tagId={ tag.id } key={ key } onClick={ this.props.Rest.deleteTag }/>
+        );
     }
 
     render() {
@@ -40,22 +46,24 @@ class GroupTag extends Component {
         );
 
         return (
-            <Draggable className="d-inline" type="GroupTag">
-                <span className={`${this.props.className}`}
-                    style={this.props.style}
-                    hidden={this.props.hidden}
-                    value={this.props.value}
-                    tagId={this.props.tagId}>
-                    <span className="badge badge-primary m-1">
-                        <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
-                            <span>{this.props.value}</span>
-                        </OverlayTrigger>
-                        <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.onClick(tagId)}>&times;</span>
-                    </span>
-                </span>
-            </Draggable>
+            <div>
+                <div className="m-1">
+                    { renderGroupTags() }
+                </div>
+                <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
+                    <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center">
+                        <IoMdAdd style={{ fontSize: '20px' }} />
+                    </button>
+                </OverlayTrigger>
+            </div>
         );
     }
 };
 
-export default GroupTag;
+function mapStateWithProps(state) {
+    return {
+        groupTags: state.admin.groupTags
+    };
+}
+
+export default connect(mapStateWithProps)(GroupTagsMenu);
