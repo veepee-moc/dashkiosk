@@ -109,9 +109,7 @@ class SideMenu extends Component {
                             <IoMdArrowBack className={`sb-collapse-arrow mr-2 ${this.state.groupTagsCollapsed ? '' : 'active'}`} />
                         </button>
                         <Collapse collapsed={this.state.groupTagsCollapsed}>
-                            <div className="bg-light mx-auto sb-container-grouptags">
-                                <GroupTagsMenu Rest={ this.Rest } />
-                            </div>
+                            <GroupTagsMenu Rest={ this.Rest } />
                         </Collapse>
                     </li>
                     <li className="nav-item">

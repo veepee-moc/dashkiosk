@@ -14,6 +14,11 @@ class GroupTagsMenu extends Component {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.groupTags !== prevProps.groupTags)
+            this.props.updateCollapse();
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.Rest.addNewTag(this.state.inputValue);
@@ -47,7 +52,7 @@ class GroupTagsMenu extends Component {
         );
 
         return (
-            <div>
+            <div className="bg-light mx-auto sb-container-grouptags">
                 <div className="m-1">
                     { this.renderGroupTags() }
                 </div>
