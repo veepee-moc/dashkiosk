@@ -16,6 +16,7 @@ const initialState = {
 	admin: {
 		socketConnected: false,
 		groups: [],
+		groupTags: [],
 		toggleMenu: false,
 		layoutSize: 3,
 		sideMenuWidth: 0
@@ -69,6 +70,12 @@ function rootReducer(state = initialState, action) {
 			return incrLayoutSize(state);
 		case Types.DecrLayoutSize:
 			return decrLayoutSize(state);
+		case Types.AddGroupTag:
+			return addGroupTag(state, action.payload);
+		case Types.UpdateGroupTag:
+			return updateGroupTag(state, action.payload);
+		case Types.DeleteGroupTag:
+			return deleteGroupTag(state, action.payload);
 		default:
 			return (state);
 	}

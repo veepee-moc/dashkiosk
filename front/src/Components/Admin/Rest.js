@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { toast } from 'react-toastify';
+import { action, Types } from '../../Actions';
 import Store from '../../Store';
 
 class Rest {
@@ -13,6 +14,12 @@ class Rest {
                     reject();
                 });
         });
+    }
+
+    loadGroupTags() {
+        Axios.get('/api/grouptag')
+            .then((res) => Store.dispatch(action(Types.SetAdminState, res.data)))
+            .catch((err) => toast.error(`Failed to load group tags: ${err.message}`));
     }
 };
 

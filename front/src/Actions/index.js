@@ -10,7 +10,10 @@ const Types = {
     DeleteDisplay: 8,
     SetDragAndDrop: 9,
     IncrLayoutSize: 10,
-    DecrLayoutSize: 11
+    DecrLayoutSize: 11,
+    AddGroupTag: 12,
+    UpdateGroupTag: 13,
+    DeleteGroupTag: 14
 };
 
 function action(type, payload) {

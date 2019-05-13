@@ -36,5 +36,14 @@ export default function () {
         console.debug('[Dashkiosk] deleted display', display);
         Store.dispatch(action(Types.DeleteDisplay, display));
     });
+    socket.on('grouptag.created', (tag) =>
+        Store.dispatch(action(Types.AddGroupTag, tag))
+    );
+    socket.on('grouptag.updated', (tag) =>
+        Store.dispatch(action(Types.UpdateGroupTag, tag))
+    );
+    socket.on('grouptag.deleted', (tag) =>
+        Store.dispatch(action(Types.DeleteGroupTag, tag))
+    );
     return (socket);
 };
