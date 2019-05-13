@@ -10,6 +10,9 @@ import deleteDisplay from './deleteDisplay';
 import setDragAndDrop from './setDragAndDrop';
 import incrLayoutSize from './incrLayoutSize';
 import decrLayoutSize from './decrLayoutSize';
+import addGroupTag from './addGroupTag';
+import updateGroupTag from './updateGroupTag';
+import deleteGroupTag from './deleteGroupTag';
 import { Types } from '../Actions';
 
 const initialState = {

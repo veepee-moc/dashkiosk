@@ -9,4 +9,4 @@ function addGroupTag(state, tag) {
     }));
 }
 
-module.exports = addGroupTag;
+export default addGroupTag;

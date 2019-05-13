@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { IoMdCheckmark, IoMdAdd } from 'react-icons/io';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import GroupTag from '../../GroupTag';
@@ -48,7 +49,7 @@ class GroupTagsMenu extends Component {
         return (
             <div>
                 <div className="m-1">
-                    { renderGroupTags() }
+                    { this.renderGroupTags() }
                 </div>
                 <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
                     <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center">

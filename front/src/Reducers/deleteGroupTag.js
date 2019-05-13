@@ -12,4 +12,4 @@ function deleteGroupTag(state, tag) {
     return state;
 }
 
-module.exports = deleteGroupTag;
+export default deleteGroupTag;

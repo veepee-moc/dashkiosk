@@ -50,7 +50,7 @@ class GroupTag extends Component {
                         <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
                             <span>{this.props.value}</span>
                         </OverlayTrigger>
-                        <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.onClick(tagId)}>&times;</span>
+                        <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.onClick(this.props.tagId)}>&times;</span>
                     </span>
                 </span>
             </Draggable>

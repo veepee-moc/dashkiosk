@@ -12,4 +12,4 @@ function updateGroupTag(state, tag) {
     return state;
 }
 
-module.exports = updateGroupTag;
+export default updateGroupTag;

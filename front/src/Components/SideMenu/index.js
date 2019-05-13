@@ -8,7 +8,6 @@ import Collapse from '../Collapse';
 import ModalBroadcast from '../Modals/broadcast';
 import ModalSettings from '../Settings';
 import GroupTagsMenu from './GroupTagsMenu';
-import GroupTagsAdd from './GroupTagsAdd';
 import './SideMenu.css';
 
 class SideMenu extends Component {
