@@ -44,7 +44,7 @@ class ModalEditDisplay extends Component {
   render() {
     if (this.props.display) {
       return (
-        <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
+        <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
           <Form
             onSubmit={this.handleSubmit}
             noValidate

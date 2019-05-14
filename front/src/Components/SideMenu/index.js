@@ -38,8 +38,7 @@ class SideMenu extends Component {
     }
 
     openBroadcast() {
-        this.setState({ broadcast: true });
-        this.closeSideMenu();
+        this.setState({ broadcast: true, settings: false });
     }
 
     addNewGroup() {
@@ -134,7 +133,7 @@ class SideMenu extends Component {
                     </li>
                     <hr className="border-bottom w-90 my-2" />
                     <li className="nav-item">
-                        <button onClick={() => { this.setState({ settings: true }); this.closeSideMenu() }}
+                        <button onClick={() => { this.setState({ settings: true, broadcast: false }) }}
                         className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
                             <IoMdSettings width="20" height="20" /> Open settings
                         </button>

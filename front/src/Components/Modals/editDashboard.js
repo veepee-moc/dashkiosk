@@ -88,7 +88,7 @@ class ModalEditDashboard extends Component {
 
   render() {
     return (
-      <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate

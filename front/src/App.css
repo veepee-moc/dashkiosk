@@ -71,3 +71,7 @@ li.list-layout-item {
 .w-90 {
     width: 90% !important;
 }
+
+.onTop {
+    z-index: 1200 !important;
+}

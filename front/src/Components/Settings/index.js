@@ -2,50 +2,84 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Types, action } from '../../Actions';
 import Axios from 'axios';
+import { toast } from 'react-toastify';
 import Swap from '../Swap';
 import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
-import { IoMdImage, IoMdColorPalette } from 'react-icons/io';
+import { IoMdImage, IoMdColorPalette, IoMdAdd } from 'react-icons/io';
+import './Settings.css';
 
 
 class ModalSettings extends Component {
   constructor(props) {
     super(props);
+    const settings = this.props.settings;
     this.state = {
-      useBranding: true,
-      timezone: 'Europe/Paris',
-      background_choice: 'color',
-      background_color: '#1c1a1f',
-      background_image: '',
-      loading_image: '',
-      stamp: '',
-      unassigned_images: [],
-      uploaded_images_format: 'cover',
+      useBranding: settings.useBranding,
+      timezone: settings.timezone,
+      background_choice: settings.background_choice,
+      background_color: settings.background_color,
+      background_image: settings.background_image,
+      loading_image: settings.loading_image,
+      stamp: settings.stamp,
+      unassigned_images: settings.unassigned_images,
+      uploaded_images_format: settings.uploaded_images_format,
     }
     this.Rest = this.props.rest;
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    if (this.props.show !== prevProps.show || prevState !== this.state)
-      return true;
-    return false;
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      const settings = this.props.settings;
+      this.setState({
+        useBranding: settings.useBranding,
+        timezone: settings.timezone,
+        background_choice: settings.background_choice,
+        background_color: settings.background_color,
+        background_image: settings.background_image,
+        loading_image: settings.loading_image,
+        stamp: settings.stamp,
+        unassigned_images: settings.unassigned_images,
+        uploaded_images_format: settings.uploaded_images_format,
+      })
+    }
   }
 
-  handleInput = (inputName, inputValue) => {
-    if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
-      inputValue = '';
-    this.setState({ [inputName]: inputValue });
+  handleInput = (inputName, inputValue, event) => {
+    if (inputName === 'unassigned') {
+      const unassigned = [...this.state.unassigned_images];
+      unassigned[parseInt(event.target.attributes.index.value)] = inputValue;
+      this.setState({ unassigned_images: unassigned });
+    } else {
+      this.setState({ [inputName]: inputValue });
+    }
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    Axios.put('http://10.138.11.150:8080/api/settings/config', { config: this.state })
-      .then(ret => console.log(ret))
-      .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
+    this.props.setStoreState({ settings: this.state });
+    const oldProps = this.props;
+    Axios.put('/api/settings/config', { config: this.state })
+      .then(() => {
+        this.props.onHide();
+        toast.success('Successfully updated settings');
+      })
+      .catch((err) => {
+        toast.error(`Failed to send configuration file: ${err.message}`)
+        this.props.setStoreState({ settings: oldProps });
+      });
   }
 
   handleError = () => {
     return false;
+  }
+
+  removeUnassigned = (index) => {
+    const unassigned = [...this.state.unassigned_images];
+    unassigned.splice(index, 1)
+    if (unassigned.length > 0) {
+      this.setState({ unassigned_images: unassigned });
+    }
   }
 
   brandingForm = () => {
@@ -75,101 +109,107 @@ class ModalSettings extends Component {
         />
         <Form.Group as={Col} sm={12}>
           <Form.Label>Unassigned displays background</Form.Label>
-        <Form.Row className='input-group-lg' sm={12}>
-        
-        <Form.Group as={Col} sm={6}>
-          <InputGroup>
-            <InputGroup.Prepend style={{ width: '42px' }}>
-              <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
-                <IoMdImage />
-              </InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              size='lg'
-              as='select'
-              value={this.state.background_choice}
-              onChange={event => this.setState({ background_choice: event.target.value })}
-            >
-              <option value='color'>Use a background color</option>
-              <option value='image'>Use a background image</option>
-            </Form.Control>
-          </InputGroup>
-          </Form.Group>
+          <Form.Row className='input-group-lg' sm={12}>
 
-        {this.state.background_choice === 'color'
-          ? 
-          <Form.Group as={Col} sm={6}>
-          <InputGroup>
-            <InputGroup.Prepend style={{ width: '42px' }}>
-              <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
-                <IoMdColorPalette />
-              </InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control 
-              size='lg'
-                type='color'
-                value={this.state.background_color}
-                onChange={event => this.setState({ background_color: event.target.value })} />
-          </InputGroup>
-          </Form.Group>
-        
-          : <FormInput
-              sm={6}
-              required={true}
-              placeholder='Image url'
-              name='background_image'
-              updateValue={this.handleInput}
-              value={this.state.background_image}
-              type='url'
-              data-name='brand'
-              upload-route='/api/settings/upload/brand'
-            />}
-        </Form.Row>
+            <Form.Group as={Col} sm={6}>
+              <InputGroup>
+                <InputGroup.Prepend style={{ width: '42px' }}>
+                  <InputGroup.Text className="input-group-text" htmlFor='inputGroupSelect01'>
+                    <IoMdImage />
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  size='lg'
+                  as='select'
+                  value={this.state.background_choice}
+                  onChange={event => this.setState({ background_choice: event.target.value })}
+                >
+                  <option value='color'>Use a background color</option>
+                  <option value='image'>Use a background image</option>
+                </Form.Control>
+              </InputGroup>
+            </Form.Group>
+
+            {this.state.background_choice === 'color'
+              ?
+              <Form.Group as={Col} sm={6}>
+                <InputGroup>
+                  <InputGroup.Prepend style={{ width: '42px' }}>
+                    <InputGroup.Text className='input-group-text' htmlFor='inputGroupSelect01'>
+                      <IoMdColorPalette />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    size='lg'
+                    type='color'
+                    value={this.state.background_color}
+                    onChange={event => this.setState({ background_color: event.target.value })} />
+                </InputGroup>
+              </Form.Group>
+
+              : <FormInput
+                sm={6}
+                required={true}
+                placeholder='Image url'
+                name='background_image'
+                updateValue={this.handleInput}
+                value={this.state.background_image}
+                type='url'
+                data-name='brand'
+                upload-route='/api/settings/upload/brand'
+              />}
+          </Form.Row>
         </Form.Group>
       </>
     );
   }
 
   defaultForm = () => {
-    /*const arr = [];
-    for (var i = 0; i < this.state.chosedTemplate.url; i++)
+    const arr = [];
+    arr.push(<Form.Label className='ml-1'>Unassigned displays images</Form.Label>);
+    if (!this.state.unassigned_images)
+      return '';
+    for (var i = 0; i < this.state.unassigned_images.length; i++)
       arr.push(<FormInput
         sm={12}
         required={true}
-        placeholder="Url"
-        name='Url'
-        value={ this.state.unassigned_images[i]}
+        placeholder='Url'
+        name='unassigned'
+        value={this.state.unassigned_images[i]}
         updateValue={this.handleInput}
         onError='insert an URL'
         type='url'
         data-name='unassigned'
         upload-route='/api/settings/upload/unassigned'
+        removeUnassigned={this.removeUnassigned}
+        unassignedList={ this.state.unassigned_images}
         index={i}
-        key={i}
+        key={`url${i}`}
       />);
 
-    return arr;*/
-    return (
-      <>
-        <FormInput
-          sm={12}
-          required={true}
-          placeholder="Url"
-          name='unassigned_images'
-          updateValue={this.handleInput}
-          value={ this.state.unassigned_images}
-          onError='insert an URL'
-          type='url'
-          data-name='unassigned'
-          upload-route='/api/settings/upload/unassigned'
-        />
-      </>
+    arr.push(
+        <Col sm={12}>
+          <Button
+            sm={12}
+            variant='outline-secondary'
+            className='btn-lg btn-block lightHover'
+            onClick={() => {
+              const newUnassigned = this.state.unassigned_images;
+              newUnassigned.push('');
+              this.setState({ unassigned_images: newUnassigned })
+            }
+            }
+          >
+            <IoMdAdd />
+          </Button>
+        </Col>
     );
+    return arr;
   }
 
   render() {
     return (
-      <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate
@@ -226,12 +266,12 @@ class ModalSettings extends Component {
                       </InputGroup.Text>
                     </InputGroup.Prepend>
                     <div
-                      class='form-control form-control-lg'
+                      className='form-control form-control-lg'
                       onClick={() => this.setState({ useBranding: !this.state.useBranding })}
                       style={{ cursor: 'pointer' }}
                     >
-                      { this.state.useBranding ? 'Using branding' : 'Not using branding' }
-                  </div>
+                      {this.state.useBranding ? 'Using branding' : 'Not using branding'}
+                    </div>
                   </InputGroup>
                 </Form.Group>
                 {this.state.useBranding
