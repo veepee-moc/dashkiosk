@@ -15,7 +15,7 @@ module.exports = {
       },
       groups: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
         type: DataTypes.DATE,

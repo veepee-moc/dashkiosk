@@ -152,11 +152,6 @@ class Rest {
             .then(() => toast.success('Add tag to group'))
             .catch((err) => toast.error(`Failed to add tag to a group: ${err.message}`));
     }
-
-    updateTagName(tag) {
-        Axios.post(`/api/grouptag/${tag.id}`)
-        .catch((err) => toast.error(`Failed to update tag name: ${err.message}`));
-    }
 }
 
 export default Rest;
