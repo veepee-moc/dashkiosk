@@ -146,9 +146,9 @@ class Rest {
             .catch((err) => toast.error(`Failed to copy dashboard: ${err.message}`));
     }
 
-    addTagToGroup(tag) {
+    addTagToGroup(tagId) {
         const group = Store.getState().admin.groups[this.groupIndex];
-        Axios.post(`/api/grouptag/${tag.id}/group/${group.id}`)
+        Axios.post(`/api/grouptag/${tagId}/group/${group.id}`)
             .then(() => toast.success('Add tag to group'))
             .catch((err) => toast.error(`Failed to add tag to a group: ${err.message}`));
     }

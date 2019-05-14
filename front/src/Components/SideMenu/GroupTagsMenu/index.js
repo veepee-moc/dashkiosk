@@ -14,9 +14,15 @@ class GroupTagsMenu extends Component {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.groupTags !== prevProps.groupTags)
+            this.props.updateCollapse();
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.Rest.addNewTag(this.state.inputValue);
+        this.overlay.hide();
     }
     
     handleValueChanged = (event) => {
@@ -25,7 +31,7 @@ class GroupTagsMenu extends Component {
 
     renderGroupTags() {
         return this.props.groupTags.map((tag, key) =>
-            <GroupTag value={ tag.name } tagId={ tag.id } key={ key } onClick={ this.props.Rest.deleteTag }/>
+            <GroupTag value={ tag.name } tagid={ tag.id } key={ key } Rest={ this.props.Rest }/>
         );
     }
 
@@ -35,9 +41,9 @@ class GroupTagsMenu extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-group">
                         <input type="text" className="form-control form-control-sm"
-                            value={this.state.inputValue} onChange={this.handleValueChanged} />
+                            value={this.state.inputValue} onChange={this.handleValueChanged} autoFocus />
                         <div className="input-group-append">
-                            <button className="btn btn-primary btn-sm" onClick={this.handleSubmit}>
+                            <button className="btn btn-primary btn-sm">
                                 <IoMdCheckmark />
                             </button>
                         </div>
@@ -47,11 +53,11 @@ class GroupTagsMenu extends Component {
         );
 
         return (
-            <div>
+            <div className="bg-light mx-auto sb-container-grouptags">
                 <div className="m-1">
                     { this.renderGroupTags() }
                 </div>
-                <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
+                <OverlayTrigger ref={(elem) => this.overlay = elem} trigger="click" rootClose placement="right" overlay={popover}>
                     <button className="btn btn-noframe-dark btn-sm d-block w-100 rounded-0 text-center">
                         <IoMdAdd style={{ fontSize: '20px' }} />
                     </button>

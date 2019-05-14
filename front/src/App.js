@@ -17,7 +17,14 @@ class App extends Component {
         this.props.setStoreState({settings: ret.data});
       })
       .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
-    console.log(this.props)
+  }
+
+  componentDidMount() {
+    const script = document.createElement("script");
+
+    script.async = false;
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.js";
+    document.body.appendChild(script);
   }
 
   render() {
@@ -30,7 +37,7 @@ class App extends Component {
             <Route path="/*" component={FromServer} />
           </Switch>
         </BrowserRouter>
-        <ToastContainer position="bottom-right"/>
+        <ToastContainer position="bottom-right" autoClose={2500} pauseOnVisibilityChange={false} closeOnClick pauseOnHover />
       </div>
     );
   }

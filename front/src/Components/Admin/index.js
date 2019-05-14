@@ -19,6 +19,7 @@ class Admin extends Component {
             animationScale: 1
         };
         this.Rest = new Rest();
+        this.Rest.loadGroupTags();
         Socket();
         this.onSortEnd = this.onSortEnd.bind(this);
         this.setAnimationScale = this.setAnimationScale.bind(this);
