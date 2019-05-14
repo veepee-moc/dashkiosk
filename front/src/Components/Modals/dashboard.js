@@ -48,6 +48,7 @@ class ModalDashboard extends Component {
       Description: '',
       delayTime: 'sec',
       timeoutTime: 'sec',
+      watermark: '',
       templates: [],
       chosedTemplate: {
         name: 'None',
@@ -99,7 +100,8 @@ class ModalDashboard extends Component {
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
       viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
-      availability: this.state.Available
+      availability: this.state.Available,
+      watermark: this.state.watermark,
     };
     this.Rest.addDashboard(body);
     this.reinitialise();
@@ -190,8 +192,18 @@ class ModalDashboard extends Component {
                 { this.renderUrlInput() }
               </Form.Row>
               <Form.Row>
+                <FormInput
+                  sm={12}
+                  value={this.state.watermark}
+                  placeholder='Watermark'
+                  name='watermark'
+                  updateValue={this.handleInput}
+                  type="url"
+                  data-name='dashkiosk'
+                  upload-route='/api/upload'
+                />
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
-                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (heunassignedight x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}
                   placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />

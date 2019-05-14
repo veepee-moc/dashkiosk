@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import config from '../../config';
 import { connect } from 'react-redux';
 import './Receiver.css';
 import Swap from '../Swap';

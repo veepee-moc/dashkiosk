@@ -88,10 +88,10 @@ class ModalSettings extends Component {
         <FormInput
           sm={12}
           placeholder='Image url'
-          label='Branding loading image'
-          name='loading_image'
+          label='Branding stamp'
+          name='stamp'
           updateValue={this.handleInput}
-          value={this.state.loading_image}
+          value={this.state.stamp}
           type='url'
           data-name='brand'
           upload-route='/api/settings/upload/brand'
@@ -99,10 +99,10 @@ class ModalSettings extends Component {
         <FormInput
           sm={12}
           placeholder='Image url'
-          label='Branding stamp'
-          name='stamp'
+          label='Branding loading image'
+          name='loading_image'
           updateValue={this.handleInput}
-          value={this.state.stamp}
+          value={this.state.loading_image}
           type='url'
           data-name='brand'
           upload-route='/api/settings/upload/brand'

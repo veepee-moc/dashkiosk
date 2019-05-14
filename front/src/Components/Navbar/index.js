@@ -5,7 +5,6 @@ import { IoMdMenu } from 'react-icons/io';
 import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
-import config from '../../config';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 import Swap from '../Swap';
 import './Navbar.css';

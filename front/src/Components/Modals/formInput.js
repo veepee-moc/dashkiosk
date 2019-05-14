@@ -79,6 +79,8 @@ class FormInput extends Component {
         return <IoMdLink />;
       case 'unassigned':
         return <IoMdLink />;
+      case 'watermark':
+        return <IoMdLink />;
     }
   }
 
