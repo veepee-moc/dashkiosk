@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { timeout } from 'q';
 
 class Collapse extends Component {
     constructor(props) {
@@ -20,33 +21,44 @@ class Collapse extends Component {
     }
 
     reRenderCollapse() {
-        this.forceUpdate();
+        if (!this.state.collapsed) {
+            const height = this.mainDiv.clientHeight;
+            this.mainDiv.style.height = '0px';
+            this.forceUpdate(() => {
+                this.mainDiv.style.height = `${this.mainDiv.scrollHeight}px`;
+                if (this.mainDiv.scrollHeight !== height)
+                    this.mainDiv.animate([
+                        { height: `${height}px` },
+                        { height: `${this.mainDiv.scrollHeight}px` }
+                    ], { duration: 100 });
+            });
+        }
     }
 
     handleCollapse() {
         if (this.state.collapsed) {
             this.setState({ collapsed: false }, () => {
+                this.mainDiv.style.height = `${ this.mainDiv.scrollHeight }px`;
                 this.mainDiv.animate([
                     { height: '0px' },
                     { height: `${ this.mainDiv.scrollHeight }px` }
                 ], { duration: 200 });
-                this.mainDiv.style.height = `${ this.mainDiv.scrollHeight }px`;
             });
         }
         else {
             this.setState({ collapsed: true }, () => {
+                this.mainDiv.style.height = '0px';
                 this.mainDiv.animate([
                     { height: `${ this.mainDiv.scrollHeight }px` },
                     { height: '0px' }
                 ], { duration: 200 });
-                this.mainDiv.style.height = '0px';
             })
         }
     }
 
     render() {
         const children = React.Children.map(this.props.children, (child) =>
-            React.cloneElement(child, { rerendercollapse: this.reRenderCollapse })
+                React.cloneElement(child, typeof(child.type) === 'object' ? { updateCollapse: this.reRenderCollapse } : {})
         );
         return (
             <div ref={ (elem) => this.mainDiv = elem } className={ this.props.className } style={{ overflow: "hidden" }}>
