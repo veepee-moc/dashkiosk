@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { IoMdAdd, IoMdRemove } from 'react-icons/io';
 import Collapse from '../../Collapse';
+import GroupMenu from './GroupMenu';
 import Display from '../../Display';
 import Dashboard from '../../Dashboard'
 import Draggable from '../../DragAndDrop/Draggable';
@@ -13,14 +13,10 @@ class GroupBody extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            toggleMenu: false
+            toggleMenu: false,
+            toggleTagsMenu: false
         };
         this.Rest = new Rest(this.props.groupIndex);
-        this.setLayoutSize = this.setLayoutSize.bind(this);
-    }
-
-    setLayoutSize(incr) {
-        this.Rest.updadeGroupLayoutSize(this.props.layoutSize + incr);
     }
 
     renderDashboard() {
@@ -49,20 +45,7 @@ class GroupBody extends Component {
         return (
             <div>
                 <Collapse collapsed={ this.props.toggleGroupMenu }>
-                    <div className="gp-body-collapse-container bg-light">
-                        <div className="text-center p-2">
-                            Layout Size
-                            <span className="border rounded p-1 ml-1 bg-white text-dark">
-                                <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(-1) }>
-                                    <IoMdRemove />
-                                </button>
-                                { this.props.layoutSize }
-                                <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1" onClick={ () => this.setLayoutSize(1) }>
-                                    <IoMdAdd />
-                                </button>
-                            </span>
-                        </div>
-                    </div>
+                    <GroupMenu groupIndex={this.props.groupIndex} />
                 </Collapse>
                 <div className="card-body p-1 pt-2 pb-2">
                     <ul className="list-layout">
@@ -85,10 +68,12 @@ class GroupBody extends Component {
 
 function mapStateToProps(state, ownProps) {
     const group = state.admin.groups[ownProps.groupIndex];
+    if (!group)
+        return { displays: 0, dashboards: [] }
     return {
-        displays: group ? Object.keys(group.displays) : null,
-        dashboards: group ? group.dashboards : null,
-        layoutSize: group ? group.layoutSize : null
+        displays: Object.keys(group.displays),
+        dashboards: group.dashboards,
+        layoutSize: group.layoutSize
     };
 }
 
