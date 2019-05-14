@@ -45,8 +45,8 @@ class Navbar extends Component {
                 <div className="collapse navbar-collapse">
                 </div>
                 <div>
-                    <div hidden={ config.branding === 'default' }>
-                        <img src={config.stamp} width="auto" height="50" alt={`logo-${config.branding}`} draggable="false" />
+                    <div hidden={ !this.props.useBranding }>
+                        <img src={this.props.stamp} width="auto" height="50" alt='logo' draggable="false" />
                     </div>
                 </div>
             </nav>
@@ -56,7 +56,9 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
     return ({
-        socketConnected: state.admin.socketConnected
+        socketConnected: state.admin.socketConnected,
+        useBranding: state.settings.useBranding,
+        stamp: state.settings.stamp,
     });
 }
 

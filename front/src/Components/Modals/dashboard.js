@@ -3,6 +3,7 @@ import { Modal, Button, Container, Form, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
 import FormInput from './formInput';
+import Availability from './availability';
 
 class ModalDashboard extends Component {
   constructor(props) {
@@ -161,7 +162,7 @@ class ModalDashboard extends Component {
 
   render() {
     return (
-      <Modal {...this.props} size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form onSubmit={this.handleSubmit} noValidate>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
@@ -198,6 +199,9 @@ class ModalDashboard extends Component {
                   placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
                 <FormInput md={12} sm={12} required={false} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
+                <Form.Text className="text-muted">
+                  <Availability input={this.state.Available}/>
+                </Form.Text>
               </Form.Row>
             </Container>
           </Modal.Body>

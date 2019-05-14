@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Types, action } from './Actions';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Axios from 'axios';
 import Admin from './Components/Admin';
@@ -9,10 +11,20 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     Axios.get('/api/settings/config')
-      .then(ret => console.log(ret))
+      .then(ret => { 
+        this.props.setStoreState({settings: ret.data});
+      })
       .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
+  }
+
+  componentDidMount() {
+    const script = document.createElement("script");
+
+    script.async = false;
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.js";
+    document.body.appendChild(script);
   }
 
   render() {
@@ -31,4 +43,10 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapDispatchWithProps(dispatch) {
+  return {
+    setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
+  };
+}
+
+export default connect(null, mapDispatchWithProps)(App);

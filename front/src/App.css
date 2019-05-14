@@ -67,6 +67,10 @@ li.list-layout-item {
     width: 90% !important;
 }
 
+.onTop {
+    z-index: 1200 !important;
+}
+
 .form-control:focus {
     box-shadow: 0px 0px 2px #007bff inset !important;
 }
