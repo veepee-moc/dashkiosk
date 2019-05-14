@@ -16,22 +16,14 @@ class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            animationScale: 1
         };
         this.Rest = new Rest();
         this.Rest.loadGroupTags();
         Socket();
-        this.onSortEnd = this.onSortEnd.bind(this);
-        this.setAnimationScale = this.setAnimationScale.bind(this);
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.setAnimationScale);
-        this.setAnimationScale();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.setAnimationScale);
+        this.container.style.paddingLeft = '5px';
     }
 
     componentDidUpdate(prevProps) {
@@ -41,39 +33,30 @@ class Admin extends Component {
             else
                 this.animateSideMenu('Close');
         }
-        if (prevProps.sideMenuWidth !== this.props.sideMenuWidth)
-            this.setAnimationScale();
-    }
-
-    setAnimationScale() {
-        const width = window.innerWidth;
-        this.setState({
-            animationScale: (width - this.props.sideMenuWidth) / width
-        });
     }
 
     animateSideMenu(action) {
         switch (action) {
             case 'Open':
+                this.container.style.paddingLeft = `${this.props.sideMenuWidth + 5}px`;
                 this.container.animate([
-                    { transform: 'scale(1)' },
-                    { transform: `scale(${ this.state.animationScale })` }
+                    { paddingLeft: `5px` },
+                    { paddingLeft: `${this.props.sideMenuWidth + 5}px` }
                 ], { duration: 400, easing: 'ease-out' });
-                this.container.style.transform = `scale(${ this.state.animationScale })`;
                 return;
             case 'Close':
+                this.container.style.paddingLeft = `5px`;
                 this.container.animate([
-                    { transform: `scale(${ this.state.animationScale })` },
-                    { transform: 'scale(1)' }
+                    { paddingLeft: `${this.props.sideMenuWidth + 5}px` },
+                    { paddingLeft: `5px` }
                 ], { duration: 400, easing: 'ease-out' });
-                this.container.style.transform = 'scale(1)';
                 return;
             default:
                 return;
         }
     }
 
-    onSortEnd({ oldIndex, newIndex }) {
+    onSortEnd = ({ oldIndex, newIndex }) => {
         if (oldIndex !== newIndex) {
             Store.dispatch(action(Types.SwapGroup, { src: oldIndex, dst: newIndex }));
             this.Rest.editRank(newIndex)
