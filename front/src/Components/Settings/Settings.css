@@ -1,0 +1,9 @@
+.lightHover {
+    border-color: #9fa0a1 !important;
+}
+
+.lightHover:hover {
+    background-color: #e9ecef !important;
+    color: rgb(73, 80, 87) !important;
+    border-color: #9fa0a1 !important;
+};

@@ -17,11 +17,6 @@
     line-height: 50px;
 }
 
-.btn.btn-nostyle:hover {
-    background-color: rgb(100,100,100);
-    background-color: rgba(200,200,200,0.1);
-}
-
 a {
     outline: none !important;
 }
@@ -70,4 +65,16 @@ li.list-layout-item {
 
 .w-90 {
     width: 90% !important;
+}
+
+.onTop {
+    z-index: 1200 !important;
+}
+
+.form-control:focus {
+    box-shadow: 0px 0px 2px #007bff inset !important;
+}
+
+.custom-select:focus {
+    box-shadow: 0px 0px 2px #007bff inset !important;
 }

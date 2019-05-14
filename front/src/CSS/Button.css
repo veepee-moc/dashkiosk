@@ -42,3 +42,8 @@
 .btn-text.btn-text-light {
     color: white;
 }
+
+.btn.btn-nostyle:hover {
+    background-color: rgb(100,100,100);
+    background-color: rgba(200,200,200,0.1);
+}

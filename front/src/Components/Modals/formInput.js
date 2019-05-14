@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, DropdownButton, Dropdown, InputGroup, Form, Row } from 'react-bootstrap';
+import { Col, DropdownButton, Dropdown, InputGroup, Form, Button } from 'react-bootstrap';
 import Axios from 'axios';
 import { 
   IoIosDesktop, 
@@ -8,7 +8,8 @@ import {
   IoMdHourglass, 
   IoMdResize, 
   IoMdDocument, 
-  IoMdCalendar
+  IoMdCalendar,
+  IoMdTrash
 } from 'react-icons/io';
 
 const styles = {
@@ -27,6 +28,21 @@ const uploadStyle = {
   minWidth: '110px',
   textAlign: 'center',
   cursor: 'pointer'
+}
+
+const uploadStyleWithoutRadius = {
+  ...styles,
+  borderTopRightRadius: '0',
+  borderBottomRightRadius: '0',
+  borderRight: 'none',
+  minWidth: '110px',
+  textAlign: 'center',
+  cursor: 'pointer'
+}
+
+const removeStyle = {
+  borderTopRightRadius: '0.3em',
+  borderBottomRightRadius: '0.3em',
 }
 
 class FormInput extends Component {
@@ -60,6 +76,8 @@ class FormInput extends Component {
       case 'unassigned_images':
         return <IoMdLink />;
       case 'background_image':
+        return <IoMdLink />;
+      case 'unassigned':
         return <IoMdLink />;
     }
   }
@@ -110,7 +128,7 @@ class FormInput extends Component {
   uploadFile() {
     if (this.props.type === 'url') {
       return (
-        <div className='align-items-center' style={uploadStyle}>
+        <div className='align-items-center' style={this.props.name === 'unassigned' ? uploadStyleWithoutRadius : uploadStyle}>
           <input
             title='file'
             style={{ display: 'none'}}
@@ -127,6 +145,19 @@ class FormInput extends Component {
         </div>
       );
     }
+  }
+
+  removeLine() {
+    if (this.props.name === 'unassigned')
+      return (
+        <Button 
+          variant='danger' 
+          disabled={this.props.unassignedList.length > 1 ? false : true } 
+          style={removeStyle} 
+          onClick={ () => this.props.removeUnassigned(this.props.index) }>
+            <IoMdTrash />
+          </Button>
+      );
   }
 
   render() {
@@ -153,6 +184,7 @@ class FormInput extends Component {
           <InputGroup.Append>
             {this.selectTime()}
             {this.uploadFile()}
+            {this.removeLine()}
           </InputGroup.Append>
           <Form.Control.Feedback type="invalid">
             {this.props.onError}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import config from '../../config';
+import { connect } from 'react-redux';
 import './Receiver.css';
 import Swap from '../Swap';
 import Clock from 'react-live-clock';
@@ -24,12 +25,22 @@ class Unassigned extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.background_choice !== prevProps.background_choice 
+      || this.props.unassigned_images !== prevProps.unassigned_images
+      || this.props.background_image !== prevProps.background_image) {
+      this.getRandomImage();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.state.interval);
   }
 
   getRandomImage = () => {
-    let array = JSON.parse(JSON.stringify(config.unassigned_images));
+    if (!this.props.unassigned_images)
+      return;
+    let array = JSON.parse(JSON.stringify(this.props.unassigned_images));
     var currentIndex = array.length,
       temporaryValue,
       randomIndex;
@@ -57,28 +68,29 @@ class Unassigned extends Component {
   }
 
   render() {
-    const style = config.background_choice !== 'image'
-      ? { backgroundColor: config.background,
+    const style = this.props.background_choice !== 'image'
+      ? { backgroundColor: this.props.background_color,
           top: '0',
           left: '0',
           position: 'absolute',
           height: '100%',
           width: '100%' }
-      : { backgroundImage: `url(${config.background})`,
+      : { backgroundImage: `url(${this.props.background_image})`,
           top: '0',
           left: '0',
           position: 'absolute',
           height: '100%',
           width: '100%',
-          backgroundSize: 'cover' };
+          backgroundSize: 'cover' 
+        };
     return (
       <>
-        <Swap control={config.branding !== 'default'}>
+        <Swap control={this.props.useBranding === true}>
           <div style={style}>
-            { config.loading && <img 
+            { this.props.loading_image && <img 
               className='logo'
-              src={config.loading} 
-              alt={`${config.branding}-logo`}
+              src={this.props.loading_image} 
+              alt='logo'
               /> }
           </div>
           <div style={{
@@ -94,11 +106,24 @@ class Unassigned extends Component {
           }} />
         </Swap>
         <div className='right-bottom clock'>
-          <Clock format={'HH:mm'} ticking={true} timezone={config.timezone} />
+          <Clock format={'HH:mm'} ticking={true} timezone={this.props.timezone} />
         </div>
       </>
     );
   }
 }
 
-export default Unassigned;
+function mapStateToProps(state) {
+	return ({
+    receiverConnected: state.receiverConnected,
+    useBranding: state.settings.useBranding,
+    timezone: state.settings.timezone,
+    background_choice: state.settings.background_choice,
+    background_color: state.settings.background_color,
+    background_image: state.settings.background_image,
+    loading_image: state.settings.loading_image,
+    unassigned_images: state.settings.unassigned_images,
+	});
+}
+
+export default connect(mapStateToProps)(Unassigned);

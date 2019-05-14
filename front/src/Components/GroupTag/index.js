@@ -15,6 +15,7 @@ class GroupTag extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.Rest.updateTag({ id: this.props.tagid, name: this.state.inputValue });
+        this.overlay.hide();
     }
 
     handleValueChanged = (event) => {
@@ -27,9 +28,9 @@ class GroupTag extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-group">
                         <input type="text" className="form-control form-control-sm"
-                            value={this.state.inputValue} onChange={this.handleValueChanged} />
+                            value={this.state.inputValue} onChange={this.handleValueChanged} autoFocus />
                         <div className="input-group-append">
-                            <button className="btn btn-primary btn-sm" onClick={this.handleSubmit}>
+                            <button className="btn btn-primary btn-sm">
                                 <IoMdCheckmark />
                             </button>
                         </div>
@@ -46,7 +47,7 @@ class GroupTag extends Component {
                     value={this.props.value}
                     tagid={this.props.tagid}>
                     <span className="badge badge-primary m-1">
-                        <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
+                        <OverlayTrigger ref={(elem) => this.overlay = elem} trigger="click" rootClose placement="right" overlay={popover}>
                             <span>{this.props.value}</span>
                         </OverlayTrigger>
                         <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.Rest.deleteTag(this.props.tagid)}>&times;</span>
