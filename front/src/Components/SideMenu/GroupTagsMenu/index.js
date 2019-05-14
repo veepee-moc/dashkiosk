@@ -25,7 +25,7 @@ class GroupTagsMenu extends Component {
 
     renderGroupTags() {
         return this.props.groupTags.map((tag, key) =>
-            <GroupTag value={ tag.name } tagId={ tag.id } key={ key } onClick={ this.props.Rest.deleteTag }/>
+            <GroupTag value={ tag.name } tagid={ tag.id } key={ key } Rest={ this.props.Rest }/>
         );
     }
 

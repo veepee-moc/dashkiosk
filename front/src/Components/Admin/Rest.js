@@ -18,7 +18,7 @@ class Rest {
 
     loadGroupTags() {
         Axios.get('/api/grouptag')
-            .then((res) => Store.dispatch(action(Types.SetAdminState, res.data)))
+            .then((res) => Store.dispatch(action(Types.SetAdminState, {groupTags: res.data})))
             .catch((err) => toast.error(`Failed to load group tags: ${err.message}`));
     }
 };

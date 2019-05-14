@@ -25,7 +25,7 @@ class App extends Component {
             <Route path="/*" component={FromServer} />
           </Switch>
         </BrowserRouter>
-        <ToastContainer position="bottom-right"/>
+        <ToastContainer position="bottom-right" autoClose={2500} pauseOnVisibilityChange={false} closeOnClick pauseOnHover />
       </div>
     );
   }

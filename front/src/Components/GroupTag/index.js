@@ -3,7 +3,6 @@ import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Draggable from '../DragAndDrop/Draggable';
 import { IoMdCheckmark } from 'react-icons/io';
-import Rest from '../SideMenu/Rest'
 
 class GroupTag extends Component {
     constructor(props) {
@@ -15,7 +14,7 @@ class GroupTag extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        
+        this.props.Rest.updateTag({ id: this.props.tagid, name: this.state.inputValue });
     }
 
     handleValueChanged = (event) => {
@@ -45,12 +44,12 @@ class GroupTag extends Component {
                     style={this.props.style}
                     hidden={this.props.hidden}
                     value={this.props.value}
-                    tagId={this.props.tagId}>
+                    tagid={this.props.tagid}>
                     <span className="badge badge-primary m-1">
                         <OverlayTrigger trigger="click" rootClose placement="right" overlay={popover}>
                             <span>{this.props.value}</span>
                         </OverlayTrigger>
-                        <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.onClick(this.props.tagId)}>&times;</span>
+                        <span className="btn-text btn-text-dark ml-1" onClick={() => this.props.Rest.deleteTag(this.props.tagid)}>&times;</span>
                     </span>
                 </span>
             </Draggable>
