@@ -10,6 +10,11 @@ import './App.css';
 
 class App extends Component {
   componentDidMount() {
+    const script = document.createElement("script");
+
+    script.async = false;
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.js";
+    document.body.appendChild(script);
     Axios.get('/api/settings/config')
       .then(ret => console.log(ret))
       .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));

@@ -3,6 +3,7 @@ import { Modal, Button, Container, Form, Col, Row } from 'react-bootstrap';
 import Swap from '../Swap';
 import FormInput from './formInput';
 import { IoIosTrash } from 'react-icons/io'
+import Availability from './availability';
 
 class ModalEditDashboard extends Component {
   constructor(props) {
@@ -114,7 +115,7 @@ class ModalEditDashboard extends Component {
                   placeholder="Url"
                   name='Url'
                   updateValue={this.handleInput}
-                  onError='insert an URL or upload an image' 
+                  onError='insert an URL or upload an image'
                   type="url"
                   data-name='dashkiosk'
                   upload-route='/api/upload'
@@ -128,6 +129,9 @@ class ModalEditDashboard extends Component {
                   placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
                 <FormInput md={12} sm={12} required={false} value={this.state.Available} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
+                <Form.Text className="text-muted">
+                  <Availability input={this.state.Available} />
+                </Form.Text>
               </Form.Row>
             </Container>
           </Modal.Body>
