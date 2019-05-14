@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Row, Col, Button, Container, Form, Collapse, Card } from 'react-bootstrap';
-import { IoMdAddCircle, IoMdCloseCircle } from 'react-icons/io'
-import Swap from '../Swap';
+import { Modal, Row, Col, Button, Container, Form, Card } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop } from 'react-icons/io'
 import FormInput from './formInput';
 import Axios from 'axios';
+import Collapse from '../Collapse'
 import { toast } from 'react-toastify';
 
 class ModalBroadcast extends Component {
@@ -65,18 +66,6 @@ class ModalBroadcast extends Component {
     if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
       inputValue = '';
     this.setState({ [inputName]: inputValue });
-  }
-
-  isValidUrl = () => {
-    let url = this.state.Url;
-
-    if (url.length < 7)
-      return false;
-    if (url.length > 0) {
-      if (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://")
-        return true;
-    }
-    return false;
   }
 
   isValidViewport = () => {
@@ -154,6 +143,18 @@ class ModalBroadcast extends Component {
     this.setState({ Groups: tmp });
   }
 
+  toggleTag = (id) => {
+    let tmp = this.state.Groups;
+    this.props.groupTags[id].groups.forEach((groupId, i) => {
+      tmp.forEach((group, i) => {
+        if (group.id === groupId)
+          tmp[i].enabled = this.props.groupTags[id].enable;
+      });
+    });
+    this.props.groupTags[id].enable = !this.props.groupTags[id].enable
+    this.setState({ Groups: tmp });
+  }
+
   toggleAll = () => {
     let tmp = this.state.Groups;
 
@@ -169,10 +170,11 @@ class ModalBroadcast extends Component {
 
   allGroups() {
     return <Card className="mb-3">
-      <Card.Header onClick={() => this.setState({ opened: !this.state.opened })} style={{ cursor: 'pointer' }}>
-        Display groups
+      <Card.Header onClick={() => this.setState({ opened: !this.state.opened })} style={{ cursor: 'pointer', position: 'relative', paddingLeft: '.75rem' }}>
+        <IoMdDesktop width="30" height="30" /> Display groups
+        <IoMdArrowBack className={`sb-collapse-arrow mr-3 ${!this.state.opened ? '' : 'active'}`} />
       </Card.Header>
-      <Collapse in={this.state.opened}>
+      <Collapse collapsed={this.state.opened}>
         <Card.Body className="text-center">
           <Row className="mb-3">
             <Col>
@@ -218,7 +220,6 @@ class ModalBroadcast extends Component {
                  <Form.Row>
                   <FormInput sm={12} 
                     required={true} 
-                    isInvalid={!this.isValidUrl()}
                     placeholder="Url" 
                     name='Url' 
                     value={this.state.Url}
@@ -252,4 +253,11 @@ class ModalBroadcast extends Component {
   }
 }
 
-export default ModalBroadcast;
+function mapStateWithProps(state) {
+  state.admin.groupTags.forEach(tag => tag.enable = true);
+  return {
+      groupTags: state.admin.groupTags
+  };
+}
+
+export default connect(mapStateWithProps)(ModalBroadcast);
