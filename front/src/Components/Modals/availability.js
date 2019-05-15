@@ -42,7 +42,7 @@ export default function availability(props) {
       if (range[1])
         return (from + ' until ' + Moment(range[1]).format(date + hour) + '.');
     }
-    return (range[1]);
+    return (Moment(range[1]).format(date + hour) + '.');
   }
   if (isAvailable()) {
     if (nextAvailable(false)) {
