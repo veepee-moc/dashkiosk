@@ -69,7 +69,11 @@ class ModalDashboard extends Component {
       timeout: null,
       delay: null,
       viewport: null,
-      availability: null
+      availability: null,
+      template : {
+        name: 'None',
+        url: 1
+      }
     };
     this.Rest.addDashboard(body);
     this.props.onHide();
