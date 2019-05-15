@@ -50,7 +50,7 @@ class Display extends Component {
     const actualDisp = this.state.displayed;
     this.setState({
       [screen]: {
-        dashboard: dashboardToDisplay.url ? dashboardToDisplay : {}
+        dashboard: dashboardToDisplay.url ? dashboardToDisplay : {},
       }
     }, () => {
       clearTimeout(this.state[screen].delay);

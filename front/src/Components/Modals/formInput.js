@@ -9,7 +9,8 @@ import {
   IoMdResize, 
   IoMdDocument, 
   IoMdCalendar,
-  IoMdTrash
+  IoMdTrash,
+  IoMdImages
 } from 'react-icons/io';
 
 const styles = {
@@ -25,7 +26,7 @@ const styles = {
 
 const uploadStyle = {
   ...styles,
-  minWidth: '110px',
+  minWidth: '80px',
   textAlign: 'center',
   cursor: 'pointer'
 }
@@ -142,7 +143,7 @@ class FormInput extends Component {
             htmlFor={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
             style={{ height:'100%', cursor:'pointer'}}
           >
-            <Col className='d-flex align-items-center pt-2'>Select a file...</Col>
+            <Col className='d-flex align-items-center mt-2'><IoMdImages size='30' /></Col>
           </label>
         </div>
       );

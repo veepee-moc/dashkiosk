@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
+import { IoMdImage } from 'react-icons/io';
 import FormInput from './formInput';
 import Availability from './availability';
 
@@ -19,6 +20,8 @@ class ModalDashboard extends Component {
       delayTime: 'sec',
       timeoutTime: 'sec',
       templates: [],
+      watermark: '',
+      watermarkPosition: 'center',
       chosedTemplate: {
         name: 'None',
         url: 1
@@ -49,6 +52,7 @@ class ModalDashboard extends Component {
       delayTime: 'sec',
       timeoutTime: 'sec',
       watermark: '',
+      watermarkPosition: 'center',
       templates: [],
       chosedTemplate: {
         name: 'None',
@@ -106,6 +110,7 @@ class ModalDashboard extends Component {
       viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
       availability: this.state.Available,
       watermark: this.state.watermark,
+      watermarkPosition: this.state.watermarkPosition,
     };
     this.Rest.addDashboard(body);
     this.reinitialise();
@@ -197,6 +202,7 @@ class ModalDashboard extends Component {
               </Form.Row>
               <Form.Row>
                 <FormInput
+                  md={6}
                   sm={12}
                   value={this.state.watermark}
                   placeholder='Watermark'
@@ -206,8 +212,29 @@ class ModalDashboard extends Component {
                   data-name='dashkiosk'
                   upload-route='/api/upload'
                 />
+                <Form.Group as={Col} md={6} sm={12}>
+                  <InputGroup>
+                    <InputGroup.Prepend style={{ width: '42px' }}>
+                      <InputGroup.Text className="input-group-text" htmlFor='watermarkPosition'>
+                        <IoMdImage />
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      size='lg'
+                      as='select'
+                      value={this.state.watermarkPosition}
+                      onChange={event => this.setState({ watermarkPosition: event.target.value })}
+                    >
+                      <option value='center'>Centered</option>
+                      <option value='topright'>Top right</option>
+                      <option value='topleft'>Top left</option>
+                      <option value='bottomright'>Bottom right</option>
+                      <option value='bottomleft'>Bottom left</option>
+                    </Form.Control>
+                  </InputGroup>
+                </Form.Group>
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
-                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (heunassignedight x width)" name='Viewport' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}
                   placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
