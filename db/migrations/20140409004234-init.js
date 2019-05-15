@@ -56,6 +56,10 @@ module.exports = {
         type: DataTypes.TEXT,
         allowNull: true
       },
+      watermarkPosition: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false
