@@ -34,16 +34,6 @@ class Rest {
         Axios.put(`/api/grouptag/${name}`)
             .catch((err) => toast.error(`Failed to create a new tag: ${err.message}`));
     }
-
-    deleteTag(id) {
-        Axios.delete(`/api/grouptag/${id}`)
-            .catch((err) => toast.error(`Failed to remove tag: ${err.message}`));
-    }
-
-    updateTag(tag) {
-        Axios.post(`/api/grouptag/${tag.id}`, { name: tag.name })
-            .catch((err) => toast.error(`Failed to update tag: ${err.message}`));
-    }
 };
 
 export default Rest;
