@@ -145,13 +145,16 @@ class ModalBroadcast extends Component {
 
   toggleTag = (id) => {
     let tmp = this.state.Groups;
-    this.props.groupTags[id].groups.forEach((groupId, i) => {
+    let tag = this.props.groupTags.find(elem => elem.id === id);
+    if (!tag || !tag.groups)
+      return;
+    tag.groups.forEach((groupId, i) => {
       tmp.forEach((group, i) => {
-        if (group.id === groupId)
-          tmp[i].enabled = this.props.groupTags[id].enable;
+        if (`${group.id}` === groupId)
+          group.enabled = !tag.enable;
       });
     });
-    this.props.groupTags[id].enable = !this.props.groupTags[id].enable
+    tag.enable = !tag.enable
     this.setState({ Groups: tmp });
   }
 
@@ -178,7 +181,7 @@ class ModalBroadcast extends Component {
         <Card.Body className="text-center">
           <Row className="mb-3">
             <Col>
-              <Button className="text-left col-md-6 col-sm-6" variant={this.state.enableAllGroup ? "info" : "light"}
+              <Button className="text-left col-md-6" variant={this.state.enableAllGroup ? "info" : "light"}
                 onClick={() => { this.toggleAll() }}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
@@ -187,10 +190,20 @@ class ModalBroadcast extends Component {
               </Button>
             </Col>
           </Row>
+          <Row className="mb-3" style={{ borderBottom: "2px solid", borderColor: "black" }}>
+            {this.props.groupTags.map((item, i) =>
+              <Col key={i} className="d-flex justify-content-around mb-2" md="1" sm="3">
+                <Button className="badge m-1" variant={item.enable ? "info" : "light"}
+                  onClick={() => this.toggleTag(item.id)} >
+                  {item.name}
+                </Button>
+              </Col>
+            )}
+          </Row>
           <Row>
             {this.state.Groups.map((item, i) =>
-              <Col key={i} className="d-flex justify-content-around mb-3" md="3" sm="12">
-                <Button className=" col-md-12 col-sm-12" variant={item.enabled ? "info" : "light"}
+              <Col key={i} className="d-flex justify-content-around mb-2" md="3" sm="6">
+                <Button className="col-sm-12" variant={item.enabled ? "info" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>

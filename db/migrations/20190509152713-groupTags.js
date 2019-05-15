@@ -15,6 +15,12 @@ module.exports = {
       },
       groups: {
         type: DataTypes.STRING,
+        defaultValue: '[]',
+        allowNull: false
+      },
+      color: {
+        type: DataTypes.STRING,
+        defaultValue: '#007bff',
         allowNull: false
       },
       createdAt: {
