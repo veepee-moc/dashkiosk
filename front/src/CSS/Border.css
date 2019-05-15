@@ -1,3 +1,11 @@
 .border-gray {
     border-color: gray;
-};
+}
+
+.rounded-top-left {
+    border-radius: .25rem 0rem 0rem 0rem !important;
+}
+
+.rounded-bottom-left {
+    border-radius: 0rem 0rem 0rem .25rem !important;
+}

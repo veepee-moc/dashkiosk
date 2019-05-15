@@ -44,10 +44,10 @@ class GroupTag extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-group">
                         <div>
-                            <input type="text" className="form-control form-control-sm"
-                            value={this.state.tagName} onChange={this.handleTagNameChanged} autoFocus />                            
-                            <input type="color" className="form-control form-control-sm"
-                            value={this.state.tagColor} onChange={this.handleTagColorChanged} />
+                            <input type="text" className="form-control form-control-sm rounded-top-left"
+                              value={this.state.tagName} onChange={this.handleTagNameChanged} autoFocus />                            
+                            <input type="color" className="form-control form-control-sm rounded-bottom-left"
+                              value={this.state.tagColor} onChange={this.handleTagColorChanged} />
                         </div>
                         <div className="input-group-append">
                             <button type="submit" className="btn btn-primary btn-sm">
