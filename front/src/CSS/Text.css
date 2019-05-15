@@ -1,0 +1,6 @@
+.text-color-depend-bg {
+    background: inherit !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: invert(1) grayscale(1) contrast(9) !important;
+}

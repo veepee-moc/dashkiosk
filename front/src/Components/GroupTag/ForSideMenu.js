@@ -67,9 +67,9 @@ class GroupTag extends Component {
                   tagid={this.props.tag.id}>
                     <span className="badge badge-primary m-1" style={{ backgroundColor: this.props.tag.color }}>
                         <OverlayTrigger ref={(elem) => this.overlay = elem} trigger="click" rootClose placement="right" overlay={popover}>
-                            <span>{this.props.tag.name}</span>
+                            <span className="text-color-depend-bg">{this.props.tag.name}</span>
                         </OverlayTrigger>
-                        <span className="btn-text btn-text-dark ml-1"
+                        <span className="btn-text btn-text-dark ml-1 text-color-depend-bg"
                           onClick={() => this.Rest.deleteTag()}>
                             &times;
                         </span>

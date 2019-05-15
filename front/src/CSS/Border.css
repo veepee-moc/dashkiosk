@@ -2,6 +2,10 @@
     border-color: gray;
 }
 
+.border-black {
+    border-color: black;
+}
+
 .rounded-top-left {
     border-radius: .25rem 0rem 0rem 0rem !important;
 }
