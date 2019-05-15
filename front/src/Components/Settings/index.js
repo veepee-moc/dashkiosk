@@ -9,7 +9,6 @@ import FormInput from '../Modals/formInput';
 import { IoMdImage, IoMdColorPalette, IoMdAdd } from 'react-icons/io';
 import './Settings.css';
 
-
 class ModalSettings extends Component {
   constructor(props) {
     super(props);

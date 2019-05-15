@@ -79,30 +79,38 @@ export default class Display extends Component {
 	}
 
 	render() {
-		const backendFile = new RegExp(/.*\.(jpe?g|gif|png|svg)$/);
+		const backendFile = new RegExp(/.*\.(jpe?g|gif|png|svg|svg\+xml)$/);
 		const dashboard = this.props.dashboard;
 		return (
 			<Swap control={dashboard.url === '/unassigned'} >
 				<Unassigned />
-				<Swap control={backendFile.test(dashboard.url)} >
-					<DashboardImage
-						src={dashboard.url}
-						style={this.state.style}
-						viewport={ dashboard.viewport }
-					/>
-					<iframe
-						id={`iframe${this.props.name}`}
-						title={dashboard.description
-							? dashboard.desciption
-							: dashboard.url}
-						src={dashboard.url}
-						style={this.state.style}
-						frameBorder='0'
-						scrolling='no'
-						width='100%'
-						height='100%'
-					/>
-				</Swap>
+				<>
+					<Swap control={backendFile.test(dashboard.url)} >
+						<DashboardImage
+							src={dashboard.url}
+							style={this.state.style}
+							viewport={dashboard.viewport}
+						/>
+						<iframe
+							id={`iframe${this.props.name}`}
+							title={dashboard.description
+								? dashboard.desciption
+								: dashboard.url}
+							src={dashboard.url}
+							style={this.state.style}
+							frameBorder='0'
+							scrolling='no'
+							width='100%'
+							height='100%'
+						/>
+					</Swap>
+					{ this.props.dashboard.watermark 
+						? <img
+								src={ this.props.dashboard.watermark }
+								className={`watermark watermark-${this.props.dashboard.watermarkPosition}`}
+							/> 
+							: '' }
+				</>
 			</Swap>
 		);
 	}

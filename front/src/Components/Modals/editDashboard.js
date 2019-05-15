@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col, Row } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import Swap from '../Swap';
 import FormInput from './formInput';
-import { IoIosTrash } from 'react-icons/io'
+import { IoIosTrash, IoMdImage } from 'react-icons/io';
 import Availability from './availability';
 
 class ModalEditDashboard extends Component {
@@ -16,6 +16,8 @@ class ModalEditDashboard extends Component {
       Url: this.props.dashboard.url,
       Available: this.props.dashboard.availability || '',
       Description: this.props.dashboard.description || '',
+      watermark: this.props.dashboard.watermark || '',
+      watermarkPosition: this.props.dashboard.watermarkPosition || 'center',
       delayTime: 'sec',
       timeoutTime: 'sec',
     }
@@ -49,6 +51,8 @@ class ModalEditDashboard extends Component {
       timeout: (timeout === 0 || timeout === '' ? null : timeout),
       delay: (delay === 0 || delay === '' ? null : delay),
       viewport: (this.state.Viewport === '' ? null : this.state.Viewport),
+      watermark: this.state.watermark,
+      watermarkPosition: this.state.watermarkPosition,
       availability: this.state.Available
     };
     this.Rest.editDashboard(body, this.props.dashboard.id, this.props.url);
@@ -108,7 +112,6 @@ class ModalEditDashboard extends Component {
             <Container> 
               <Form.Row>
                 <FormInput
-                  md={12}
                   sm={12}
                   required={true}
                   value={this.state.Url}
@@ -120,6 +123,38 @@ class ModalEditDashboard extends Component {
                   data-name='dashkiosk'
                   upload-route='/api/upload'
                 />
+                <FormInput
+                  md={6}
+                  sm={12}
+                  value={this.state.watermark}
+                  placeholder='Watermark'
+                  name='watermark'
+                  updateValue={this.handleInput}
+                  type="url"
+                  data-name='dashkiosk'
+                  upload-route='/api/upload'
+                />
+                <Form.Group as={Col} md={6} sm={12}>
+                  <InputGroup>
+                    <InputGroup.Prepend style={{ width: '42px' }}>
+                      <InputGroup.Text className="input-group-text" htmlFor='watermarkPosition'>
+                        <IoMdImage />
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      size='lg'
+                      as='select'
+                      value={this.state.watermarkPosition}
+                      onChange={event => this.setState({ watermarkPosition: event.target.value })}
+                    >
+                      <option value='center'>Centered</option>
+                      <option value='topright'>Top right</option>
+                      <option value='topleft'>Top left</option>
+                      <option value='bottomright'>Bottom right</option>
+                      <option value='bottomleft'>Bottom left</option>
+                    </Form.Control>
+                  </InputGroup>
+                </Form.Group>
                 <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
                 <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}
