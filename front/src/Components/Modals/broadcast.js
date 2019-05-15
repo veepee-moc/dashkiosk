@@ -195,7 +195,8 @@ class ModalBroadcast extends Component {
           <div className="pb-2" >
             {this.props.groupTags.map((item, i) =>
               <span key={i} className="mb-2">
-                <Button className="badge m-1" variant={item.enable ? "primary" : "light"}
+                <Button className="badge m-1" style={item.enable ? { backgroundColor: item.color, borderColor: item.color }
+                  : { backgroundColor: "#f8f9fa", color: "#212529", borderColor: "#f8f9fa" }}
                   onClick={() => this.toggleTag(item.id)} >
                   {item.name}
                 </Button>
