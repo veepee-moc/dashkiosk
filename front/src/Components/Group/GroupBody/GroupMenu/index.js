@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IoMdPricetag, IoMdGrid, IoMdAdd, IoMdRemove } from 'react-icons/io';
-import GroupTag from '../../../GroupTag';
+import GroupTag from '../../../GroupTag/ForGroup';
 import Rest from '../../Rest';
 
 class GroupMenu extends Component {
@@ -20,8 +20,10 @@ class GroupMenu extends Component {
     }
 
     renderTags() {
+        if (this.props.tags.length <= 0)
+            return <p className="m-0 p-0">None</p>;
         return this.props.tags.map((tag, key) =>
-            <GroupTag value={tag.name} tagId={tag.id} key={key} />
+            <GroupTag value={tag.name} tagId={tag.id} key={key} groupId={this.props.groupId} />
         );
     }
 
@@ -62,12 +64,13 @@ class GroupMenu extends Component {
 function mapStateToProps(state, ownProps) {
     const group = state.admin.groups[ownProps.groupIndex];
     if (!group)
-        return { layoutSize: 3, tags: [] }
+        return { groupId: 0, layoutSize: 3, tags: [] }
     const tags = [];
     for (const tag of state.admin.groupTags)
         if (tag.groups && tag.groups.find((id) => id === `${group.id}`))
             tags.push(tag);
     return {
+        groupId: group.id,
         layoutSize: group.layoutSize,
         tags: tags
     };
