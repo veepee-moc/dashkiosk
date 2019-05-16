@@ -44,10 +44,10 @@ class GroupTag extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="input-group">
                         <div>
-                            <input type="text" className="form-control form-control-sm"
-                            value={this.state.tagName} onChange={this.handleTagNameChanged} autoFocus />                            
-                            <input type="color" className="form-control form-control-sm"
-                            value={this.state.tagColor} onChange={this.handleTagColorChanged} />
+                            <input type="text" className="form-control form-control-sm rounded-top-left"
+                              value={this.state.tagName} onChange={this.handleTagNameChanged} autoFocus />                            
+                            <input type="color" className="form-control form-control-sm rounded-bottom-left"
+                              value={this.state.tagColor} onChange={this.handleTagColorChanged} />
                         </div>
                         <div className="input-group-append">
                             <button type="submit" className="btn btn-primary btn-sm">
@@ -67,9 +67,9 @@ class GroupTag extends Component {
                   tagid={this.props.tag.id}>
                     <span className="badge badge-primary m-1" style={{ backgroundColor: this.props.tag.color }}>
                         <OverlayTrigger ref={(elem) => this.overlay = elem} trigger="click" rootClose placement="right" overlay={popover}>
-                            <span>{this.props.tag.name}</span>
+                            <span className="text-color-depend-bg">{this.props.tag.name}</span>
                         </OverlayTrigger>
-                        <span className="btn-text btn-text-dark ml-1"
+                        <span className="btn-text btn-text-dark ml-1 text-color-depend-bg"
                           onClick={() => this.Rest.deleteTag()}>
                             &times;
                         </span>

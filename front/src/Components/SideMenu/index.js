@@ -3,7 +3,18 @@ import { connect } from 'react-redux';
 import { Types, action } from '../../Actions';
 import Store from '../../Store';
 import Rest from './Rest';
-import { IoMdArrowBack, IoMdAdd, IoMdRemove, IoMdTime, IoMdBook, IoMdWifi, IoMdGrid, IoMdSettings, IoMdBookmark } from 'react-icons/io';
+import {
+    IoMdArrowBack,
+    IoMdAdd,
+    IoMdRemove,
+    IoMdTime,
+    IoMdBook,
+    IoMdWifi,
+    IoMdGrid,
+    IoMdSettings,
+    IoMdBookmark,
+    IoMdExit
+} from 'react-icons/io';
 import Collapse from '../Collapse';
 import ModalBroadcast from '../Modals/broadcast';
 import ModalSettings from '../Settings';
@@ -16,16 +27,15 @@ class SideMenu extends Component {
         this.state = {
             layoutSizeCollapsed: true,
             groupTagsCollapsed: true,
-            settings: false
+            settings: false,
+            keycloakLogout: null
         };
         this.Rest = new Rest(this);
-        this.closeSideMenu = this.closeSideMenu.bind(this);
-        this.openBroadcast = this.openBroadcast.bind(this);
-        this.addNewGroup = this.addNewGroup.bind(this);
     }
 
     componentDidMount() {
         Store.dispatch(action(Types.SetAdminState, { sideMenuWidth: this.mainDiv.clientWidth }));
+        this.Rest.getKeycloakLogout();
     }
 
     componentDidUpdate(prevProps) {
@@ -37,11 +47,11 @@ class SideMenu extends Component {
         }
     }
 
-    openBroadcast() {
+    openBroadcast = () => {
         this.setState({ broadcast: true, settings: false });
     }
 
-    addNewGroup() {
+    addNewGroup = () => {
         this.Rest.addNewGroup();
     }
 
@@ -66,7 +76,7 @@ class SideMenu extends Component {
         }
     }
 
-    closeSideMenu() {
+    closeSideMenu = () => {
         Store.dispatch(action(Types.SetAdminState, { toggleMenu: false }));
     }
 
@@ -135,6 +145,11 @@ class SideMenu extends Component {
                         className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
                             <IoMdSettings width="20" height="20" /> Open settings
                         </button>
+                    </li>
+                    <li className="nav-item" hidden={!this.state.keycloakLogout}>
+                        <a href={this.state.keycloakLogout} className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+                            <IoMdExit /> Logout
+                        </a>
                     </li>
                 </ul>
                 <ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />

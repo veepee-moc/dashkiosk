@@ -14,8 +14,8 @@ class GroupTag extends Component {
               style={this.props.style}
               hidden={this.props.hidden}>
                 <span className="badge badge-primary m-1" style={{ backgroundColor: this.props.tag.color }}>
-                    <span>{this.props.tag.name}</span>
-                    <span className="btn-text btn-text-dark ml-1"
+                    <span className="text-color-depend-bg">{this.props.tag.name}</span>
+                    <span className="btn-text btn-text-dark ml-1 text-color-depend-bg"
                       onClick={() => this.Rest.deleteTagFromGroup(this.props.groupId)}>
                         &times;
                     </span>

@@ -198,7 +198,7 @@ class ModalBroadcast extends Component {
                 <Button className="badge m-1" style={item.enable ? { backgroundColor: item.color, borderColor: item.color }
                   : { backgroundColor: "#f8f9fa", color: "#212529", borderColor: "#f8f9fa" }}
                   onClick={() => this.toggleTag(item.id)} >
-                  {item.name}
+                  <span className="text-color-depend-bg">{item.name}</span>
                 </Button>
               </span>
             )}

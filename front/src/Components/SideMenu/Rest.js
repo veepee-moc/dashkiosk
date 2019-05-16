@@ -6,6 +6,17 @@ class Rest {
         this.parent = parent;
     }
 
+    getKeycloakLogout() {
+        Axios.get('/api/keycloak')
+            .then((res) => {
+                if (res.status === 204)
+                    this.parent.setState({ keycloakLogout: null });
+                else
+                    this.parent.setState({ keycloakLogout: res.data.logout });
+            })
+            .catch(() => toast.error('Failed to get info about keycloak from server.'));
+    }
+
     addNewGroup() {
         const random = (function(length) {
             var bits = 36,
@@ -22,12 +33,6 @@ class Rest {
             description: 'Newly created group'
         })
             .catch((err) => toast.error(`Failed to create a new group: ${err.message}`));
-    }
-
-    getKeycloakLogout() {
-        Axios.get('/api/keycloak')
-            .then((res) => this.parent.setState({ keycloak: res.data.logout }))
-            .catch(() => this.parent.setState({ keycloak: null }));
     }
 
     addNewTag(name) {
