@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable('GroupTags', {
+    migration.createTable('SavedDashboard', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -36,7 +36,7 @@ module.exports = {
   },
 
   down: function(migration, DataTypes, done) {
-    migration.dropTable('GroupTags');
+    migration.dropTable('SavedDashboard');
     done();
   }
 };

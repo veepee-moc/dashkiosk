@@ -6,6 +6,17 @@ class Rest {
         this.parent = parent;
     }
 
+    getKeycloakLogout() {
+        Axios.get('/api/keycloak')
+            .then((res) => {
+                if (res.status === 204)
+                    this.parent.setState({ keycloakLogout: null });
+                else
+                    this.parent.setState({ keycloakLogout: res.data.logout });
+            })
+            .catch(() => toast.error('Failed to get info about keycloak from server.'));
+    }
+
     addNewGroup() {
         const random = (function(length) {
             var bits = 36,
@@ -24,25 +35,9 @@ class Rest {
             .catch((err) => toast.error(`Failed to create a new group: ${err.message}`));
     }
 
-    getKeycloakLogout() {
-        Axios.get('/api/keycloak')
-            .then((res) => this.parent.setState({ keycloak: res.data.logout }))
-            .catch(() => this.parent.setState({ keycloak: null }));
-    }
-
     addNewTag(name) {
         Axios.put(`/api/grouptag/${name}`)
             .catch((err) => toast.error(`Failed to create a new tag: ${err.message}`));
-    }
-
-    deleteTag(id) {
-        Axios.delete(`/api/grouptag/${id}`)
-            .catch((err) => toast.error(`Failed to remove tag: ${err.message}`));
-    }
-
-    updateTag(tag) {
-        Axios.post(`/api/grouptag/${tag.id}`, { name: tag.name })
-            .catch((err) => toast.error(`Failed to update tag: ${err.message}`));
     }
 };
 

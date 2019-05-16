@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { IoMdCheckmark, IoMdAdd } from 'react-icons/io';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import GroupTag from '../../GroupTag';
+import GroupTag from '../../GroupTag/ForSideMenu';
 
 class GroupTagsMenu extends Component {
 
@@ -31,7 +31,7 @@ class GroupTagsMenu extends Component {
 
     renderGroupTags() {
         return this.props.groupTags.map((tag, key) =>
-            <GroupTag value={ tag.name } tagid={ tag.id } key={ key } Rest={ this.props.Rest }/>
+            <GroupTag tagId={ tag.id } key={ key } Rest={ this.props.Rest }/>
         );
     }
 

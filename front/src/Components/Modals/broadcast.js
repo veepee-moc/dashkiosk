@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Row, Col, Button, Container, Form, Card, InputGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage } from 'react-icons/io'
+import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage, IoMdPricetag, IoMdGrid } from 'react-icons/io'
 import FormInput from './formInput';
 import Axios from 'axios';
 import Collapse from '../Collapse'
@@ -145,13 +145,16 @@ class ModalBroadcast extends Component {
 
   toggleTag = (id) => {
     let tmp = this.state.Groups;
-    this.props.groupTags[id].groups.forEach((groupId, i) => {
+    let tag = this.props.groupTags.find(elem => elem.id === id);
+    if (!tag || !tag.groups)
+      return;
+    tag.groups.forEach((groupId, i) => {
       tmp.forEach((group, i) => {
-        if (group.id === groupId)
-          tmp[i].enabled = this.props.groupTags[id].enable;
+        if (`${group.id}` === groupId)
+          group.enabled = !tag.enable;
       });
     });
-    this.props.groupTags[id].enable = !this.props.groupTags[id].enable
+    tag.enable = !tag.enable
     this.setState({ Groups: tmp });
   }
 
@@ -160,6 +163,9 @@ class ModalBroadcast extends Component {
 
     tmp.forEach((item, i) => {
       item.enabled = !this.state.enableAllGroup;
+    });
+    this.props.groupTags.forEach((tag, i) => {
+      tag.enable = !this.state.enableAllGroup;
     });
     this.setState({ Group: tmp, enableAllGroup: !this.state.enableAllGroup });
   }
@@ -176,27 +182,39 @@ class ModalBroadcast extends Component {
       </Card.Header>
       <Collapse collapsed={this.state.opened}>
         <Card.Body className="text-center">
-          <Row className="mb-3">
-            <Col>
-              <Button className="text-left col-md-6 col-sm-6" variant={this.state.enableAllGroup ? "info" : "light"}
+          <div className="mb-3">
+              <Button variant={this.state.enableAllGroup ? "primary" : "light"}
                 onClick={() => { this.toggleAll() }}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
                   {this.state.enableAllGroup ? 'Disable all' : 'Enable all'}
                 </span>
               </Button>
-            </Col>
-          </Row>
-          <Row>
+          </div>
+          <p className="mb-1"><IoMdPricetag /> Tags</p>
+          <div className="pb-2" >
+            {this.props.groupTags.map((item, i) =>
+              <span key={i} className="mb-2">
+                <Button className="badge m-1" style={item.enable ? { backgroundColor: item.color, borderColor: item.color }
+                  : { backgroundColor: "#f8f9fa", color: "#212529", borderColor: "#f8f9fa" }}
+                  onClick={() => this.toggleTag(item.id)} >
+                  <span className="text-color-depend-bg">{item.name}</span>
+                </Button>
+              </span>
+            )}
+          </div>
+          <hr className="border-bottom my-2 border-gray" />
+          <p className="mb-1"><IoMdGrid /> Groups</p>
+          <div>
             {this.state.Groups.map((item, i) =>
-              <Col key={i} className="d-flex justify-content-around mb-3" md="3" sm="12">
-                <Button className=" col-md-12 col-sm-12" variant={item.enabled ? "info" : "light"}
+              <span key={i} className="mb-2">
+                <Button className="m-1" variant={item.enabled ? "primary" : "light"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>
-              </Col>
+              </span>
             )}
-          </Row>
+          </div>
         </Card.Body>
       </Collapse>
     </Card>

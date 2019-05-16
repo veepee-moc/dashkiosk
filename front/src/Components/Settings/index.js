@@ -165,7 +165,7 @@ class ModalSettings extends Component {
 
   defaultForm = () => {
     const arr = [];
-    arr.push(<Form.Label className='ml-1'>Unassigned displays images</Form.Label>);
+    arr.push(<Form.Label key="0" className='ml-1'>Unassigned displays images</Form.Label>);
     if (!this.state.unassigned_images)
       return '';
     for (var i = 0; i < this.state.unassigned_images.length; i++)
@@ -187,7 +187,7 @@ class ModalSettings extends Component {
       />);
 
     arr.push(
-        <Col sm={12}>
+        <Col key="0" sm={12}>
           <Button
             sm={12}
             variant='outline-secondary'
