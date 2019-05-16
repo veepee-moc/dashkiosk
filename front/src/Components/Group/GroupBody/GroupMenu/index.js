@@ -33,15 +33,16 @@ class GroupMenu extends Component {
                 <li className="nav-item">
                     <p className="font-weight-bold m-0 ml-2 mt-1">
                         <IoMdPricetag /> Tags
-                            </p>
+                    </p>
                     <div className="p-1 text-center">
                         {this.renderTags()}
                     </div>
                 </li>
+                <hr className="border-bottom border-black w-90" />
                 <li className="nav-item border-bottom">
                     <p className="font-weight-bold m-0 ml-2 mt-1">
                         <IoMdGrid /> Layout Size
-                            </p>
+                    </p>
                     <div className="p-2 text-center">
                         <span className="border rounded p-1 ml-1 bg-white text-dark">
                             <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1"

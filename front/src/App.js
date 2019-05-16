@@ -34,7 +34,7 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/receiver"]} component={Receiver} />
             <Route exact path="/admin" component={Admin} />
-            <Route path="/*" component={FromServer} />
+            <Route component={FromServer} />
           </Switch>
         </BrowserRouter>
         <ToastContainer position="bottom-right" autoClose={2500} pauseOnVisibilityChange={false} closeOnClick pauseOnHover />
