@@ -43,9 +43,6 @@ module.exports = {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      groupID: {
-        type: DataTypes.INTEGER,
-      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false
