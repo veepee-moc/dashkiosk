@@ -106,6 +106,7 @@ export default class Display extends Component {
 					</Swap>
 					{this.props.dashboard.watermark
 						? <img
+							alt="watermark"
 							src={this.props.dashboard.watermark}
 							className={`watermark watermark-${this.props.dashboard.watermarkPosition}`}
 						/>

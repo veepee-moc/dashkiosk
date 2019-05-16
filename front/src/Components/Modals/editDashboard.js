@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
-import Swap from '../Swap';
 import FormInput from './formInput';
 import { IoIosTrash, IoMdImage } from 'react-icons/io';
 import Availability from './availability';
@@ -85,7 +84,6 @@ class ModalEditDashboard extends Component {
   }
 
   handleError = () => {
-    var ret = !this.isValidViewport();
     if (!this.isValidViewport())
       return (true);
     return (false);

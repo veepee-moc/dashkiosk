@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Row, Col, Button, Container, Form, Card, InputGroup } from 'react-bootstrap';
+import { Modal, Col, Button, Container, Form, Card, InputGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage, IoMdPricetag, IoMdGrid } from 'react-icons/io'
 import FormInput from './formInput';
