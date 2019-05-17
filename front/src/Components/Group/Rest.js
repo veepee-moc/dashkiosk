@@ -95,7 +95,7 @@ class Rest {
 
     saveDashboard(inputs) {
         const group = Store.getState().admin.groups[this.groupIndex];
-        const body = {...inputs, groupID: group.id};
+        const body = {...inputs };
         delete body.template;
 
         Axios.post(`/api/saved_dashboard`, body)
