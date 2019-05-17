@@ -17,6 +17,7 @@ class Rest {
         this.editDisplay = this.editDisplay.bind(this);
         this.deleteDashboard = this.deleteDashboard.bind(this);
         this.deleteDisplay = this.deleteDisplay.bind(this);
+        this.saveDashboard = this.saveDashboard.bind(this);
     }
 
     updateGroupName(newName) {
@@ -90,6 +91,16 @@ class Rest {
         else
             Axios.post(`/api/group/${group.id}/dashboard`, inputs)
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
+    }
+
+    saveDashboard(inputs) {
+        const group = Store.getState().admin.groups[this.groupIndex];
+        const body = {...inputs, groupID: group.id};
+        delete body.template;
+
+        Axios.post(`/api/saved_dashboard`, body)
+            .then(ret => toast.success(ret.data.message))
+            .catch((err) => toast.error(`Failed to save dashboard: ${err.message}`));
     }
 
     deleteDashboard(dashboardId, dashboardUrl) {
