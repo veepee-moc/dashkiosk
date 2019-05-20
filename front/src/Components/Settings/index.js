@@ -166,7 +166,7 @@ class ModalSettings extends Component {
     return (
       <>
         <Form.Label className='ml-1'>Unassigned displays images</Form.Label>
-        {this.state.unassigned_images.map((elem, i) => {
+        {this.state.unassigned_images && this.state.unassigned_images.map((elem, i) => {
           return <FormInput
             sm={12}
             required={true}
