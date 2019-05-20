@@ -163,29 +163,28 @@ class ModalSettings extends Component {
   }
 
   defaultForm = () => {
-    const arr = [];
-    arr.push(<Form.Label key="0" className='ml-1'>Unassigned displays images</Form.Label>);
-    if (!this.state.unassigned_images)
-      return '';
-    for (var i = 0; i < this.state.unassigned_images.length; i++)
-      arr.push(<FormInput
-        sm={12}
-        required={true}
-        placeholder='Url'
-        name='unassigned'
-        value={this.state.unassigned_images[i]}
-        updateValue={this.handleInput}
-        onError='insert an URL'
-        type='url'
-        data-name='unassigned'
-        upload-route='/api/settings/upload/unassigned'
-        removeUnassigned={this.removeUnassigned}
-        unassignedList={ this.state.unassigned_images}
-        index={i}
-        key={`url${i}`}
-      />);
-
-    arr.push(
+    return (
+      <>
+        <Form.Label className='ml-1'>Unassigned displays images</Form.Label>
+        {this.state.unassigned_images.map((elem, i) => {
+          return <FormInput
+            sm={12}
+            required={true}
+            placeholder='Url'
+            name='unassigned'
+            value={elem}
+            updateValue={this.handleInput}
+            onError='insert an URL'
+            type='url'
+            data-name='unassigned'
+            upload-route='/api/settings/upload/unassigned'
+            removeUnassigned={this.removeUnassigned}
+            unassignedList={this.state.unassigned_images}
+            index={i}
+            key={`url${i}`}
+          />
+        })
+        }
         <Col key="0" sm={12}>
           <Button
             sm={12}
@@ -201,8 +200,8 @@ class ModalSettings extends Component {
             <IoMdAdd />
           </Button>
         </Col>
+      </>
     );
-    return arr;
   }
 
   render() {
