@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
-import { IoIosTrash, IoMdImage, IoMdCreate, IoIosSave } from 'react-icons/io';
+import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
+import { IoMdTrash, IoMdImage, IoMdCreate, IoMdSave } from 'react-icons/io';
 import FormInput from './formInput';
 import Availability from './availability';
 import AnimatedSwap from '../Swap/Animated';
@@ -189,13 +189,13 @@ class ModalEditDashboard extends Component {
 
           <Row className='w-100'>
                   <Col md={6} className='text-left pl-0'>
-                    <Button variant="danger" onClick={this.deleteDashboard}><IoIosTrash /></Button>
+                    <Button variant="danger" onClick={this.deleteDashboard}><IoMdTrash /></Button>
                     <Button
                       variant={this.state.save ? 'primary' : 'outline-primary'}
                       onClick={() => this.setState({ save: !this.state.save })}
                       className='ml-3'
                     >
-                      <IoIosSave />
+                      <IoMdSave />
                     </Button>
                   </Col>
                   <Col md={6} className='text-right'>
