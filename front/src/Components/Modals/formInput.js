@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Col, DropdownButton, Dropdown, InputGroup, Form, Button } from 'react-bootstrap';
 import Axios from 'axios';
 import { 
-  IoIosDesktop, 
+  IoMdDesktop, 
   IoMdLink, 
   IoMdTime, 
   IoMdHourglass, 
@@ -43,7 +43,7 @@ class FormInput extends Component {
       default:
         return;
       case 'Ip':
-        return <IoIosDesktop />;
+        return <IoMdDesktop />;
       case 'Url':
         return <IoMdLink />;
       case 'Delay':

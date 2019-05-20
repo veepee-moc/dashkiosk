@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
-import { IoIosClose, IoIosSearch } from 'react-icons/io';
+import { IoMdClose, IoMdSearch } from 'react-icons/io';
 import { Card, Button } from 'react-bootstrap';
 import './Modals.css';
 import Swap from '../Swap';
@@ -63,7 +63,7 @@ export default class savedDashboard extends Component {
   searchBar = () =>
     <div className="input-group input-group-lg mb-4">
       <div className="input-group-prepend">
-        <span className="input-group-text" id="inputGroup-sizing-lg"><IoIosSearch /></span>
+        <span className="input-group-text" id="inputGroup-sizing-lg"><IoMdSearch /></span>
       </div>
       <input onChange={this.searchEngine} type="text" className="form-control" aria-label="search" aria-describedby="inputGroup-sizing-sm" />
     </div>
@@ -76,7 +76,6 @@ export default class savedDashboard extends Component {
     }
     var fuse = new Fuse(this.state.dashboards, this.searchOptions);
     this.setState({ searched_dashboards: fuse.search(event.target.value) });
-    console.log(this.state.searched_dashboards);
   }
 
   renderCards = (dashboard, i) =>
@@ -91,7 +90,7 @@ export default class savedDashboard extends Component {
         className='float-right pt-0 pr-0 pb-0 pl-0'
         onClick={() => this.remove(i)}
       >
-        <IoIosClose size='22' />
+        <IoMdClose size='22' />
       </Button>
       <Card.Body>
         <Card.Subtitle className="mb-2 text-muted">{dashboard.description}</Card.Subtitle>
