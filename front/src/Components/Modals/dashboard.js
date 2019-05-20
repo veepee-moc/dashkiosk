@@ -26,6 +26,7 @@ class ModalDashboard extends Component {
       templates: [],
       watermark: '',
       watermarkPosition: 'center',
+      submitLoad: false,
       chosedTemplate: {
         name: 'None',
         url: 1
@@ -173,6 +174,7 @@ class ModalDashboard extends Component {
                 <SavedDashboard 
                   handleInput={ this.handleInput}
                   group={this.props.group}
+                  submitLoad={this.state.submitLoad}
                 />
                 <NewDashboard
                   isValidViewport={this.isValidViewport}
@@ -196,7 +198,7 @@ class ModalDashboard extends Component {
           </Modal.Body>
           <Modal.Footer>
             {!this.state.newDashboard
-              ? <Button >
+              ? <Button onClick={() => {this.setState({submitLoad: true}, () => this.props.onHide())}}>
                   Add dashboard
                 </Button>
               : (

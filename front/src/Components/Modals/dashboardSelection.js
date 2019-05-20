@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 
 export default function DashboardSelection(props) {
   return (
-    <ButtonGroup className="w-100 mb-4">
+    <ButtonGroup className='w-100 mb-3'>
       <Button
         variant='light'
         className={`w-50 border-right border-bottom rounded-0 ${props.newDashboard ? 'dashboardSelection' : ''}`}
