@@ -24,10 +24,8 @@ class Unassigned extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.background_choice !== prevProps.background_choice 
-      || this.props.unassigned_images !== prevProps.unassigned_images
-      || this.props.background_image !== prevProps.background_image) {
+  componentWillUpdate(prevProps) {
+    if (this.props !== prevProps) {
       this.getRandomImage();
     }
   }

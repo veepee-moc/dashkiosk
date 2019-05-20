@@ -26,21 +26,25 @@ class ModalSettings extends Component {
     this.Rest = this.props.rest;
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      const settings = this.props.settings;
-      this.setState({
-        useBranding: settings.useBranding,
-        timezone: settings.timezone,
-        background_choice: settings.background_choice,
-        background_color: settings.background_color,
-        background_image: settings.background_image,
-        loading_image: settings.loading_image,
-        stamp: settings.stamp,
-        unassigned_images: settings.unassigned_images,
-        uploaded_images_format: settings.uploaded_images_format,
-      })
+  componentWillUpdate(nextProps) {
+    if (this.props !== nextProps) {
+      this.updateState();
     }
+  }
+
+  updateState = () => {
+    const settings = this.props.settings;
+    this.setState({
+      useBranding: settings.useBranding,
+      timezone: settings.timezone,
+      background_choice: settings.background_choice,
+      background_color: settings.background_color,
+      background_image: settings.background_image,
+      loading_image: settings.loading_image,
+      stamp: settings.stamp,
+      unassigned_images: settings.unassigned_images,
+      uploaded_images_format: settings.uploaded_images_format,
+    });
   }
 
   handleInput = (inputName, inputValue, event) => {
@@ -55,8 +59,6 @@ class ModalSettings extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.setStoreState({ settings: this.state });
-    const oldProps = this.props;
     Axios.put('/api/settings/config', { config: this.state })
       .then(() => {
         this.props.onHide();
@@ -64,7 +66,6 @@ class ModalSettings extends Component {
       })
       .catch((err) => {
         toast.error(`Failed to send configuration file: ${err.message}`)
-        this.props.setStoreState({ settings: oldProps });
       });
   }
 
@@ -191,9 +192,9 @@ class ModalSettings extends Component {
             variant='outline-secondary'
             className='btn-lg btn-block lightHover'
             onClick={() => {
-              const newUnassigned = this.state.unassigned_images;
+              const newUnassigned = this.state.unassigned_images ? this.state.unassigned_images : [];
               newUnassigned.push('');
-              this.setState({ unassigned_images: newUnassigned })
+              this.setState({ unassigned_images: newUnassigned });
             }
             }
           >
