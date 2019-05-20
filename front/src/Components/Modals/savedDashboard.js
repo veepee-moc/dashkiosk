@@ -76,7 +76,6 @@ export default class savedDashboard extends Component {
     }
     var fuse = new Fuse(this.state.dashboards, this.searchOptions);
     this.setState({ searched_dashboards: fuse.search(event.target.value) });
-    console.log(this.state.searched_dashboards);
   }
 
   renderCards = (dashboard, i) =>
