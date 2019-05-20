@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
+import { IoIosTrash, IoMdImage, IoMdCreate } from 'react-icons/io';
 import FormInput from './formInput';
-import { IoIosTrash, IoMdImage } from 'react-icons/io';
 import Availability from './availability';
+import AnimatedSwap from '../Swap/Animated';
+import MultiDashboardEdit from './MultiDashboardEdit';
 
 class ModalEditDashboard extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class ModalEditDashboard extends Component {
       watermarkPosition: this.props.dashboard.watermarkPosition || 'center',
       delayTime: 'sec',
       timeoutTime: 'sec',
+      multDashEditControl: true
     }
     this.Rest = this.props.rest;
   }
@@ -109,18 +112,25 @@ class ModalEditDashboard extends Component {
           <Modal.Body>
             <Container> 
               <Form.Row>
-                <FormInput
-                  sm={12}
-                  required={true}
-                  value={this.state.Url}
-                  placeholder="Url"
-                  name='Url'
-                  updateValue={this.handleInput}
-                  onError='insert an URL or upload an image'
-                  type="url"
-                  data-name='dashkiosk'
-                  upload-route='/api/upload'
-                />
+                <button type="button" className="btn btn-dark col-sm-6 mx-auto mb-3"
+                 onClick={() => this.setState({ multDashEditControl: !this.state.multDashEditControl })}>
+                  <IoMdCreate /> Edit multi dashboard
+                </button>
+                <AnimatedSwap className="col-sm-12" control={this.state.multDashEditControl} delay={ 500 }>
+                  <FormInput
+                    sm={12}
+                    required={true}
+                    value={this.state.Url}
+                    placeholder="Url"
+                    name='Url'
+                    updateValue={this.handleInput}
+                    onError='insert an URL or upload an image'
+                    type="url"
+                    data-name='dashkiosk'
+                    upload-route='/api/upload'
+                  />
+                  <MultiDashboardEdit />
+                </AnimatedSwap>
                 <FormInput
                   md={6}
                   sm={12}
@@ -153,15 +163,19 @@ class ModalEditDashboard extends Component {
                     </Form.Control>
                   </InputGroup>
                 </Form.Group>
-                <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
-                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} value={this.state.Description} placeholder="Description"
+                  name='Description' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()}
+                  value={this.state.Viewport} placeholder="Viewport size (height x width)" name='Viewport'
+                  updateValue={this.handleInput} type="text" />
                 <FormInput md={6} sm={12} required={false} value={this.state.Timeout}
                   placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
                 <FormInput md={6} sm={12} required={false} value={this.state.Delay}
                   placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number"
                   dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
-                <FormInput md={12} sm={12} required={false} value={this.state.Available} hasTextArea={true} placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
+                <FormInput md={12} sm={12} required={false} value={this.state.Available} hasTextArea={true}
+                  placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
                 <Form.Text className="text-muted">
                   <Availability input={this.state.Available} />
                 </Form.Text>

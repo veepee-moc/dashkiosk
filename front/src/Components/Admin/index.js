@@ -15,8 +15,7 @@ import './Admin.css';
 class Admin extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
         this.Rest = new Rest();
         this.Rest.loadGroupTags();
         Socket();
