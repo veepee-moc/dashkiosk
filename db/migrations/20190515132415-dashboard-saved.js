@@ -2,26 +2,46 @@
 
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable('SavedDashboard', {
+    migration.createTable('SavedDashboards', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false
+      url: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notNull: true
+        }
       },
-      groups: {
-        type: DataTypes.STRING,
-        defaultValue: '[]',
-        allowNull: false
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true
       },
-      color: {
-        type: DataTypes.STRING,
-        defaultValue: '#007bff',
-        allowNull: false
+      timeout: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      viewport: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      delay: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      availability: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      watermark: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      watermarkPosition: {
+        type: DataTypes.TEXT,
+        allowNull: true
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -30,13 +50,13 @@ module.exports = {
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false
-      }
+      },
     });
     done();
   },
 
   down: function(migration, DataTypes, done) {
-    migration.dropTable('SavedDashboard');
+    migration.dropTable('SavedDashboards');
     done();
   }
 };

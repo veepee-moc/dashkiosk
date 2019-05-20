@@ -82,9 +82,9 @@ export default class Display extends Component {
 		const backendFile = new RegExp(/.*\.(jpe?g|gif|png|svg|svg\+xml)$/);
 		const dashboard = this.props.dashboard;
 		return (
-			<Swap control={dashboard.url === '/unassigned'} >
-				<Unassigned />
-				<>
+			dashboard.url === '/unassigned'
+				? <Unassigned />
+				: <>
 					<Swap control={backendFile.test(dashboard.url)} >
 						<DashboardImage
 							src={dashboard.url}
@@ -104,14 +104,14 @@ export default class Display extends Component {
 							height='100%'
 						/>
 					</Swap>
-					{ this.props.dashboard.watermark 
+					{this.props.dashboard.watermark
 						? <img
-								src={ this.props.dashboard.watermark }
-								className={`watermark watermark-${this.props.dashboard.watermarkPosition}`}
-							/> 
-							: '' }
+							alt="watermark"
+							src={this.props.dashboard.watermark}
+							className={`watermark watermark-${this.props.dashboard.watermarkPosition}`}
+						/>
+						: ''}
 				</>
-			</Swap>
 		);
 	}
 }

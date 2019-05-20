@@ -1,0 +1,20 @@
+.savedCard {
+    cursor: pointer;
+}
+
+.savedCard:hover {
+    background-color: #f8f9fa;
+}
+
+.selected {
+    box-shadow: 0px 0px 4px #5e9fe4 inset;
+    background-color: #f8f9fa !important;
+}
+
+.dashboardSelection {
+    background-color: #ebf0f5 !important;
+}
+
+.dashboardSelection:hover {
+    background-color: #e2e6ea !important;
+}

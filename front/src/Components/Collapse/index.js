@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { timeout } from 'q';
 
 class Collapse extends Component {
     constructor(props) {

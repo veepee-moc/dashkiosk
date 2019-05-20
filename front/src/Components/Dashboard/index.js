@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync, IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io';
 import { connect } from 'react-redux';
 import './Dashboard.css';
-import EditableText from '../EditableText';
 import ModalEditDashboard from '../Modals/editDashboard'
 import Rest from '../Group/Rest'
 

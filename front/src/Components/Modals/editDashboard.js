@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
-import Swap from '../Swap';
+import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import FormInput from './formInput';
-import { IoIosTrash, IoMdImage } from 'react-icons/io';
+import { IoIosTrash, IoMdImage, IoIosSave } from 'react-icons/io';
 import Availability from './availability';
 
 class ModalEditDashboard extends Component {
@@ -20,6 +19,7 @@ class ModalEditDashboard extends Component {
       watermarkPosition: this.props.dashboard.watermarkPosition || 'center',
       delayTime: 'sec',
       timeoutTime: 'sec',
+      save: false,
     }
     this.Rest = this.props.rest;
   }
@@ -55,6 +55,7 @@ class ModalEditDashboard extends Component {
       watermarkPosition: this.state.watermarkPosition,
       availability: this.state.Available
     };
+    this.Rest.saveDashboard(body);
     this.Rest.editDashboard(body, this.props.dashboard.id, this.props.url);
     this.props.onHide();
   }
@@ -85,7 +86,6 @@ class ModalEditDashboard extends Component {
   }
 
   handleError = () => {
-    var ret = !this.isValidViewport();
     if (!this.isValidViewport())
       return (true);
     return (false);
@@ -144,6 +144,7 @@ class ModalEditDashboard extends Component {
                     <Form.Control
                       size='lg'
                       as='select'
+                      className='custom-select'
                       value={this.state.watermarkPosition}
                       onChange={event => this.setState({ watermarkPosition: event.target.value })}
                     >
@@ -170,9 +171,35 @@ class ModalEditDashboard extends Component {
               </Form.Row>
             </Container>
           </Modal.Body>
-          <Modal.Footer className="d-flex justify-content-between">
-            <Button variant="danger" onClick={this.deleteDashboard}><IoIosTrash /></Button>
-            <Button disabled={this.handleError()} type="submit">Save</Button>
+          <Modal.Footer>
+
+          <Row className='w-100'>
+                  <Col md={6} className='text-left pl-0'>
+                    <Button variant="danger" onClick={this.deleteDashboard}><IoIosTrash /></Button>
+                    <Button
+                      variant={this.state.save ? 'primary' : 'outline-primary'}
+                      onClick={() => this.setState({ save: !this.state.save })}
+                      className='ml-3'
+                    >
+                      <IoIosSave />
+                    </Button>
+                  </Col>
+                  <Col md={6} className='text-right'>
+                    <Button
+                      className='mr-3'
+                      variant="outline-primary"
+                      onClick={this.unassigned}
+                    >
+                      Default dashboard
+                    </Button>
+                    <Button
+                      className='mr-3'
+                      disabled={this.handleError()}
+                      type="submit">
+                      {this.state.save ? 'Edit & Save' : 'Edit'}
+                    </Button>
+                  </Col>
+                </Row>
           </Modal.Footer>
         </Form>
       </Modal>
