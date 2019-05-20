@@ -26,17 +26,7 @@ const styles = {
 
 const uploadStyle = {
   ...styles,
-  minWidth: '80px',
-  textAlign: 'center',
-  cursor: 'pointer'
-}
-
-const uploadStyleWithoutRadius = {
-  ...styles,
-  borderTopRightRadius: '0',
-  borderBottomRightRadius: '0',
-  borderRight: 'none',
-  minWidth: '110px',
+  minWidth: '60px',
   textAlign: 'center',
   cursor: 'pointer'
 }
@@ -131,7 +121,7 @@ class FormInput extends Component {
   uploadFile() {
     if (this.props.type === 'url') {
       return (
-        <div className='align-items-center' style={this.props.name === 'unassigned' ? uploadStyleWithoutRadius : uploadStyle}>
+        <div className='align-items-center' style={/*this.props.name === 'unassigned' ? uploadStyleWithoutRadius : */uploadStyle}>
           <input
             title='file'
             style={{ display: 'none'}}
@@ -143,7 +133,7 @@ class FormInput extends Component {
             htmlFor={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
             style={{ height:'100%', cursor:'pointer'}}
           >
-            <Col className='d-flex align-items-center mt-2'><IoMdImages size='30' /></Col>
+            <Col className='d-flex align-items-center mt-2'><IoMdImages size='25' /></Col>
           </label>
         </div>
       );
