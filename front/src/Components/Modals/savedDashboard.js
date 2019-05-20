@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoIosClose, IoIosSearch } from 'react-icons/io';
-import { Card, Button, Modal, Container, Col, Button } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import './Modals.css';
 import Swap from '../Swap';
 import Fuse from 'fuse.js';
