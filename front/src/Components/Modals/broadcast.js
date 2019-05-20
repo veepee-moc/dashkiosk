@@ -183,7 +183,7 @@ class ModalBroadcast extends Component {
       <Collapse collapsed={this.state.opened}>
         <Card.Body className="text-center">
           <div className="mb-3">
-              <Button variant={this.state.enableAllGroup ? "primary" : "light"}
+              <Button variant={this.state.enableAllGroup ? "primary" : "outline-primary"}
                 onClick={() => { this.toggleAll() }}>
                 {this.toggleIcon(this.state.enableAllGroup)}
                 <span className="ml-3">
@@ -208,7 +208,7 @@ class ModalBroadcast extends Component {
           <div>
             {this.state.Groups.map((item, i) =>
               <span key={i} className="mb-2">
-                <Button className="m-1" variant={item.enabled ? "primary" : "light"}
+                <Button className="m-1" variant={item.enabled ? "primary" : "outline-primary"}
                   onClick={() => this.toggleGroup(i)} >
                   {item.title}
                 </Button>

@@ -187,13 +187,6 @@ class ModalEditDashboard extends Component {
                   <Col md={6} className='text-right'>
                     <Button
                       className='mr-3'
-                      variant="outline-primary"
-                      onClick={this.unassigned}
-                    >
-                      Default dashboard
-                    </Button>
-                    <Button
-                      className='mr-3'
                       disabled={this.handleError()}
                       type="submit">
                       {this.state.save ? 'Edit & Save' : 'Edit'}

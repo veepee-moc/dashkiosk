@@ -205,7 +205,7 @@ class ModalDashboard extends Component {
                 <Row className='w-100'>
                   <Col md={6} className='text-left pl-0'>
                     <Button
-                      variant={this.state.save ? 'info' : 'light'}
+                      variant={this.state.save ? 'primary' : 'outline-primary'}
                       onClick={() => this.setState({ save: !this.state.save })}
                     >
                       <IoIosSave />
@@ -214,7 +214,7 @@ class ModalDashboard extends Component {
                   <Col md={6} className='text-right'>
                     <Button
                       className='mr-3'
-                      variant="info"
+                      variant="outline-primary"
                       onClick={this.unassigned}
                     >
                       Default dashboard
