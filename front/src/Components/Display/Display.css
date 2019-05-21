@@ -1,0 +1,76 @@
+.display {
+    background-color: black;
+    border: ridge 3px gray;
+    padding: 0px;
+    cursor: pointer;
+}
+
+.display.on {
+    background-image: url("../../Resources/Images/display-bg.jpg");
+    background-size: 800%;
+}
+
+.display:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    right: 4px;
+    bottom: 2px;
+}
+
+.display.on:after {
+    width: 10px;
+    height: 10px;
+    background-color: #7E0;
+    box-shadow: #000 0 -1px 7px 1px, inset #490 0 -1px 9px, #7F0 0 2px 12px;
+}
+
+.display .content {
+    position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+    overflow: hidden;
+    padding: 2px 0px 0px 7px;
+	box-shadow: inset 2px 2px 3px 2px rgba(0,0,0,0.4);
+}
+
+.display .content:before {
+    content: "";
+    position: absolute;
+    right: -25%;
+    width: 50%;
+    height: 90%;
+    transform: rotate(45deg);
+    background: linear-gradient(to bottom,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 100%);
+    z-index: 5;
+}
+
+.innerDisplay {
+    font-size: 16px;
+    color:white;
+}
+
+.displayName {
+    font-size: 14px;
+}
+
+.chromecastIcon {
+    font-size: 18px;
+    color:white;
+}
+
+@media (max-width: 769px) {
+    .innerDisplay {
+        font-size: 11px;
+    }
+    .displayName {
+        font-size: 9px;
+    }
+    .chromecastIcon {
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,10 @@
+.name {
+    line-height: 32px;
+}
+
+.list-group-item.active.light-blue {
+    z-index:2;
+    color:#ffffff;
+    background-color:#00BFFF;
+    border-color:#00BFFF;
+}

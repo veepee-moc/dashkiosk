@@ -1,0 +1,136 @@
+.clock {
+    margin-right: 2%;
+    font-size: 80px;
+    text-shadow: 2px 0px #343a40, -2px 0px #343a40, 0px 2px #343a40, 0px -2px #343a40;
+    color: #f7f7f7;
+}
+
+@media(max-width: 479px) {
+    .clock {
+        font-size: 60px;
+    }
+}
+
+@media(min-width: 1900px) {
+    .clock {
+        font-size: 100px;
+    }
+}
+
+.osd {
+    font-size: 40px;
+    text-shadow: 2px 0px #343a40, -2px 0px #343a40, 0px 2px #343a40, 0px -2px #343a40;
+    color: #f7f7f7;
+}
+
+@media(max-width: 479px) {
+    .osd {
+        font-size: 30px;
+    }
+}
+
+@media(min-width: 1900px) {
+    .osd {
+        font-size: 60px;
+    }
+}
+
+.osd > .title {
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+    font-size: 60px;
+}
+
+@media(max-width: 479px) {
+    .osd > .title {
+        font-size: 40px;
+    }
+}
+
+@media(min-width: 1900px) {
+    .osd > .title {
+        font-size: 80px;
+    }
+}
+
+.osd > .size {
+    position: absolute;
+    top: 2%;
+    right:2%;
+    text-align: right;
+}
+
+.osd > .size > span {
+    display: block;
+}
+
+.hide {
+    opacity: 0;
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+
+.disp {
+    opacity: 1;
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+
+.logo {
+    position: absolute;
+    height: 50%;
+    width: auto;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform:translate(-50%, -50%)
+}
+
+.watermark-center {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform:translate(-50%, -50%)
+}
+
+.watermark-bottomright {
+    top: 100%;
+    left: 100%;
+    -webkit-transform: translate(-100%, -100%);
+    -ms-transform: translate(-100%, -100%);
+    transform:translate(-100%, -100%);
+}
+
+.watermark-bottomleft {
+    top: 100%;
+    left: 0%;
+    -webkit-transform: translate(0%, -100%);
+    -ms-transform: translate(0%, -100%);
+    transform:translate(0%, -100%);
+}
+
+.watermark-topright {
+    top: 0%;
+    left: 100%;
+    -webkit-transform: translate(-100%, 0%);
+    -ms-transform: translate(-100%, 0%);
+    transform:translate(-100%, 0%);
+}
+
+.watermark-topleft {
+    top: 0%;
+    left: 0%;
+}
+
+.watermark {
+    height: 15%;
+    width: auto;
+    position: absolute;
+}
