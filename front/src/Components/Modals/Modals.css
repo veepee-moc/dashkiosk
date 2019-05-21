@@ -22,3 +22,8 @@
 .tooltip {
     z-index: 2000 !important;
 }
+
+.savedDashboardBody {
+    max-height: 50vh;
+    overflow-y: auto;
+}

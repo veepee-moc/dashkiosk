@@ -235,8 +235,8 @@ class ModalSettings extends Component {
                       value={this.state.timezone}
                       onChange={event => this.setState({ timezone: event.target.value })}
                     >
-                      { Moment.tz.names().map(elem => {
-                        return <option value={elem}>{ elem.split('/').join(' / ').split('_').join(' ') }</option>;
+                      { Moment.tz.names().map((elem, i) => {
+                        return <option key={`timezone-${i}`} value={elem}>{ elem.split('/').join(' / ').split('_').join(' ') }</option>;
                       })}
                     </Form.Control>
                   </InputGroup>
