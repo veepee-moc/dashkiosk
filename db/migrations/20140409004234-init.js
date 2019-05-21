@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      rank: {
-        type: DataTypes.INTEGER
-      },
       name: {
         type: DataTypes.STRING,
         unique: true,
@@ -50,14 +47,6 @@ module.exports = {
       },
       timeout: {
         type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      watermark: {
-        type: DataTypes.TEXT,
-        allowNull: true
-      },
-      watermarkPosition: {
-        type: DataTypes.TEXT,
         allowNull: true
       },
       createdAt: {
