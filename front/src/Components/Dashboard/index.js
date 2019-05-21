@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync, IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io';
 import { connect } from 'react-redux';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 import './Dashboard.css';
-import ModalEditDashboard from '../Modals/editDashboard'
 import Rest from '../Group/Rest'
 
 class Dashboard extends Component {
@@ -62,7 +63,14 @@ class Dashboard extends Component {
     }
 
     openModal() {
-        this.setState({ showModal: true });
+        Store.dispatch(action(Types.SetModal, {
+            modal: {
+                group: { id: this.props.groupIndex },
+                rest: this.rest,
+                dashboard: this.props.dashboard,
+                show: 'editDashboard'
+            }
+        }));
     }
 
     render() {
@@ -84,7 +92,7 @@ class Dashboard extends Component {
                         </span>
                     </span>
                     <button
-                    onClick={ this.openModal }
+                    onClick={() => this.openModal() }
                     className={`btn ${ this.state.active ? "btn-noframe-light" : "btn-noframe-dark"} py-1 pl-2 pr-2 color-transition col-md-auto`}>
                         <IoMdCreate />
                     </button>
@@ -105,10 +113,6 @@ class Dashboard extends Component {
                         </button>
                     </span>
                 </span>
-                <ModalEditDashboard
-                dashboard={this.props.dashboard}
-                show={this.state.showModal} rest={this.rest}
-                group={{ id: this.props.groupIndex }} onHide={this.closeModal} />
             </li>
         );
     }

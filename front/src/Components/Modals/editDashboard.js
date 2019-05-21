@@ -11,20 +11,39 @@ class ModalEditDashboard extends Component {
     super(props);
     this.state = {
       validated: false,
-      Timeout: this.props.dashboard.timeout || '',
-      Viewport: this.props.dashboard.viewport || '',
-      Delay: this.props.dashboard.delay || '',
-      Url: this.props.dashboard.url,
-      Available: this.props.dashboard.availability || '',
-      Description: this.props.dashboard.description || '',
-      watermark: this.props.dashboard.watermark || '',
+      Timeout: '',
+      Viewport: '',
+      Delay: '',
+      Url: '',
+      Available: '',
+      Description: '',
+      watermark: '',
       watermarkPosition: this.props.dashboard.watermarkPosition || 'center',
       delayTime: 'sec',
       timeoutTime: 'sec',
       multDashEditControl: true,
       save: false
     }
-    this.Rest = this.props.rest;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setState({
+        validated: false,
+        Timeout: this.props.dashboard.timeout || '',
+        Viewport: this.props.dashboard.viewport || '',
+        Delay: this.props.dashboard.delay || '',
+        Url: this.props.dashboard.url,
+        Available: this.props.dashboard.availability || '',
+        Description: this.props.dashboard.description || '',
+        watermark: this.props.dashboard.watermark || '',
+        watermarkPosition: this.props.dashboard.watermarkPosition || 'center',
+        delayTime: 'sec',
+        timeoutTime: 'sec',
+        multDashEditControl: true,
+        save: false
+      });
+    }
   }
 
   shouldComponentUpdate(prevProps, prevState) {
@@ -40,7 +59,7 @@ class ModalEditDashboard extends Component {
   }
 
   deleteDashboard = () => {
-    this.Rest.deleteDashboard(this.props.dashboard.id, this.props.dashboard.url);
+    this.props.rest.deleteDashboard(this.props.dashboard.id, this.props.dashboard.url);
     this.props.onHide();
   }
 
@@ -58,8 +77,8 @@ class ModalEditDashboard extends Component {
       watermarkPosition: this.state.watermarkPosition,
       availability: this.state.Available
     };
-    this.Rest.saveDashboard(body);
-    this.Rest.editDashboard(body, this.props.dashboard.id, this.props.url);
+    this.props.rest.saveDashboard(body);
+    this.props.rest.editDashboard(body, this.props.dashboard.id, this.props.url);
     this.props.onHide();
   }
 

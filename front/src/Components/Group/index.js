@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Rest from './Rest';
 import Droppable from '../DragAndDrop/Droppable';
-import ModalDashboard from '../Modals/dashboard';
 import GroupHeader from './GroupHeader';
 import GroupBody from './GroupBody';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 
 class Group extends Component {
     constructor(props) {
@@ -15,7 +16,6 @@ class Group extends Component {
         };
         this.Rest = new Rest(this.props.groupIndex);
         this.onDrop = this.onDrop.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
     }
 
@@ -38,12 +38,14 @@ class Group extends Component {
         }
     }
 
-    closeModal() {
-        this.setState({ showModal: false });
-    }
-
     openModal() {
-        this.setState({ showModal: true });
+        Store.dispatch(action(Types.SetModal, {
+            modal: {
+                group: this.props.group,
+                rest: this.Rest,
+                show: 'addDashboard'
+            }
+        }));
     }
 
     render() {
@@ -54,15 +56,14 @@ class Group extends Component {
                         onToggleGroupMenu={ (toggle) => this.setState({ toggleGroupMenu: toggle }) } />
                     <GroupBody groupIndex={ this.props.groupIndex } toggleGroupMenu={ this.state.toggleGroupMenu } />
                     <div className="btn-group btn-group-sm">
-                        <button type="button" className="btn btn-light w-50 border-right rounded-0" onClick={ this.openModal }>
+                        <button type="button" className="btn btn-light w-50 border-right rounded-0"
+                            onClick={() => this.openModal()}>
                             Add a new dashboard
                         </button>
                         <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={ this.Rest.preview }>
                             Preview
                         </button>
                     </div>
-                    <ModalDashboard show={this.state.showModal} rest={this.Rest}
-                        group={{ name: this.props.group.name, id: this.props.group.id }} onHide={this.closeModal} />
                 </div>
             </Droppable>
         );

@@ -13,6 +13,7 @@ import decrLayoutSize from './decrLayoutSize';
 import addGroupTag from './addGroupTag';
 import updateGroupTag from './updateGroupTag';
 import deleteGroupTag from './deleteGroupTag';
+import setModal from './setModal';
 import { Types } from '../Actions';
 
 const initialState = {
@@ -44,6 +45,12 @@ const initialState = {
 		loading_image: '',
 		stamp: '',
 		unassigned_images: []
+	},
+	modal: {
+		group: null,
+		rest: null,
+		dashboard: {},
+		show: false
 	}
 };
 
@@ -79,6 +86,8 @@ function rootReducer(state = initialState, action) {
 			return updateGroupTag(state, action.payload);
 		case Types.DeleteGroupTag:
 			return deleteGroupTag(state, action.payload);
+		case Types.SetModal:
+			return setModal(state, action.payload);
 		default:
 			return (state);
 	}
