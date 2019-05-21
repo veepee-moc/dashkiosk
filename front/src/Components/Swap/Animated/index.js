@@ -22,7 +22,7 @@ class AnimatedSwap extends Component {
     }
 
     updateHeight() {
-        const height = this.props.control ? this.elemOne.scrollHeight : this.elemTwo.scrollHeight;
+        const height = this.props.control ? this.elemOne.clientHeight : this.elemTwo.clientHeight;
         if (height !== this.state.height)
             this.setState({
                 heightHigher: height > this.state.height,
@@ -33,6 +33,10 @@ class AnimatedSwap extends Component {
     componentDidMount() {
         this.updateMaxWidth();
         this.updateHeight();
+        if (this.props.control)
+            this.elemTwo.style.transform = 'translateX(-100%)';
+        else
+            this.elemOne.style.transform = 'translateX(-100%)';
         this.setState({ control: this.props.control });
     }
 
@@ -45,23 +49,6 @@ class AnimatedSwap extends Component {
             else
                 this.animate(this.elemOne, this.elemTwo);
         }
-    }
-
-    animation(elemOne, elemTwo) {
-        elemOne.style.transform = 'translateX(-100%)';
-        elemOne.animate([
-            { transform: 'translateX(0%)' },
-            { transform: 'translateX(-100%)'}
-        ], { duration: this.props.delay });
-        setTimeout(() => {
-            this.setState({ control: this.props.control }, () => {
-                elemTwo.style.transform = 'translateX(0%)';
-                elemTwo.animate([
-                    { transform: 'translateX(-100%)'},
-                    { transform: 'translateX(0%)' }
-                ], { duration: this.props.delay });
-            });
-        }, this.props.delay);
     }
 
     animate(elemOne, elemTwo) {
@@ -90,10 +77,10 @@ class AnimatedSwap extends Component {
                 height: this.state.height,
                 width: this.state.maxWidth
             }}>
-                <div hidden={!this.state.control} style={{ willChange: 'transform' }} ref={elem => this.elemOne = elem}>
+                <div className="" hidden={!this.state.control} style={{ willChange: 'transform' }} ref={elem => this.elemOne = elem}>
                     {this.props.children[0]}
                 </div>
-                <div className="" style={{ willChange: 'transform' }} ref={elem => this.elemTwo = elem}>
+                <div className="" hidden={this.state.control} style={{ willChange: 'transform' }} ref={elem => this.elemTwo = elem}>
                     {this.props.children[1]}
                 </div>
             </div>

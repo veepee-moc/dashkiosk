@@ -11,7 +11,6 @@ class Group extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            layoutSize: 3
         };
         this.Rest = new Rest(this.props.groupIndex);
         this.onDrop = this.onDrop.bind(this);

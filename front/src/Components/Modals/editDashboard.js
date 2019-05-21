@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, InputGroup, Row, FormGroup } from 'react-bootstrap';
 import { IoMdTrash, IoMdImage, IoMdCreate, IoMdSave } from 'react-icons/io';
 import FormInput from './formInput';
 import Availability from './availability';
@@ -25,6 +25,19 @@ class ModalEditDashboard extends Component {
       save: false
     }
     this.Rest = this.props.rest;
+  }
+
+  componentDidMount() {
+    this.setState({
+      isMultiDashboard: this.state.Url.match(/\/api\/multi-dashboards\/\d+/) ? true : false
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.Url !== prevState.Url)
+      this.setState({
+        isMultiDashboard: this.state.Url.match(/\/api\/multi-dashboards\/\d+/) ? true : false
+      });
   }
 
   shouldComponentUpdate(prevProps, prevState) {
@@ -94,6 +107,49 @@ class ModalEditDashboard extends Component {
     return (false);
   }
 
+  renderDashboardUrlEdit() {
+    if (this.state.isMultiDashboard)
+      return (
+        <>
+          <button type="button" className="btn btn-dark col-sm-6 mx-auto mb-3"
+            onClick={() => this.setState({ multDashEditControl: !this.state.multDashEditControl })}>
+            <IoMdCreate /> Edit multi dashboard
+                </button>
+          <AnimatedSwap className="form-group col-sm-12" control={this.state.multDashEditControl} delay={300}>
+            <FormInput
+              className="p-0"
+              sm={12}
+              required={true}
+              value={this.state.Url}
+              placeholder="Url"
+              name='Url'
+              updateValue={this.handleInput}
+              onError='insert an URL or upload an image'
+              type="url"
+              data-name='dashkiosk'
+              upload-route='/api/upload'
+            />
+            <MultiDashboardEdit url={this.state.Url} />
+          </AnimatedSwap>
+        </>
+      );
+    else
+      return (
+        <FormInput
+          sm={12}
+          required={true}
+          value={this.state.Url}
+          placeholder="Url"
+          name='Url'
+          updateValue={this.handleInput}
+          onError='insert an URL or upload an image'
+          type="url"
+          data-name='dashkiosk'
+          upload-route='/api/upload'
+        />
+      );
+  }
+
   render() {
     return (
       <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
@@ -114,25 +170,7 @@ class ModalEditDashboard extends Component {
           <Modal.Body>
             <Container> 
               <Form.Row>
-                <button type="button" className="btn btn-dark col-sm-6 mx-auto mb-3"
-                 onClick={() => this.setState({ multDashEditControl: !this.state.multDashEditControl })}>
-                  <IoMdCreate /> Edit multi dashboard
-                </button>
-                <AnimatedSwap className="col-sm-12" control={this.state.multDashEditControl} delay={ 500 }>
-                  <FormInput
-                    sm={12}
-                    required={true}
-                    value={this.state.Url}
-                    placeholder="Url"
-                    name='Url'
-                    updateValue={this.handleInput}
-                    onError='insert an URL or upload an image'
-                    type="url"
-                    data-name='dashkiosk'
-                    upload-route='/api/upload'
-                  />
-                  <MultiDashboardEdit />
-                </AnimatedSwap>
+                {this.renderDashboardUrlEdit()}
                 <FormInput
                   md={6}
                   sm={12}
