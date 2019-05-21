@@ -64,8 +64,9 @@ class Admin extends Component {
     }
 
     renderSortableGroupList() {
+        const size = 100 / this.props.layoutSize + '%';
         const SortableGroupItem = SortableElement(({value}) =>
-            <li className="list-layout-item" style={{ width: 100 / this.props.layoutSize + '%' }}>
+            <li className="list-layout-item d-inline-block" style={{ width: size, maxWidth: size }}>
                 <Group groupIndex={ value } />
             </li>
         );
