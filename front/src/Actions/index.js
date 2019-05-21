@@ -13,7 +13,8 @@ const Types = {
     DecrLayoutSize: 11,
     AddGroupTag: 12,
     UpdateGroupTag: 13,
-    DeleteGroupTag: 14
+    DeleteGroupTag: 14,
+    SetModal:15
 };
 
 function action(type, payload) {

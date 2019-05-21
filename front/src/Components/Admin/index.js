@@ -10,6 +10,7 @@ import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import SideMenu from '../SideMenu';
+import AllModals from './allModals'
 import './Admin.css';
 
 class Admin extends Component {
@@ -70,7 +71,7 @@ class Admin extends Component {
                 <Group groupIndex={ value } />
             </li>
         );
-        const SortableGroupList = SortableContainer(({items}) => 
+        const SortableGroupList = SortableContainer(({items}) =>
             <ul className="list-layout">
                 { items }
             </ul>
@@ -84,6 +85,7 @@ class Admin extends Component {
     render() {
         return (
             <div>
+                <AllModals/>
                 <SideMenu />
                 <Navbar />
                 <div ref={ (elem) => this.container = elem } className={ `container-fluid handle-fixed-navbar handle-side-menu` }>
