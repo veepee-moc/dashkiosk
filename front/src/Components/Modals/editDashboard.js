@@ -26,7 +26,13 @@ class ModalEditDashboard extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount() {
+    this.setState({
+      isMultiDashboard: this.state.Url.match(/\/api\/multi-dashboards\/\d+/) ? true : false
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
       this.setState({
         validated: false,
@@ -44,16 +50,7 @@ class ModalEditDashboard extends Component {
         save: false
       });
     }
-  }
-
-  componentDidMount() {
-    this.setState({
-      isMultiDashboard: this.state.Url.match(/\/api\/multi-dashboards\/\d+/) ? true : false
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.Url !== prevState.Url)
+    if (this.state.Url && this.state.Url !== prevState.Url)
       this.setState({
         isMultiDashboard: this.state.Url.match(/\/api\/multi-dashboards\/\d+/) ? true : false
       });

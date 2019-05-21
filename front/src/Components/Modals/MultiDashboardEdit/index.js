@@ -23,15 +23,16 @@ class MultiDashboardEdit extends Component {
     }
 
     getMultDashboardInfo() {
-      Axios.get(`${this.props.url}/info`)
-        .then((res) => {
-          if (res.status === 204)
-            throw new Error('This multi dashboard doesn\'t exist.');
-          this.setState({
-            multDashboard: res.data
-          });
-        })
-        .catch((err) => toast.error(`Failed to load multi dashboards info: ${err}`));
+      if (this.props.url)
+        Axios.get(`${this.props.url}/info`)
+          .then((res) => {
+            if (res.status === 204)
+              throw new Error('This multi dashboard doesn\'t exist.');
+            this.setState({
+              multDashboard: res.data
+            });
+          })
+          .catch((err) => toast.error(`Failed to load multi dashboards info: ${err}`));
     }
 
     handleInput = (inputName, inputValue, event) => {
