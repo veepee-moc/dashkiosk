@@ -1,0 +1,80 @@
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.right-bottom {
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+}
+
+.my-nav li {
+    line-height: 50px;
+}
+
+a {
+    outline: none !important;
+}
+
+.fade-enter {
+    opacity: 0;
+}
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+.fade-exit {
+    opacity: 1;
+}
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+}
+
+ul.list-layout {
+    padding: 0px;
+}
+
+li.list-layout-item {
+    padding: 10px;
+    display: inline-table;
+}
+
+.bg-color-transition {
+    -webkit-transition: background-color 300ms ease-in !important;
+    -moz-transition: background-color 300ms ease-in !important;
+    -o-transition: background-color 300ms ease-in !important;
+    transition: background-color 300ms ease-in !important;
+}
+
+.color-transition {
+    -webkit-transition: color 300ms ease-in !important;
+    -moz-transition: color 300ms ease-in !important;
+    -o-transition: color 300ms ease-in !important;
+    transition: color 300ms ease-in !important;
+}
+
+.w-40 {
+    width: 40% !important;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+.onTop {
+    z-index: 1200 !important;
+}
+
+.form-control:focus {
+    box-shadow: 0px 0px 2px #007bff inset !important;
+}
+
+.custom-select:focus {
+    box-shadow: 0px 0px 2px #007bff inset !important;
+}

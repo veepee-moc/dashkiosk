@@ -1,0 +1,9 @@
+.handle-fixed-navbar {
+    margin-top: 75px;
+}
+
+.handle-side-menu {
+    padding-right: 5px !important;
+    transform-origin: top right;
+    will-change: padding-left;
+}

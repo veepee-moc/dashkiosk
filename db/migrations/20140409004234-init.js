@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      rank: {
-        type: DataTypes.INTEGER
-      },
       name: {
         type: DataTypes.STRING,
         unique: true,

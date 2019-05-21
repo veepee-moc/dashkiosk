@@ -1,0 +1,47 @@
+html
+    head
+        title Dashkiosk - Multi Dashboards
+    body(style={
+            padding: '0px',
+            margin: '0px'
+        })
+        iframe(frameborder=0, scrolling="no", src=url[0], style={
+                'overflow-y': 'hidden',
+                position: 'fixed',
+                top: '0px',
+                left: '0px',
+                width: '100%',
+                height: '100%',
+                'transform-origin': 'top left',
+                transform: 'scale(0.5)'
+            })
+        iframe(frameborder=0, scrolling="no", src=url[1], style={
+                'overflow-y': 'hidden',
+                position: 'fixed',
+                top: '0px',
+                left: '50%',
+                width: '100%',
+                height: '100%',
+                'transform-origin': 'top left',
+                transform: 'scale(0.5)'
+            })
+        iframe(frameborder=0, scrolling="no", src=url[2], style={
+                'overflow-y': 'hidden',
+                position: 'fixed',
+                top: '50%',
+                left: '0px',
+                width: '100%',
+                height: '100%',
+                'transform-origin': 'top left',
+                transform: 'scale(0.5)'
+            })
+        iframe(frameborder=0, scrolling="no", src=url[3], style={
+                'overflow-y': 'hidden',
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                width: '100%',
+                height: '100%',
+                'transform-origin': 'top left',
+                transform: 'scale(0.5)'
+            })
