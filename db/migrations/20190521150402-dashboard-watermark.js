@@ -2,11 +2,11 @@
 
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.addColumn('Groups', 'watermark', {
+    migration.addColumn('Dashboards', 'watermark', {
       type: DataTypes.TEXT,
       allowNull: true
     });
-    migration.addColumn('Groups', 'watermarkPosition', {
+    migration.addColumn('Dashboards', 'watermarkPosition', {
       type: DataTypes.TEXT,
       allowNull: true
     });
@@ -14,8 +14,8 @@ module.exports = {
   },
 
   down: function(migration, DataTypes, done) {
-    migration.removeColumn('Groups', 'watermark');
-    migration.removeColumn('Groups', 'watermarkPosition');
+    migration.removeColumn('Dashboards', 'watermark');
+    migration.removeColumn('Dashboards', 'watermarkPosition');
     done();
   }
 };
