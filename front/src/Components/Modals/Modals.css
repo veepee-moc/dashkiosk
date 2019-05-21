@@ -18,3 +18,7 @@
 .dashboardSelection:hover {
     background-color: #e2e6ea !important;
 }
+
+.tooltip {
+    z-index: 2000 !important;
+}

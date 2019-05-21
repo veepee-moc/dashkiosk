@@ -32,7 +32,6 @@ class ModalDashboard extends Component {
         url: 1
       }
     }
-    this.Rest = this.props.rest;
   }
 
   componentDidUpdate(prevProps) {
@@ -44,6 +43,10 @@ class ModalDashboard extends Component {
     Axios.get('/api/multi-dashboards')
       .then((res) => this.setState({ templates: res.data }))
       .catch((err) => toast.error(`Failed to get dashboard templates:\n${err.message}`));
+  }
+
+  setTime = (time, value) => {
+    return (time === 'hour' ? (value * 60 * 60) : (value * 60));
   }
 
   reinitialise = () => {
@@ -88,7 +91,7 @@ class ModalDashboard extends Component {
         url: 1
       }
     };
-    this.Rest.addDashboard(body);
+    this.props.rest.addDashboard(body);
     this.props.onHide();
   }
 
@@ -134,10 +137,9 @@ class ModalDashboard extends Component {
       watermark: this.state.watermark,
       watermarkPosition: this.state.watermarkPosition,
     };
-    if (this.state.save) {
-      this.Rest.saveDashboard(body);
-    }
-    this.Rest.addDashboard(body);
+    if (this.state.save)
+      this.props.rest.saveDashboard(body);
+    this.props.rest.addDashboard(body);
     this.reinitialise();
     this.props.onHide();
   }

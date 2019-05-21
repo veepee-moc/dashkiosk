@@ -108,7 +108,7 @@ export default function (receiver) {
   socket.on('settings', function (config) {
     console.info('[Dashkiosk] settings updated');
     receiver.props.setStoreState({
-      settings:config
+      settings:JSON.parse(config)
     });
   });
 

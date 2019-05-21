@@ -5,7 +5,8 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
-import { IoMdImage, IoMdColorPalette, IoMdAdd } from 'react-icons/io';
+import Moment from 'moment-timezone';
+import { IoMdImage, IoMdColorPalette, IoMdAdd, IoMdTime } from 'react-icons/io';
 import './Settings.css';
 
 class ModalSettings extends Component {
@@ -26,21 +27,25 @@ class ModalSettings extends Component {
     this.Rest = this.props.rest;
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      const settings = this.props.settings;
-      this.setState({
-        useBranding: settings.useBranding,
-        timezone: settings.timezone,
-        background_choice: settings.background_choice,
-        background_color: settings.background_color,
-        background_image: settings.background_image,
-        loading_image: settings.loading_image,
-        stamp: settings.stamp,
-        unassigned_images: settings.unassigned_images,
-        uploaded_images_format: settings.uploaded_images_format,
-      })
+  componentWillUpdate(nextProps) {
+    if (this.props !== nextProps) {
+      this.updateState();
     }
+  }
+
+  updateState = () => {
+    const settings = this.props.settings;
+    this.setState({
+      useBranding: settings.useBranding,
+      timezone: settings.timezone,
+      background_choice: settings.background_choice,
+      background_color: settings.background_color,
+      background_image: settings.background_image,
+      loading_image: settings.loading_image,
+      stamp: settings.stamp,
+      unassigned_images: settings.unassigned_images,
+      uploaded_images_format: settings.uploaded_images_format,
+    });
   }
 
   handleInput = (inputName, inputValue, event) => {
@@ -55,8 +60,6 @@ class ModalSettings extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.setStoreState({ settings: this.state });
-    const oldProps = this.props;
     Axios.put('/api/settings/config', { config: this.state })
       .then(() => {
         this.props.onHide();
@@ -64,7 +67,6 @@ class ModalSettings extends Component {
       })
       .catch((err) => {
         toast.error(`Failed to send configuration file: ${err.message}`)
-        this.props.setStoreState({ settings: oldProps });
       });
   }
 
@@ -191,9 +193,9 @@ class ModalSettings extends Component {
             variant='outline-secondary'
             className='btn-lg btn-block lightHover'
             onClick={() => {
-              const newUnassigned = this.state.unassigned_images;
+              const newUnassigned = this.state.unassigned_images ? this.state.unassigned_images : [];
               newUnassigned.push('');
-              this.setState({ unassigned_images: newUnassigned })
+              this.setState({ unassigned_images: newUnassigned });
             }
             }
           >
@@ -219,16 +221,27 @@ class ModalSettings extends Component {
           <Modal.Body>
             <Container>
               <Form.Row>
-                <FormInput
-                  label='Timezone'
-                  sm={12}
-                  required={false}
-                  value={this.state.timezone}
-                  placeholder='Timezone'
-                  name='timezone'
-                  updateValue={this.handleInput}
-                  type='text'
-                />
+              <Form.Group as={Col} className='input-group-lg' sm={12}>
+                  <Form.Label>Timezone</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Prepend style={{ width: '42px' }}>
+                      <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
+                        <IoMdTime />
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      size='lg'
+                      as='select'
+                      value={this.state.timezone}
+                      onChange={event => this.setState({ timezone: event.target.value })}
+                    >
+                      { Moment.tz.names().map(elem => {
+                        return <option value={elem}>{ elem.split('/').join(' / ').split('_').join(' ') }</option>;
+                      })}
+                    </Form.Control>
+                  </InputGroup>
+                </Form.Group>
+
                 <Form.Group as={Col} className='input-group-lg' sm={12}>
                   <Form.Label>Uploaded images format</Form.Label>
                   <InputGroup>
