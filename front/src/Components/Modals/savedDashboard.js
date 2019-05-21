@@ -100,7 +100,7 @@ export default class savedDashboard extends Component {
         </Card.Body>
         {this.state.selected === i
           &&
-          <Row className='text-center no-gutters pb-2 align-items-center'>
+          <Row className='text-center no-gutters pb-2 justify-content-center'>
             <Col xs={6} sm={12} md={6} hidden={!dashboard.viewport}>
               <IoMdResize />{dashboard.viewport}
             </Col>
@@ -149,11 +149,13 @@ export default class savedDashboard extends Component {
               <span className="font-weight-light"> No saved dashboard </span>
             </div> :
             // Cards display
+            <div className=' savedDashboardBody'>
             <div className='card-columns'>
               <Swap control={this.state.search_input.length > 0}>
                 {this.state.searched_dashboards.map(this.renderCards)}
                 {this.state.dashboards.map(this.renderCards)}
               </Swap>
+            </div>
             </div>
         }
       </div>
