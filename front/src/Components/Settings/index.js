@@ -5,7 +5,8 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
-import { IoMdImage, IoMdColorPalette, IoMdAdd } from 'react-icons/io';
+import Moment from 'moment-timezone';
+import { IoMdImage, IoMdColorPalette, IoMdAdd, IoMdTime } from 'react-icons/io';
 import './Settings.css';
 
 class ModalSettings extends Component {
@@ -220,16 +221,27 @@ class ModalSettings extends Component {
           <Modal.Body>
             <Container>
               <Form.Row>
-                <FormInput
-                  label='Timezone'
-                  sm={12}
-                  required={false}
-                  value={this.state.timezone}
-                  placeholder='Timezone'
-                  name='timezone'
-                  updateValue={this.handleInput}
-                  type='text'
-                />
+              <Form.Group as={Col} className='input-group-lg' sm={12}>
+                  <Form.Label>Timezone</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Prepend style={{ width: '42px' }}>
+                      <InputGroup.Text className="input-group-text" htmlFor="inputGroupSelect01">
+                        <IoMdTime />
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      size='lg'
+                      as='select'
+                      value={this.state.timezone}
+                      onChange={event => this.setState({ timezone: event.target.value })}
+                    >
+                      { Moment.tz.names().map(elem => {
+                        return <option value={elem}>{ elem.split('/').join(' / ').split('_').join(' ') }</option>;
+                      })}
+                    </Form.Control>
+                  </InputGroup>
+                </Form.Group>
+
                 <Form.Group as={Col} className='input-group-lg' sm={12}>
                   <Form.Label>Uploaded images format</Form.Label>
                   <InputGroup>

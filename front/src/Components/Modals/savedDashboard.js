@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
-import { IoMdClose, IoMdSearch } from 'react-icons/io';
-import { Card, Button } from 'react-bootstrap';
+import { IoMdOpen, IoMdSearch, IoMdResize, IoMdSync, IoMdTimer, IoMdTrash } from 'react-icons/io';
+import { Row, Col, Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './Modals.css';
 import Swap from '../Swap';
 import Fuse from 'fuse.js';
@@ -45,13 +45,10 @@ export default class savedDashboard extends Component {
   }
 
   updateDashboard() {
+    this.setState({selected: -1});
     Axios.get('/api/saved_dashboard')
       .then(res => this.setState({ dashboards: res.data }))
       .catch(err => console.error(err));
-  }
-
-  select(i) {
-    this.setState({selected: i});
   }
 
   remove(i) {
@@ -69,10 +66,10 @@ export default class savedDashboard extends Component {
     </div>
 
   searchEngine = (event) => {
-    this.setState({search_input: event.target.value});
+    this.setState({ search_input: event.target.value });
     if (event.target.value.length === 0) {
-      this.setState({searched_dashboards: []});
-      return ;
+      this.setState({ searched_dashboards: [] });
+      return;
     }
     var fuse = new Fuse(this.state.dashboards, this.searchOptions);
     this.setState({ searched_dashboards: fuse.search(event.target.value) });
@@ -82,25 +79,64 @@ export default class savedDashboard extends Component {
     <Card
       key={`dashboardCard${i}`}
       className={`pt-1 pr-1 savedCard ${(this.state.selected === i) ? 'selected' : ''}`}
-      onClick={() => this.select(i)}
+      onClick={() => this.setState({selected: this.state.selected === i ? -1 : i})}
     >
-      <Button
-        variant='light'
-        size='sm'
-        className='float-right pt-0 pr-0 pb-0 pl-0'
-        onClick={() => this.remove(i)}
-      >
-        <IoMdClose size='22' />
-      </Button>
       <Card.Body>
         <Card.Subtitle className="mb-2 text-muted">{dashboard.description}</Card.Subtitle>
-        <Card.Text>
-          {dashboard.url}
-        </Card.Text>
-        <div className='text-right'>
-          <Card.Link target='_blank' href={dashboard.url}>Open in new tab</Card.Link>
+        <OverlayTrigger
+          key={`card-tooltip-${i}`}
+          placement='bottom'
+          overlay={ this.state.selected === i ? <span/> :
+            <Tooltip id={`card-tooltip-${i}`}>
+              {dashboard.url}
+            </Tooltip>
+          }
+        >
+          <Card.Text className={this.state.selected === i ? '' : 'text-truncate'}>
+            {dashboard.url}
+          </Card.Text>
+        </OverlayTrigger>
+        
+        </Card.Body>
+        {this.state.selected === i
+          &&
+          <Row className='text-center no-gutters pb-2 align-items-center'>
+            <Col xs={6} sm={12} md={6} hidden={!dashboard.viewport}>
+              <IoMdResize />{dashboard.viewport}
+            </Col>
+            <Col xs={3} sm={12} md={3} hidden={!dashboard.timeout}>
+              <IoMdSync />{dashboard.timeout}s
+            </Col>
+            <Col xs={3} sm={12} md={3} hidden={!dashboard.delay}>
+              <IoMdTimer />{dashboard.delay}s
+              </Col>
+          </Row>
+        }
+      <Card.Footer>
+        <div className='w-50 d-inline-block text-left'>
+          <Button
+            variant='outline-danger'
+            size='sm'
+            className='px-1'
+            onClick={() => this.remove(i)}
+          >
+            <IoMdTrash size='20'/>
+          </Button>
+      </div>
+      <div className='w-50 d-inline-block text-right'>
+          <Button
+            type='a'
+            target='_blank'
+            href={dashboard.url}
+            role='button'
+            variant='outline-primary'
+            size='sm'
+            className='px-1'
+          >
+            <IoMdOpen size='20'/>
+          </Button>
         </div>
-      </Card.Body>
+      </Card.Footer>
     </Card>
 
   render() {
@@ -109,15 +145,15 @@ export default class savedDashboard extends Component {
         {this.searchBar()}
         {
           this.state.dashboards.length === 0 ?
-          <div className="text-center">
-            <span className="font-weight-light"> No saved dashboard </span>
+            <div className="text-center">
+              <span className="font-weight-light"> No saved dashboard </span>
             </div> :
             // Cards display
             <div className='card-columns'>
-            <Swap control={this.state.search_input.length > 0}>
+              <Swap control={this.state.search_input.length > 0}>
                 {this.state.searched_dashboards.map(this.renderCards)}
                 {this.state.dashboards.map(this.renderCards)}
-            </Swap>
+              </Swap>
             </div>
         }
       </div>
