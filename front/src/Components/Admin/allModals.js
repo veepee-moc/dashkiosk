@@ -7,9 +7,6 @@ import { Types, action } from '../../Actions';
 
 const closeModal = () => Store.dispatch(action(Types.SetModal, {
   modal: {
-    group: null,
-    rest: null,
-    dashboard: {},
     show: false
   }
 }));
