@@ -3,7 +3,7 @@
   "description": "Drive a set of screens displaying dashboards",
   "url": "https://github.com/vincentbernat/dashkiosk",
   "license": "ISC",
-  "version": "2.7.3",
+  "version": "3.0.0",
   "private": true,
   "bin": {
     "dashkiosk": "./server.js"
@@ -21,7 +21,10 @@
     "imagemin": "imagemin -p dist/front/static/media/* --out-dir=dist/front/static/media",
     "dev": "concurrently -n Server,Front -c \"bgRed.bold,bgBlue.bold\" \"yarn dev-server\" \"yarn dev-front\"",
     "dev-server": "nodemon ./server.js",
-    "dev-front": "cd front && yarn start"
+    "dev-front": "cd front && yarn start",
+    "docker-build": "docker build -t dashkiosk .",
+    "docker-run": "docker run -d -p 8080:8080 -v /var/lib/dashkiosk/database:/database --rm --name dashkiosk dashkiosk",
+    "docker-stop": "docker stop dashkiosk"
   },
   "repository": {
     "type": "git",
