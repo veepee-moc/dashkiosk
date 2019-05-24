@@ -29,6 +29,7 @@ api.rest(app);
 
 // DB
 var db = require('./lib/db'),
+    initializeRank = require('./lib/tools/initializeRankDb'),
     models = require('./lib/models');
 db
   .initialize()
@@ -39,7 +40,8 @@ db
     }
     throw err;
   })
-  .then(function() {
+  .then(function () {
+      initializeRank();
       if (config.get('chromecast:enabled')) {
       chromecast();
     }
