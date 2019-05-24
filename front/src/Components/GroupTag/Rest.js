@@ -2,22 +2,20 @@ import Axios from "axios";
 import { toast } from 'react-toastify';
 
 class Rest {
-    constructor(tagId) {
-        this.tagId = tagId;
-    }
+    constructor() {}
 
-    updateTag(newName, newColor) {
-        Axios.post(`/api/grouptag/${this.tagId}`, { name: newName, color: newColor })
+    updateTag(newName, newColor, tagId) {
+        Axios.post(`/api/grouptag/${tagId}`, { name: newName, color: newColor })
             .catch((err) => toast.error(`Failed to update tag: ${err.message}`));
     }
 
-    deleteTag() {
-        Axios.delete(`/api/grouptag/${this.tagId}`)
+    deleteTag(tagId) {
+        Axios.delete(`/api/grouptag/${tagId}`)
             .catch((err) => toast.error(`Failed to remove tag: ${err.message}`));
     }
 
-    deleteTagFromGroup(groupId) {
-        Axios.delete(`/api/grouptag/${this.tagId}/group/${groupId}`)
+    deleteTagFromGroup(groupId, tagId) {
+        Axios.delete(`/api/grouptag/${tagId}/group/${groupId}`)
             .catch((err) => toast.error(`Failed to remove tag: ${err.message}`));
     }
 };
