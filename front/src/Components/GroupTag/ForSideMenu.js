@@ -13,7 +13,7 @@ class GroupTag extends Component {
             tagName: this.props.tag.name,
             tagColor: this.props.tag.color
         };
-        this.Rest = new Rest(this.props.tag.id);
+        this.Rest = new Rest();
     }
 
     componentDidUpdate(prevProps) {
@@ -26,7 +26,7 @@ class GroupTag extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.Rest.updateTag(this.state.tagName, this.state.tagColor);
+        this.Rest.updateTag(this.state.tagName, this.state.tagColor, this.props.tag.id);
         this.overlay.hide();
     }
 
@@ -70,7 +70,7 @@ class GroupTag extends Component {
                             <span className="text-color-depend-bg">{this.props.tag.name}</span>
                         </OverlayTrigger>
                         <span className="btn-text btn-text-dark ml-1 text-color-depend-bg"
-                          onClick={() => this.Rest.deleteTag()}>
+                          onClick={() => this.Rest.deleteTag(this.props.tag.id)}>
                             &times;
                         </span>
                     </span>
