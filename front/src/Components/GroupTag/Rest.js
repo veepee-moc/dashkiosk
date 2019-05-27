@@ -2,8 +2,6 @@ import Axios from "axios";
 import { toast } from 'react-toastify';
 
 class Rest {
-    constructor() {}
-
     updateTag(newName, newColor, tagId) {
         Axios.post(`/api/grouptag/${tagId}`, { name: newName, color: newColor })
             .catch((err) => toast.error(`Failed to update tag: ${err.message}`));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Container, Form, Col, InputGroup, Row, FormGroup } from 'react-bootstrap';
+import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import { IoMdTrash, IoMdImage, IoMdCreate, IoMdSave } from 'react-icons/io';
 import FormInput from './formInput';
 import Availability from './availability';

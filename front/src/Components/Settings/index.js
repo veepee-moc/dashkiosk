@@ -208,7 +208,7 @@ class ModalSettings extends Component {
 
   render() {
     return (
-      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal show={this.props.show} onHide={this.props.onHide} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate
