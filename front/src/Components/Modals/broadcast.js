@@ -39,7 +39,8 @@ class ModalBroadcast extends Component {
       });
       if (this.state.Groups !== newGroups)
         this.setState({ Groups: newGroups });
-    });
+    })
+    ;
   }
 
   componentDidMount() {
@@ -175,13 +176,13 @@ class ModalBroadcast extends Component {
   }
 
   allGroups() {
-    return <Card className="mb-3">
+    return <div className="card mb-3">
       <Card.Header onClick={() => this.setState({ opened: !this.state.opened })} style={{ cursor: 'pointer', position: 'relative', paddingLeft: '.75rem' }}>
         <IoMdDesktop width="30" height="30" /> Display groups
         <IoMdArrowBack className={`sb-collapse-arrow mr-3 ${!this.state.opened ? '' : 'active'}`} />
       </Card.Header>
       <Collapse collapsed={this.state.opened}>
-        <Card.Body className="text-center">
+        <div className="card-body text-center">
           <div className="mb-3">
               <Button variant={this.state.enableAllGroup ? "primary" : "outline-primary"}
                 onClick={() => { this.toggleAll() }}>
@@ -215,14 +216,14 @@ class ModalBroadcast extends Component {
               </span>
             )}
           </div>
-        </Card.Body>
+        </div>
       </Collapse>
-    </Card>
+    </div>
   }
 
   render() {
     return (
-      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal show={this.props.show} onHide={this.props.onHide} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate

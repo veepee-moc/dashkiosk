@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -122,7 +123,7 @@ class Admin extends Component {
             }
         }
         else {
-            for (var i = 0; i < this.props.gourpsNbr; i++)
+            for (i = 0; i < this.props.gourpsNbr; i++)
                 groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } searched={ false }/>);
         }
         return <SortableGroupList items={ groups } axis="xy" onSortEnd={ this.onSortEnd } useDragHandle />
@@ -156,3 +157,4 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(connect(mapStateToProps)(Admin));
+/* eslint-enable no-loop-func */
