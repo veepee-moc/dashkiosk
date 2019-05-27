@@ -4,46 +4,35 @@ class AnimatedSwap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            maxWidth: 0,
-            heightHigher: true,
-            height: 0,
-            control: true
+            width: 0,
+            height: 0
         };
+        this.timerId = null;
     }
 
-    updateMaxWidth() {
-        const maxWidth = this.elemOne.scrollWidth > this.elemTwo.scrollWidth ?
-            this.elemOne.scrollWidth :
-            this.elemTwo.scrollWidth;
-        if (maxWidth !== this.state.maxWidth)
-            this.setState({
-                maxWidth: maxWidth
-            });
-    }
-
-    updateHeight() {
-        const height = this.props.control ? this.elemOne.clientHeight : this.elemTwo.clientHeight;
-        if (height !== this.state.height)
-            this.setState({
-                heightHigher: height > this.state.height,
-                height: height
-            });
+    updateWidth() {
+        const width = this.elemOne.clientWidth > this.elemTwo.clientWidth ?
+            this.elemOne.clientWidth :
+            this.elemTwo.clientWidth;
+        if (width !== this.state.width)
+            this.setState({ width: width });
     }
 
     componentDidMount() {
-        this.updateMaxWidth();
-        this.updateHeight();
-        if (this.props.control)
-            this.elemTwo.style.transform = 'translateX(-100%)';
-        else
-            this.elemOne.style.transform = 'translateX(-100%)';
-        this.setState({ control: this.props.control });
+        this.updateWidth();
+        this.elemOne.hidden = false;
+        this.forceUpdate(() => {
+            this.setState({ height: this.elemOne.clientHeight }, () => {
+                this.elemOne.hidden = false;
+                this.elemOne.style.transform = 'translateX(0%)';
+                this.container.style.transition = `height ${this.props.delay}ms linear`;
+            });
+        });
     }
 
     componentDidUpdate(prevProps) {
-        this.updateMaxWidth();
-        this.updateHeight();
-        if (this.props.control !== prevProps.control) {
+        this.updateWidth();
+        if (this.props.control !== prevProps.control && (this.props.control === true || this.props.control === false)) {
             if (this.props.control)
                 this.animate(this.elemTwo, this.elemOne);
             else
@@ -51,36 +40,46 @@ class AnimatedSwap extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.timerId)
+            clearTimeout(this.timerId);
+    }
+
     animate(elemOne, elemTwo) {
-        elemOne.style.transform = 'translateX(-100%)';
-        const animOne = elemOne.animate([
+        elemOne.style.transform = 'translateX(-110%)';
+        elemOne.animate([
             { transform: 'translateX(0%)' },
-            { transform: 'translateX(-100%)' }
+            { transform: 'translateX(-110%)'}
         ], { duration: this.props.delay });
-        animOne.onfinish = () => {
-            this.setState({ control: this.props.control }, () => {
+        this.timerId = setTimeout(() => {
+            elemOne.hidden = true;
+            elemTwo.hidden = false;
+            this.forceUpdate(() => {
                 elemTwo.style.transform = 'translateX(0%)';
                 elemTwo.animate([
-                    { transform: 'translateX(-100%)' },
+                    { transform: 'translateX(-110%)' },
                     { transform: 'translateX(0%)' }
                 ], { duration: this.props.delay });
-            })
-        };
+            });
+            if (this)
+                this.setState({ height: elemTwo.clientHeight });
+        }, this.props.delay);
     }
 
     render() {
         return (
-            <div className={this.props.className} hidden={this.props.hidden} style={{
+            <div className={this.props.className} hidden={this.props.hidden}
+              ref={(el) => this.container = el}
+              style={{
                 position: 'relative',
                 overflow: 'hidden',
-                transition: `height ${this.props.delay}ms linear ${this.state.heightHigher ? '0ms' : `${this.props.delay}ms`}`,
                 height: this.state.height,
-                width: this.state.maxWidth
+                width: this.state.width
             }}>
-                <div className="" hidden={!this.state.control} style={{ willChange: 'transform' }} ref={elem => this.elemOne = elem}>
+                <div ref={elem => this.elemOne = elem}>
                     {this.props.children[0]}
                 </div>
-                <div className="" hidden={this.state.control} style={{ willChange: 'transform' }} ref={elem => this.elemTwo = elem}>
+                <div ref={elem => this.elemTwo = elem}>
                     {this.props.children[1]}
                 </div>
             </div>
