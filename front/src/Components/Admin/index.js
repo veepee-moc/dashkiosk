@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { IoMdSearch } from 'react-icons/io';
 import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
@@ -10,13 +11,31 @@ import Rest from './Rest';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
 import SideMenu from '../SideMenu';
-import AllModals from './allModals'
+import AllModals from './allModals';
 import './Admin.css';
+import Fuse from 'fuse.js';
 
 class Admin extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            searched_groups: [],
+            search_input: ''
+        };
+        this.searchOptions = {
+            shouldSort: true,
+            matchAllTokens: true,
+            tokenize: true,
+            threshold: 0.3,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: [
+              "description",
+              "name"
+            ]
+          };
         this.Rest = new Rest();
         this.Rest.loadGroupTags();
         Socket();
@@ -56,6 +75,25 @@ class Admin extends Component {
         }
     }
 
+    searchBar = () =>
+        <div className="input-group input-group-lg mx-auto mb-2 w-75 handle-fixed-navbar handle-side-menu">
+            <div className="input-group-prepend">
+                <span className="input-group-text" id="inputGroup-sizing-lg"><IoMdSearch /></span>
+            </div>
+            <input onChange={this.searchEngine} type="text" className="form-control" aria-label="search" aria-describedby="inputGroup-sizing-sm" />
+        </div>
+
+    searchEngine = (event) => {
+        this.setState({ search_input: event.target.value });
+        if (event.target.value.length === 0) {
+            if (this.state.searched_groups !== [])
+                this.setState({ searched_groups: [] });
+            return;
+        }
+        var fuse = new Fuse(Store.getState().admin.groups, this.searchOptions);
+        this.setState({ searched_groups: fuse.search(event.target.value) });
+    }
+
     onSortEnd = ({ oldIndex, newIndex }) => {
         if (oldIndex !== newIndex) {
             Store.dispatch(action(Types.SwapGroup, { src: oldIndex, dst: newIndex }));
@@ -66,9 +104,9 @@ class Admin extends Component {
 
     renderSortableGroupList() {
         const size = 100 / this.props.layoutSize + '%';
-        const SortableGroupItem = SortableElement(({value}) =>
+        const SortableGroupItem = SortableElement(({value, searched}) =>
             <li className="list-layout-item d-inline-block" style={{ width: size, maxWidth: size }}>
-                <Group groupIndex={ value } />
+                <Group groupIndex={ value } searched={ searched } />
             </li>
         );
         const SortableGroupList = SortableContainer(({items}) =>
@@ -77,8 +115,16 @@ class Admin extends Component {
             </ul>
         );
         const groups = [];
-        for (var i = 0; i < this.props.gourpsNbr; i++)
-            groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } />);
+        if (this.state.search_input.length > 0) {
+            for (var i = 0; i < this.props.gourpsNbr; i++) {
+                if (this.state.searched_groups.find(group => {return group.id === Store.getState().admin.groups[i].id}))
+                    groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } searched={ true }/>);
+            }
+        }
+        else {
+            for (var i = 0; i < this.props.gourpsNbr; i++)
+                groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } searched={ false }/>);
+        }
         return <SortableGroupList items={ groups } axis="xy" onSortEnd={ this.onSortEnd } useDragHandle />
     }
 
@@ -88,7 +134,8 @@ class Admin extends Component {
                 <AllModals/>
                 <SideMenu />
                 <Navbar />
-                <div ref={ (elem) => this.container = elem } className={ `container-fluid handle-fixed-navbar handle-side-menu` }>
+                <div ref={ (elem) => this.container = elem } className={ `container-fluid` }>
+                    {this.searchBar()}
                     { this.renderSortableGroupList() }
                     <div className="my-3">
                         <Preview />

@@ -7,8 +7,8 @@ import Swap from '../../Swap';
 import EditableText from '../../EditableText';
 import './GroupHeader.css';
 
-const DragHandle = SortableHandle(() =>
-    <button className="btn btn-noframe-dark p-1 pl-2 pr-2">
+const DragHandle = SortableHandle(({searched, collapse}) =>
+    <button className={`btn btn-noframe-dark p-1 pl-2 pr-2 ${ searched === true ? collapse === true ? 'collapse' : 'invisible' : 'visible' }`}>
         <IoMdMove />
     </button>
 );
@@ -47,7 +47,7 @@ class GroupHeader extends Component {
                                 </button>
                             </div>
                         </Swap>
-                        <DragHandle />
+                        <DragHandle searched={ this.props.searched } collapse={ this.props.group.displayConnected || this.props.group.empty }/>
                     </div>
                     <button className="btn btn-noframe-dark p-1 px-2 mb-1 float-right"
                         onClick={ this.handleToggleGroupMenu }>

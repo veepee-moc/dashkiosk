@@ -51,7 +51,7 @@ class Group extends Component {
         return (
             <Droppable types={["Display", "Dashboard", "GroupTag"]} onDrop={ this.onDrop }>
                 <div className="card">
-                    <GroupHeader groupIndex={ this.props.groupIndex }
+                    <GroupHeader groupIndex={ this.props.groupIndex } searched={ this.props.searched }
                         onToggleGroupMenu={ (toggle) => this.setState({ toggleGroupMenu: toggle }) } />
                     <GroupBody groupIndex={ this.props.groupIndex } toggleGroupMenu={ this.state.toggleGroupMenu } />
                     <div className="btn-group btn-group-sm">
