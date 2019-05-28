@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IoMdPricetag, IoMdGrid, IoMdAdd, IoMdRemove } from 'react-icons/io';
+import { IoMdBookmark, IoMdGrid, IoMdAdd, IoMdRemove } from 'react-icons/io';
 import GroupTag from '../../../GroupTag/ForGroup';
 import Rest from '../../Rest';
 
@@ -32,7 +32,7 @@ class GroupMenu extends Component {
             <ul className="container nav flex-column px-0 text-left bg-white">
                 <li className="nav-item">
                     <p className="font-weight-bold m-0 ml-2 mt-1">
-                        <IoMdPricetag /> Tags
+                        <IoMdBookmark /> Tags
                     </p>
                     <div className="p-1 text-center">
                         {this.renderTags()}

@@ -21,8 +21,6 @@ class Dashboard extends Component {
         };
         this.rest = new Rest(this.props.groupIndex);
         this.openModal = this.openModal.bind(this);
-        this.moveUp = this.moveUp.bind(this);
-        this.moveDown = this.moveDown.bind(this);
         this.updateDashboard = this.updateDashboard.bind(this);
     }
 
@@ -48,14 +46,6 @@ class Dashboard extends Component {
                 id: this.props.dashboard.id
             });
         }
-    }
-
-    moveUp() {
-        this.rest.editDashboard({ rank: parseInt(this.props.dashboardKey - 1) }, this.state.id);
-    }
-
-    moveDown() {
-        this.rest.editDashboard({ rank: parseInt(this.props.dashboardKey + 1) }, this.state.id);
     }
 
     openModal() {
@@ -93,22 +83,6 @@ class Dashboard extends Component {
                     className={`btn ${ this.state.active ? "btn-noframe-light" : "btn-noframe-dark"} py-1 pl-2 pr-2 color-transition`}>
                         <IoMdCreate />
                     </button>
-                    <span className={`color-transition pl-1 pr-0`}>
-                        <button
-                        onClick={ this.moveUp }
-                        className={`btn ${ this.state.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 color-transition ${ parseInt(this.props.dashboardKey) !== 0 ? "visible" : "invisible" }` }
-                        >
-                            <IoMdArrowDropup/>
-                        </button>
-                    </span>
-                    <span className={`color-transition pl-1 pr-0`}>
-                        <button
-                        onClick={ this.moveDown }
-                        className={`btn ${ this.state.active ? "btn-noframe-light" : "btn-noframe-dark"} p-1 color-transition ${ parseInt(this.props.nbDashboard) !== (parseInt(this.props.dashboardKey) + 1) ? "visible" : "invisible" }`}
-                        >
-                            <IoMdArrowDropdown/>
-                        </button>
-                    </span>
                 </span>
             </span>
 

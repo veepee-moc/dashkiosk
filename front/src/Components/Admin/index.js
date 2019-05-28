@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { IoMdSearch } from 'react-icons/io';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Socket from './Socket';
 import Navbar from '../Navbar';
 import Group from '../Group';
@@ -137,7 +138,9 @@ class Admin extends Component {
                 <Navbar />
                 <div ref={ (elem) => this.container = elem } className={ `container-fluid` }>
                     {this.searchBar()}
-                    { this.renderSortableGroupList() }
+                    <DragDropContext onDragEnd={this.Rest.moveDashboard}>
+                        { this.renderSortableGroupList() }
+                    </DragDropContext>
                     <div className="my-3">
                         <Preview />
                     </div>

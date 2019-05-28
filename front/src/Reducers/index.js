@@ -1,3 +1,4 @@
+import { Types } from '../Actions';
 import setStoreState from './setStoreState';
 import setAdminState from './setAdminState';
 import setAllGroups from './setAllGroups';
@@ -14,7 +15,6 @@ import addGroupTag from './addGroupTag';
 import updateGroupTag from './updateGroupTag';
 import deleteGroupTag from './deleteGroupTag';
 import setModal from './setModal';
-import { Types } from '../Actions';
 
 const initialState = {
 	admin: {

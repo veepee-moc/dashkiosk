@@ -8,6 +8,7 @@ import Dashboard from '../../Dashboard'
 import Draggable from '../../DragAndDrop/Draggable';
 import Rest from '../Rest';
 import './GroupBody.css';
+import DraggableList from '../../DragAndDrop/DraggableList';
 
 class GroupBody extends Component {
     constructor(props) {
@@ -22,9 +23,7 @@ class GroupBody extends Component {
     renderDashboard() {
         return this.props.dashboards.map((dashboard, key) =>
             <CSSTransition key={ key } timeout={ 500 } classNames="fade">
-                <Draggable type="Dashboard" key={ key }>
                     <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ this.props.dashboards.length }/>
-                </Draggable>
             </CSSTransition>
         );
     }
@@ -57,7 +56,9 @@ class GroupBody extends Component {
                 <div>
                     <ul className="list-group list-group-flush">
                         <TransitionGroup>
-                            { this.renderDashboard() }
+                            <DraggableList onDragEnd={(info) => console.log(info)} droppableId={this.props.groupIndex}>
+                                { this.renderDashboard() }
+                            </DraggableList>
                         </TransitionGroup>
                     </ul>
                 </div>
