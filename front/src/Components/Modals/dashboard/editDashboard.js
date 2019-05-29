@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form, Col, InputGroup, Row } from 'react-bootstrap';
 import { IoMdTrash, IoMdImage, IoMdCreate, IoMdSave } from 'react-icons/io';
-import FormInput from './formInput';
-import Availability from './availability';
-import AnimatedSwap from '../Swap/Animated';
-import MultiDashboardEdit from './MultiDashboardEdit';
+import ImportedImage from '../../uploadImage/importedImage';
+import FormInput from '../formInput';
+import Availability from '../availability';
+import AnimatedSwap from '../../Swap/Animated';
+import MultiDashboardEdit from '../MultiDashboardEdit';
 
 class ModalEditDashboard extends Component {
   constructor(props) {
@@ -87,25 +88,15 @@ class ModalEditDashboard extends Component {
       watermarkPosition: this.state.watermarkPosition,
       availability: this.state.Available
     };
-    this.props.rest.saveDashboard(body);
+    if (this.state.save){
+      this.props.rest.saveDashboard(body);
+    }
     this.props.rest.editDashboard(body, this.props.dashboard.id, this.props.url);
     this.props.onHide();
   }
 
   setTime = (time, value) => {
     return (time === 'hour' ? (value * 60 * 60) : (value * 60));
-  }
-
-  isValidUrl = () => {
-    var url = this.state.Url;
-
-    if (url.length < 7)
-      return false;
-    if (url.length > 0) {
-      if (url.substring(0, 7) === "http://" || url.substring(0, 8) === "https://")
-        return true;
-    }
-    return false;
   }
 
   isValidViewport = () => {
@@ -127,10 +118,10 @@ class ModalEditDashboard extends Component {
     if (this.state.isMultiDashboard)
       return (
         <>
-          <button type="button" className="btn btn-dark col-sm-6 mx-auto mb-3"
+          <Button variant={this.state.multDashEditControl ? 'outline-primary' : 'primary'} className='col-sm-6 mx-auto mb-3'
             onClick={() => this.setState({ multDashEditControl: !this.state.multDashEditControl })}>
             <IoMdCreate /> Edit multi dashboard
-                </button>
+          </Button>
           <AnimatedSwap className="form-group col-sm-12" control={this.state.multDashEditControl} delay={300}>
             <FormInput
               className="p-0"
@@ -142,10 +133,11 @@ class ModalEditDashboard extends Component {
               updateValue={this.handleInput}
               onError='insert an URL or upload an image'
               type="url"
-              data-name='dashkiosk'
+              dataName='dashboard'
               upload-route='/api/upload'
+              openImageManagement={(name, index, folderName) => this.handleInput('images', {name, index, folderName})}
             />
-            <MultiDashboardEdit url={this.state.Url} />
+            <MultiDashboardEdit url={this.state.Url} handleInput={this.handleInput} newMult={this.state.newMult}/>
           </AnimatedSwap>
         </>
       );
@@ -160,13 +152,27 @@ class ModalEditDashboard extends Component {
           updateValue={this.handleInput}
           onError='insert an URL or upload an image'
           type="url"
-          data-name='dashkiosk'
+          dataName='dashboard'
           upload-route='/api/upload'
+          openImageManagement={(name, index, folderName) => this.handleInput('images', {name, index, folderName})}
         />
       );
   }
 
+  validateImage = () => {
+    if (!this.state.multDashEditControl) {
+      this.state.images.validateImage();
+      this.setState({ images: false});
+    } else {
+      this.setState({[this.state.images.name]: this.state.newImageUrl || ''})
+      this.setState({ images: false });
+    }
+  }
+
   render() {
+    const importedImagesValue = this.state.images
+    ? this.state[this.state.images.name]
+    : '';
     return (
       <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
@@ -185,6 +191,14 @@ class ModalEditDashboard extends Component {
           </Modal.Header>
           <Modal.Body>
             <Container> 
+            {this.state.images
+                  ? <ImportedImage
+                      handleInput={this.state.images.handleInput || this.handleInput}
+                      images={this.state.images}
+                      value={importedImagesValue}
+                      folder={this.state.images.folderName}
+                    />
+                  :
               <Form.Row>
                 {this.renderDashboardUrlEdit()}
                 <FormInput
@@ -195,8 +209,9 @@ class ModalEditDashboard extends Component {
                   name='watermark'
                   updateValue={this.handleInput}
                   type="url"
-                  data-name='dashkiosk'
+                  dataName='dashboard'
                   upload-route='/api/upload'
+                  openImageManagement={(name, index, folderName) => this.handleInput('images', {name, index, folderName})}
                 />
                 <Form.Group as={Col} md={6} sm={12}>
                   <InputGroup>
@@ -208,7 +223,7 @@ class ModalEditDashboard extends Component {
                     <Form.Control
                       size='lg'
                       as='select'
-                      className='custom-select'
+                      className='custom-select custom-select-lg'
                       value={this.state.watermarkPosition}
                       onChange={event => this.setState({ watermarkPosition: event.target.value })}
                     >
@@ -237,11 +252,25 @@ class ModalEditDashboard extends Component {
                   <Availability input={this.state.Available} />
                 </Form.Text>
               </Form.Row>
+            }
             </Container>
           </Modal.Body>
           <Modal.Footer>
-
-          <Row className='w-100'>
+          { this.state.images
+                ? 
+                  <>
+                    <Button 
+                      variant='outline-primary'
+                      onClick={() => this.setState({ images: false }) }
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={() => this.validateImage() }>
+                      Add dashboard
+                    </Button>
+                  </>
+                :
+                <Row className='w-100'>
                   <Col md={6} className='text-left pl-0'>
                     <Button variant="danger" onClick={this.deleteDashboard}><IoMdTrash /></Button>
                     <Button
@@ -261,6 +290,7 @@ class ModalEditDashboard extends Component {
                     </Button>
                   </Col>
                 </Row>
+          }
           </Modal.Footer>
         </Form>
       </Modal>

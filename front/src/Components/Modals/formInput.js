@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Col, DropdownButton, Dropdown, InputGroup, Form, Button } from 'react-bootstrap';
 import Axios from 'axios';
-import { 
-  IoMdDesktop, 
-  IoMdLink, 
-  IoMdTime, 
-  IoMdHourglass, 
-  IoMdResize, 
-  IoMdDocument, 
+import {
+  IoMdDesktop,
+  IoMdLink,
+  IoMdTime,
+  IoMdHourglass,
+  IoMdResize,
+  IoMdDocument,
   IoMdCalendar,
   IoMdTrash,
   IoMdImages
@@ -22,18 +22,6 @@ const styles = {
   backgroundColor: '#E9ECEF',
   minWidth: '80px',
   color: '#495057'
-}
-
-const uploadStyle = {
-  ...styles,
-  minWidth: '60px',
-  textAlign: 'center',
-  cursor: 'pointer'
-}
-
-const removeStyle = {
-  borderTopRightRadius: '0.3em',
-  borderBottomRightRadius: '0.3em',
 }
 
 class FormInput extends Component {
@@ -80,17 +68,17 @@ class FormInput extends Component {
     const file = event.target.files[0];
 
     event.preventDefault();
-    data.append(this.props['data-name'], file);
+    data.append(this.props.dataName, file);
     Axios({
-        method: 'post',
-        url: this.props['upload-route'],
-        data: data,
-        headers: { 'content-type': 'multipart/form-data' }
+      method: 'post',
+      url: this.props['upload-route'],
+      data: data,
+      headers: { 'content-type': 'multipart/form-data' }
     })
-        .then(json => { 
-          this.props.updateValue(this.props.name, `/api/${json.data.filepath}`, { target: this.input })
-         })
-        .catch((err) => { console.log(err) });
+      .then(json => {
+        this.props.updateValue(this.props.name, `/api/${json.data.filepath}`, { target: this.input }, this.props.index)
+      })
+      .catch((err) => { console.log(err) });
   }
 
   selectTime() {
@@ -120,43 +108,48 @@ class FormInput extends Component {
 
   uploadFile() {
     if (this.props.type === 'url') {
-      return (
-        <div className='align-items-center' style={/*this.props.name === 'unassigned' ? uploadStyleWithoutRadius : */uploadStyle}>
+      return <Button
+        className={`${this.props.name === 'unassigned' ? '' : 'inputAppendBorder'} openImageManagement`}
+        onClick={() => this.props.openImageManagement(this.props.name, this.props.index, this.props.dataName)}>
+        <IoMdImages size='22'/>
+      </Button>
+      /*return (
+        <div className='align-items-center' style={/*this.props.name === 'unassigned' ? uploadStyleWithoutRadius : *//*uploadStyle}>
           <input
             title='file'
-            style={{ display: 'none'}}
+            style={{ display: 'none' }}
             id={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
             type='file'
             onChange={event => this.uploadImage(event)}
           />
           <label
             htmlFor={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
-            style={{ height:'100%', cursor:'pointer'}}
+            style={{ height: '100%', cursor: 'pointer' }}
           >
             <Col className='d-flex align-items-center mt-2'><IoMdImages size='25' /></Col>
           </label>
         </div>
-      );
+      );*/
     }
   }
 
   removeLine() {
     if (this.props.name === 'unassigned')
       return (
-        <Button 
-          variant='danger' 
-          disabled={this.props.unassignedList.length > 1 ? false : true } 
-          style={removeStyle} 
-          onClick={ () => this.props.removeUnassigned(this.props.index) }>
-            <IoMdTrash />
-          </Button>
+        <Button
+          variant='danger'
+          disabled={this.props.unassignedList.length > 1 ? false : true}
+          className='inputAppendBorder'
+          onClick={() => this.props.removeUnassigned(this.props.index)}>
+          <IoMdTrash />
+        </Button>
       );
   }
 
   render() {
     return (
-      <Form.Group className={ this.props.className } as={Col} md={this.props.md} sm={this.props.sm}>
-        { this.props.label ? <Form.Label>{ this.props.label }</Form.Label> : '' }
+      <Form.Group className={this.props.className} as={Col} md={this.props.md} sm={this.props.sm}>
+        {this.props.label ? <Form.Label>{this.props.label}</Form.Label> : ''}
         <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroupPrepend"> {this.putIcon()} </InputGroup.Text>
@@ -171,7 +164,7 @@ class FormInput extends Component {
             type={this.props.type}
             placeholder={this.props.placeholder}
             aria-describedby="inputGroupPrepend"
-            onChange={(event) => { this.props.updateValue(this.props.name, event.target.value, event) }}
+            onChange={(event) => { this.props.updateValue(this.props.name, event.target.value, event, this.props.index) }}
             isInvalid={this.props.isInvalid}
           />
           <InputGroup.Append>

@@ -1,6 +1,6 @@
 import React from 'react';
-import ModalDashboard from '../Modals/dashboard';
-import ModalEditDashboard from '../Modals/editDashboard';
+import ModalDashboard from '../Modals/dashboard/dashboard';
+import ModalEditDashboard from '../Modals/dashboard/editDashboard';
 import { connect } from 'react-redux';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';

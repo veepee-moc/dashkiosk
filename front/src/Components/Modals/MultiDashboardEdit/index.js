@@ -14,7 +14,13 @@ class MultiDashboardEdit extends Component {
     }
 
     componentDidMount() {
-      this.getMultDashboardInfo();
+      if (this.props.newMult) {
+        this.setState({
+          multDashboard: this.props.newMult
+        });
+      } else {
+        this.getMultDashboardInfo();
+      }
     }
 
     componentDidUpdate(prevProps) {
@@ -35,17 +41,23 @@ class MultiDashboardEdit extends Component {
           .catch((err) => toast.error(`Failed to load multi dashboards info: ${err}`));
     }
 
-    handleInput = (inputName, inputValue, event) => {
+    handleInput = (inputName, inputValue, event, index) => {
       if (!this.state.multDashboard)
         return;
       const multDashboard = Object.assign({}, this.state.multDashboard);
-      multDashboard.urls[parseInt(event.target.attributes.index.value)] = inputValue;
+      multDashboard.urls[index] = inputValue;
       this.setState({
         multDashboard: multDashboard
       });
     }
 
+    validateImage = () => {
+      this.props.handleInput('newMult', this.state.multDashboard);
+    }
+
     renderMultDashInput() {
+      const fnHandleInput = this.handleInput;
+      const fnValidateImage = this.validateImage;
       if (!this.state.multDashboard)
         return <div></div>;
       return this.state.multDashboard.urls.map((url, key) =>
@@ -61,8 +73,9 @@ class MultiDashboardEdit extends Component {
           updateValue={this.handleInput}
           onError='Insert an URL on upload an image'
           type='url'
-          data-name='dashkiosk'
+          dataName='dashboard'
           upload-route='/api/upload'
+          openImageManagement={(name, index, folderName) => this.props.handleInput('images', {name, index, folderName, handleInput: fnHandleInput, validateImage: fnValidateImage})}
         />
       );
     }
@@ -73,7 +86,7 @@ class MultiDashboardEdit extends Component {
               {this.renderMultDashInput()}
               <div className="text-right">
                 <button type="button" className="btn btn-primary"
-                 onClick={() => this.Rest.updateMultiDashboard(this.state.multDashboard)}>
+                 onClick={() => { this.Rest.updateMultiDashboard(this.state.multDashboard); this.props.handleInput('newMult', false) }}>
                   Save
                 </button>
               </div>

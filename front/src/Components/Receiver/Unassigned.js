@@ -35,9 +35,9 @@ class Unassigned extends Component {
   }
 
   getRandomImage = () => {
-    if (!this.props.unassigned_images)
+    if (!this.props.unassigned)
       return;
-    let array = JSON.parse(JSON.stringify(this.props.unassigned_images));
+    let array = JSON.parse(JSON.stringify(this.props.unassigned));
     var currentIndex = array.length,
       temporaryValue,
       randomIndex;
@@ -119,7 +119,7 @@ function mapStateToProps(state) {
     background_color: state.settings.background_color,
     background_image: state.settings.background_image,
     loading_image: state.settings.loading_image,
-    unassigned_images: state.settings.unassigned_images,
+    unassigned: state.settings.unassigned,
 	});
 }
 
