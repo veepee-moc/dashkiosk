@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Col, InputGroup } from 'react-bootstrap';
 import { IoMdImage } from 'react-icons/io';
-import FormInput from './formInput';
-import Availability from './availability';
+import FormInput from '../formInput';
+import Availability from '../availability';
 
 export default function NewDashboard (props) {
   const handleTemplateChanged = (event) => {
@@ -34,8 +34,9 @@ export default function NewDashboard (props) {
         updateValue={props.handleInput}
         onError='insert an URL or upload an image'
         type='url'
-        data-name='dashkiosk'
+        dataName='dashboard'
         upload-route='/api/upload'
+        openImageManagement={(name, index, folderName) => props.handleInput('images', {name, index, folderName})}
         rest={props.rest}
         index={i}
         key={i}
@@ -68,8 +69,8 @@ export default function NewDashboard (props) {
           name='watermark'
           updateValue={props.handleInput}
           type="url"
-          data-name='dashkiosk'
-          upload-route='/api/upload'
+          dataName='dashboard'
+          openImageManagement={(name, index, folderName) => props.handleInput('images', {name, index, folderName})}
         />
         <Form.Group as={Col} md={6} sm={12}>
           <InputGroup>
@@ -81,6 +82,7 @@ export default function NewDashboard (props) {
             <Form.Control
               size='lg'
               as='select'
+              className='custom-select custom-select-lg'
               value={props.watermarkPosition}
               onChange={event => props.handleInput('watermarkPosition', event.target.value)}
             >

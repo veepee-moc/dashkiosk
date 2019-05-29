@@ -82,7 +82,14 @@ class Admin extends Component {
             <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-lg"><IoMdSearch /></span>
             </div>
-            <input onChange={this.searchEngine} type="text" className="form-control" aria-label="search" aria-describedby="inputGroup-sizing-sm" />
+            <input 
+                onChange={this.searchEngine} 
+                type="text" 
+                className="form-control" 
+                aria-label="search" 
+                aria-describedby="inputGroup-sizing-sm" 
+                placeholder='Search group...'
+            />
         </div>
 
     searchEngine = (event) => {

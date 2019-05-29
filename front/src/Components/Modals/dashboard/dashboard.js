@@ -3,9 +3,10 @@ import { Modal, Button, Container, Form, Col, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Axios from 'axios';
 import { IoIosSave } from 'react-icons/io';
-import Swap from '../Swap';
+import Swap from '../../Swap';
 import DashboardSelection from './dashboardSelection';
 import SavedDashboard from './savedDashboard';
+import ImportedImage from '../../uploadImage/importedImage';
 import NewDashboard from './newDashboard';
 
 class ModalDashboard extends Component {
@@ -14,6 +15,7 @@ class ModalDashboard extends Component {
     this.state = {
       save: false,
       newDashboard: true,
+      images: false,
       validated: false,
       Timeout: '',
       Viewport: '',
@@ -64,6 +66,7 @@ class ModalDashboard extends Component {
       templates: [],
       save: false,
       newDashboard: true,
+      images: false,
       chosedTemplate: {
         name: 'None',
         url: 1
@@ -104,7 +107,7 @@ class ModalDashboard extends Component {
     return true;
   }
 
-  handleInput = (inputName, inputValue, event) => {
+  handleInput = (inputName, inputValue, event, index) => {
     if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
       inputValue = '';
     if (inputName === 'setUrl') {
@@ -113,7 +116,7 @@ class ModalDashboard extends Component {
       this.setState({ [inputName]: inputValue });
     } else {
       const urls = [...this.state.Url];
-      urls[parseInt(event.target.attributes.index.value)] = inputValue;
+      urls[index] = inputValue;
       this.setState({ Url: urls });
     }
   }
@@ -144,7 +147,23 @@ class ModalDashboard extends Component {
     this.props.onHide();
   }
 
+  validateImage = () => {
+    if (this.state.images.name === 'Url') {
+      const urls = [...this.state.Url];
+      urls[this.state.images.index] = this.state.newImageUrl || '';
+      this.setState({ Url: urls });
+      this.setState({ images: false });
+    } else {
+      this.setState({[this.state.images.name]: this.state.newImageUrl || ''})
+      this.setState({ images: false });
+    }
+  }
+
   render() {
+    const importedImagesValue = 
+    ((this.state.images.name === 'Url')
+      ? this.state[this.state.images.name][this.state.images.index]
+      : this.state[this.state.images.name]) 
     const template = this.state.chosedTemplate;
     if (!this.props.show)
       return '';
@@ -169,67 +188,85 @@ class ModalDashboard extends Component {
               </Col>
             </Modal.Title>
           </Modal.Header>
-          <DashboardSelection handleInput={this.handleInput} newDashboard={ this.state.newDashboard }/>
+          <DashboardSelection handleInput={this.handleInput} newDashboard={this.state.newDashboard} />
           <Modal.Body>
             <Container>
               <Swap control={!this.state.newDashboard}>
-                <SavedDashboard 
-                  handleInput={ this.handleInput}
+                <SavedDashboard
+                  handleInput={this.handleInput}
                   group={this.props.group}
                   submitLoad={this.state.submitLoad}
                 />
-                <NewDashboard
-                  isValidViewport={this.isValidViewport}
-                  handleInput={this.handleInput}
-                  validated={this.state.validated}
-                  Timeout={this.state.Timeout}
-                  Viewport={this.state.Viewport}
-                  Delay={this.state.Delay}
-                  Url={this.state.Url}
-                  Available={this.state.Available}
-                  Description={this.state.Description}
-                  delayTime={this.state.delayTime}
-                  timeoutTime={this.state.timeoutTime}
-                  templates={this.state.templates}
-                  watermark={this.state.watermark}
-                  watermarkPosition={this.state.watermarkPosition}
-                  chosedTemplate={template}
-                />
+                {this.state.images
+                  ? <ImportedImage
+                      handleInput={this.handleInput}
+                      images={this.state.images}
+                      value={importedImagesValue}
+                      folder={this.state.images.folderName}
+                    />
+                  : <NewDashboard
+                      isValidViewport={this.isValidViewport}
+                      handleInput={this.handleInput}
+                      validated={this.state.validated}
+                      Timeout={this.state.Timeout}
+                      Viewport={this.state.Viewport}
+                      Delay={this.state.Delay}
+                      Url={this.state.Url}
+                      Available={this.state.Available}
+                      Description={this.state.Description}
+                      delayTime={this.state.delayTime}
+                      timeoutTime={this.state.timeoutTime}
+                      templates={this.state.templates}
+                      watermark={this.state.watermark}
+                      watermarkPosition={this.state.watermarkPosition}
+                      chosedTemplate={template}
+                    />}
               </Swap>
             </Container>
           </Modal.Body>
           <Modal.Footer>
             {!this.state.newDashboard
-              ? <Button onClick={() => {this.setState({submitLoad: true}, () => this.props.onHide())}}>
+              ? <Button onClick={() => { this.setState({ submitLoad: true }, () => this.props.onHide()) }}>
                   Add dashboard
                 </Button>
-              : (
-                <Row className='w-100'>
-                  <Col md={6} className='text-left pl-0'>
-                    <Button
-                      variant={this.state.save ? 'primary' : 'outline-primary'}
-                      onClick={() => this.setState({ save: !this.state.save })}
+              : this.state.images
+                ? 
+                  <>
+                    <Button 
+                      variant='outline-primary'
+                      onClick={() => this.setState({ images: false }) }
                     >
-                      <IoIosSave />
+                      Cancel
                     </Button>
-                  </Col>
-                  <Col md={6} className='text-right'>
-                    <Button
-                      className='mr-3'
-                      variant="outline-primary"
-                      onClick={this.unassigned}
-                    >
-                      Default dashboard
+                    <Button onClick={() => this.validateImage() }>
+                      Add image
                     </Button>
-                    <Button
-                      className='mr-3'
-                      disabled={this.isValidViewport() ? false : true}
-                      type="submit">
-                      {this.state.save ? 'Add & Save' : 'Add'}
-                    </Button>
-                  </Col>
-                </Row>
-                )
+                  </>
+                : <Row className='w-100'>
+                    <Col md={6} className='text-left pl-0'>
+                      <Button
+                        variant={this.state.save ? 'primary' : 'outline-primary'}
+                        onClick={() => this.setState({ save: !this.state.save })}
+                      >
+                        <IoIosSave />
+                      </Button>
+                    </Col>
+                    <Col md={6} className='text-right'>
+                      <Button
+                        className='mr-3'
+                        variant="outline-primary"
+                        onClick={this.unassigned}
+                      >
+                        Default dashboard
+                      </Button>
+                      <Button
+                        className='mr-3'
+                        disabled={this.isValidViewport() ? false : true}
+                        type="submit">
+                        {this.state.save ? 'Add & Save' : 'Add'}
+                      </Button>
+                    </Col>
+                  </Row>
             }
           </Modal.Footer>
         </Form>

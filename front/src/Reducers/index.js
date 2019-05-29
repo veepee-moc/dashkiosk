@@ -44,7 +44,7 @@ const initialState = {
 		background_image: '',
 		loading_image: '',
 		stamp: '',
-		unassigned_images: []
+		unassigned: []
 	},
 	modal: {
 		group: null,

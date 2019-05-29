@@ -15,8 +15,8 @@ export default class Display extends Component {
 				overflow: 'hidden',
 				height: '100%',
 				width: '100%',
-				top: '-2px',
-				left: '-2px',
+				top: '0px',
+				left: '0px',
 				backgroundColor: '#faf5f2'
 			}
 		};

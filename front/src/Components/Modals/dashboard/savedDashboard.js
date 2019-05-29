@@ -3,8 +3,8 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoMdOpen, IoMdSearch, IoMdResize, IoMdSync, IoMdTimer, IoMdTrash } from 'react-icons/io';
 import { Row, Col, Card, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import './Modals.css';
-import Swap from '../Swap';
+import '../Modals.css';
+import Swap from '../../Swap';
 import Fuse from 'fuse.js';
 
 export default class savedDashboard extends Component {
@@ -62,7 +62,14 @@ export default class savedDashboard extends Component {
       <div className="input-group-prepend">
         <span className="input-group-text" id="inputGroup-sizing-lg"><IoMdSearch /></span>
       </div>
-      <input onChange={this.searchEngine} type="text" className="form-control" aria-label="search" aria-describedby="inputGroup-sizing-sm" />
+      <input 
+        onChange={this.searchEngine} 
+        type="text" 
+        className="form-control" 
+        aria-label="search" 
+        aria-describedby="inputGroup-sizing-sm" 
+        placeholder='Search a dashboard...'
+      />
     </div>
 
   searchEngine = (event) => {
@@ -78,11 +85,11 @@ export default class savedDashboard extends Component {
   renderCards = (dashboard, i) =>
     <Card
       key={`dashboardCard${i}`}
-      className={`pt-1 pr-1 savedCard ${(this.state.selected === i) ? 'selected' : ''}`}
+      className={`savedCard ${(this.state.selected === i) ? 'selected' : ''}`}
       onClick={() => this.setState({selected: this.state.selected === i ? -1 : i})}
     >
       <Card.Body>
-        <Card.Subtitle className="mb-2 text-muted">{dashboard.description}</Card.Subtitle>
+        <Card.Subtitle className="text-muted">{dashboard.description}</Card.Subtitle>
         <OverlayTrigger
           key={`card-tooltip-${i}`}
           placement='bottom'
@@ -113,17 +120,16 @@ export default class savedDashboard extends Component {
           </Row>
         }
       <Card.Footer>
-        <div className='w-50 d-inline-block text-left'>
+      { this.props.management ? <div className='w-50 d-inline-block text-left'>
           <Button
             variant='outline-danger'
             size='sm'
-            className='px-1'
             onClick={() => this.remove(i)}
           >
             <IoMdTrash size='20'/>
           </Button>
-      </div>
-      <div className='w-50 d-inline-block text-right'>
+        </div> : <div className='w-50 d-inline-block'/> }
+        <div className='w-50 d-inline-block text-right'>
           <Button
             type='a'
             target='_blank'
@@ -141,24 +147,25 @@ export default class savedDashboard extends Component {
 
   render() {
     return (
-      <div>
-        {this.searchBar()}
+      <>
         {
           this.state.dashboards.length === 0 ?
             <div className="text-center">
               <span className="font-weight-light"> No saved dashboard </span>
             </div> :
-            // Cards display
-            <div className=' savedDashboardBody'>
-            <div className='card-columns'>
-              <Swap control={this.state.search_input.length > 0}>
-                {this.state.searched_dashboards.map(this.renderCards)}
-                {this.state.dashboards.map(this.renderCards)}
-              </Swap>
-            </div>
-            </div>
+            <>
+              {this.searchBar()}
+              <div className='savedImagesBody'>
+                <div className='card-columns'>
+                  <Swap control={this.state.search_input.length > 0}>
+                    {this.state.searched_dashboards.map(this.renderCards)}
+                    {this.state.dashboards.map(this.renderCards)}
+                  </Swap>
+                </div>
+              </div>
+            </>
         }
-      </div>
+      </>
     );
   }
 };
