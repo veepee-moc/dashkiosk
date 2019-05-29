@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync, IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io';
+import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync} from 'react-icons/io';
 import { connect } from 'react-redux';
 import Store from '../../Store';
 import { Types, action } from '../../Actions';
