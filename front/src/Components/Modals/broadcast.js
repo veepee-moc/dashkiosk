@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage, IoMdPricetag, IoMdGrid } from 'react-icons/io'
 import FormInput from './formInput';
 import Axios from 'axios';
-import Collapse from '../Collapse'
+import Collapse from '../Collapse';
+import ImportedImage from '../uploadImage/importedImage';
 import { toast } from 'react-toastify';
 
 class ModalBroadcast extends Component {
@@ -21,8 +22,8 @@ class ModalBroadcast extends Component {
       enableAllGroup: true,
       delayTime: 'sec',
       timeoutTime: 'sec',
-      watermark:'',
-      watermarkPosition:'center',
+      watermark: '',
+      watermarkPosition: 'center',
     }
   }
 
@@ -40,7 +41,7 @@ class ModalBroadcast extends Component {
       if (this.state.Groups !== newGroups)
         this.setState({ Groups: newGroups });
     })
-    ;
+      ;
   }
 
   componentDidMount() {
@@ -184,13 +185,13 @@ class ModalBroadcast extends Component {
       <Collapse collapsed={this.state.opened}>
         <div className="card-body text-center">
           <div className="mb-3">
-              <Button variant={this.state.enableAllGroup ? "primary" : "outline-primary"}
-                onClick={() => { this.toggleAll() }}>
-                {this.toggleIcon(this.state.enableAllGroup)}
-                <span className="ml-3">
-                  {this.state.enableAllGroup ? 'Disable all' : 'Enable all'}
-                </span>
-              </Button>
+            <Button variant={this.state.enableAllGroup ? "primary" : "outline-primary"}
+              onClick={() => { this.toggleAll() }}>
+              {this.toggleIcon(this.state.enableAllGroup)}
+              <span className="ml-3">
+                {this.state.enableAllGroup ? 'Disable all' : 'Enable all'}
+              </span>
+            </Button>
           </div>
           <p className="mb-1"><IoMdPricetag /> Tags</p>
           <div className="pb-2" >
@@ -221,7 +222,15 @@ class ModalBroadcast extends Component {
     </div>
   }
 
+  validateImage = () => {
+    this.setState({ [this.state.images.name]: this.state.newImageUrl || '' })
+    this.setState({ images: false });
+  }
+
   render() {
+    const importedImagesValue = this.state.images
+      ? this.state[this.state.images.name]
+      : '';
     return (
       <Modal show={this.props.show} onHide={this.props.onHide} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
@@ -235,68 +244,95 @@ class ModalBroadcast extends Component {
           </Modal.Header>
           <Modal.Body>
             <Container>
-              {this.allGroups()}
-                 <Form.Row>
-                  <FormInput sm={12} 
-                    required={true} 
-                    placeholder="Url" 
-                    name='Url' 
-                    value={this.state.Url}
-                    updateValue={this.handleInput} 
-                    onError='insert an URL or upload an image' 
-                    type="url"
-                    data-name='dashkiosk'
-                    upload-route='/api/upload'
-                  />
-                <FormInput
-                  md={6}
-                  sm={12}
-                  value={this.state.watermark}
-                  placeholder='Watermark'
-                  name='watermark'
-                  updateValue={this.handleInput}
-                  type="url"
-                  data-name='dashkiosk'
-                  upload-route='/api/upload'
+              {this.state.images
+                ? <ImportedImage
+                  handleInput={this.state.images.handleInput || this.handleInput}
+                  images={this.state.images}
+                  value={importedImagesValue}
+                  folder={this.state.images.folderName}
                 />
-                <Form.Group as={Col} md={6} sm={12}>
-                  <InputGroup>
-                    <InputGroup.Prepend style={{ width: '42px' }}>
-                      <InputGroup.Text className="input-group-text" htmlFor='watermarkPosition'>
-                        <IoMdImage />
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <Form.Control
-                      size='lg'
-                      as='select'
-                      value={this.state.watermarkPosition}
-                      onChange={event => this.setState({ watermarkPosition: event.target.value })}
-                    >
-                      <option value='center'>Centered</option>
-                      <option value='topright'>Top right</option>
-                      <option value='topleft'>Top left</option>
-                      <option value='bottomright'>Bottom right</option>
-                      <option value='bottomleft'>Bottom left</option>
-                    </Form.Control>
-                  </InputGroup>
-                </Form.Group>
-              </Form.Row>
-              <Form.Row>
-                <FormInput md={12} sm={12} required={false} value={this.state.Description}
-                  placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
-                <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport}
-                  placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
-                <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout <= 0}
-                  placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number" value={this.state.Timeout}
-                  dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
-                <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0}
-                  placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number" value={this.state.Delay}
-                  dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
-              </Form.Row>
+                :
+                <>
+                  {this.allGroups()}
+                  <Form.Row>
+                    <FormInput sm={12}
+                      required={true}
+                      placeholder="Url"
+                      name='Url'
+                      value={this.state.Url}
+                      updateValue={this.handleInput}
+                      onError='insert an URL or upload an image'
+                      type="url"
+                      dataName='dashboard'
+                      upload-route='/api/upload'
+                      openImageManagement={(name, index, folderName) => this.handleInput('images', { name, index, folderName })}
+                    />
+                    <FormInput
+                      md={6}
+                      sm={12}
+                      value={this.state.watermark}
+                      placeholder='Watermark'
+                      name='watermark'
+                      updateValue={this.handleInput}
+                      type="url"
+                      dataName='dashboard'
+                      upload-route='/api/upload'
+                      openImageManagement={(name, index, folderName) => this.handleInput('images', { name, index, folderName })}
+                    />
+                    <Form.Group as={Col} md={6} sm={12}>
+                      <InputGroup>
+                        <InputGroup.Prepend style={{ width: '42px' }}>
+                          <InputGroup.Text className="input-group-text" htmlFor='watermarkPosition'>
+                            <IoMdImage />
+                          </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          size='lg'
+                          as='select'
+                          value={this.state.watermarkPosition}
+                          onChange={event => this.setState({ watermarkPosition: event.target.value })}
+                        >
+                          <option value='center'>Centered</option>
+                          <option value='topright'>Top right</option>
+                          <option value='topleft'>Top left</option>
+                          <option value='bottomright'>Bottom right</option>
+                          <option value='bottomleft'>Bottom left</option>
+                        </Form.Control>
+                      </InputGroup>
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Row>
+                    <FormInput md={12} sm={12} required={false} value={this.state.Description}
+                      placeholder="Description" name='Description' updateValue={this.handleInput} type="text" />
+                    <FormInput md={12} sm={12} required={false} isInvalid={!this.isValidViewport()} value={this.state.Viewport}
+                      placeholder="Viewport size (height x width)" name='Viewport' updateValue={this.handleInput} type="text" />
+                    <FormInput md={6} sm={12} required={false} isInvalid={this.state.Timeout <= 0}
+                      placeholder="Timeout" name='Timeout' updateValue={this.handleInput} type="number" value={this.state.Timeout}
+                      dropdown={true} time={this.state.timeoutTime} selectTime={(value) => { this.setState({ timeoutTime: value }) }} />
+                    <FormInput md={6} sm={12} required={false} isInvalid={this.state.Delay < 0}
+                      placeholder="Delay" name='Delay' updateValue={this.handleInput} type="number" value={this.state.Delay}
+                      dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
+                  </Form.Row>
+                </>}
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button disabled={this.handleError()} type="submit">Save</Button>
+            {this.state.images
+              ?
+              <>
+                <Button
+                  variant='outline-primary'
+                  onClick={() => this.setState({ images: false })}
+                >
+                  Cancel
+                    </Button>
+                <Button onClick={() => this.validateImage()}>
+                  Add image
+                    </Button>
+              </>
+              :
+              <Button disabled={this.handleError()} type="submit">Save</Button>
+            }
           </Modal.Footer>
         </Form>
       </Modal>
@@ -307,7 +343,7 @@ class ModalBroadcast extends Component {
 function mapStateWithProps(state) {
   state.admin.groupTags.forEach(tag => tag.enable = true);
   return {
-      groupTags: state.admin.groupTags
+    groupTags: state.admin.groupTags
   };
 }
 
