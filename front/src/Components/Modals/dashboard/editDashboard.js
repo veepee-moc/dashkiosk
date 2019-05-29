@@ -266,7 +266,7 @@ class ModalEditDashboard extends Component {
                       Cancel
                     </Button>
                     <Button onClick={() => this.validateImage() }>
-                      Add dashboard
+                      Add image
                     </Button>
                   </>
                 :
