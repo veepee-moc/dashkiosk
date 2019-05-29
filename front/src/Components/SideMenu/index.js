@@ -137,6 +137,7 @@ class SideMenu extends Component {
 					<li className="nav-item">
 						<a className="btn btn-noframe-light d-block w-100 rounded-0 text-left"
 							target='_blank'
+							rel='noopener noreferrer'
 							href="https://dashkiosk.readthedocs.io/en/v2.7.3/usage.html#administration">
 							<IoMdBook width="20" height="20" /> Documentation
             </a>

@@ -22,7 +22,7 @@ class ModalSettings extends Component {
       background_image: settings.background_image,
       loading_image: settings.loading_image,
       stamp: settings.stamp,
-      unassigned: settings.unassigned_images,
+      unassigned: settings.unassigned,
       uploaded_images_format: settings.uploaded_images_format,
     }
     this.Rest = this.props.rest;
@@ -44,7 +44,7 @@ class ModalSettings extends Component {
       background_image: settings.background_image,
       loading_image: settings.loading_image,
       stamp: settings.stamp,
-      unassigned: settings.unassigned_images,
+      unassigned: settings.unassigned,
       uploaded_images_format: settings.uploaded_images_format,
     });
   }
