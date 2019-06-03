@@ -23,6 +23,8 @@ class Rest {
     }
 
     moveDashboard(info) {
+        if (!info.destination)
+            return;
         const groupIndex = parseInt(info.source.droppableId);
         const dashboardIndex = info.source.index;
         const group = Store.getState().admin.groups[groupIndex];
