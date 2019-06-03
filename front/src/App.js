@@ -6,6 +6,7 @@ import Axios from 'axios';
 import Admin from './Components/Admin';
 import Receiver from './Components/Receiver';
 import FromServer from './Components/FromServer';
+import History from './Components/History';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
@@ -34,6 +35,7 @@ class App extends Component {
           <Switch>
             <Route exact path={["/", "/receiver"]} component={Receiver} />
             <Route exact path="/admin" component={Admin} />
+            <Route exact path="/history" component={History} />
             <Route component={FromServer} />
           </Switch>
         </BrowserRouter>

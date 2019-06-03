@@ -20,7 +20,7 @@
     "lint": "eslint server.js && eslint lib/",
     "imagemin": "imagemin -p dist/front/static/media/* --out-dir=dist/front/static/media",
     "dev": "concurrently -n Server,Front -c \"bgRed.bold,bgBlue.bold\" \"yarn dev-server\" \"yarn dev-front\"",
-    "dev-server": "nodemon ./server.js",
+    "dev-server": "nodemon --ignore './front/' ./server.js",
     "dev-front": "cd front && yarn start",
     "docker-build": "docker build -t dashkiosk .",
     "docker-run": "docker run -d -p 8080:8080 -v /var/lib/dashkiosk/database:/database --rm --name dashkiosk dashkiosk",

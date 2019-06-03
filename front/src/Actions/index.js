@@ -14,7 +14,8 @@ const Types = {
     AddGroupTag: 12,
     UpdateGroupTag: 13,
     DeleteGroupTag: 14,
-    SetModal:15
+    SetModal: 15,
+    SetLogs: 16
 };
 
 function action(type, payload) {

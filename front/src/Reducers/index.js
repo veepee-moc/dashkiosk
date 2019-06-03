@@ -15,6 +15,7 @@ import addGroupTag from './addGroupTag';
 import updateGroupTag from './updateGroupTag';
 import deleteGroupTag from './deleteGroupTag';
 import setModal from './setModal';
+import setLogs from './setLogs';
 
 const initialState = {
 	admin: {
@@ -51,6 +52,9 @@ const initialState = {
 		rest: null,
 		dashboard: {},
 		show: false
+	},
+	history: {
+		historyLogs: []
 	}
 };
 
@@ -88,6 +92,8 @@ function rootReducer(state = initialState, action) {
 			return deleteGroupTag(state, action.payload);
 		case Types.SetModal:
 			return setModal(state, action.payload);
+		case Types.SetLogs:
+			return setLogs(state, action.payload);
 		default:
 			return (state);
 	}
