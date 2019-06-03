@@ -21,7 +21,7 @@ class Group extends Component {
     onDrop(dropEffect, dnd) {
         switch (dnd.type) {
             case "Display":
-                this.Rest.moveDisplay(dnd.object.props.displayKey);
+                this.Rest.moveDisplay(dnd.object.props.groupIndex, dnd.object.props.displayKey);
                 return;
             case "Dashboard":
                 if (dropEffect === "move")

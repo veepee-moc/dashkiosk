@@ -119,9 +119,10 @@ class Rest {
             .catch(() => toast.error('Failed to edit dashboard.'));
     }
 
-    moveDisplay(display) {
+    moveDisplay(groupIndex, displayKey) {
         const group = Store.getState().admin.groups[this.groupIndex];
-        Axios.put(`/api/display/${display}/group/${group.id}`)
+        const display = Store.getState().admin.groups[groupIndex].displays[displayKey];
+        Axios.put(`/api/display/${display.name}/group/${group.id}`)
             .catch(() => toast.error('Failed to move display.'));
     }
 
