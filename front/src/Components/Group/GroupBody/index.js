@@ -46,7 +46,7 @@ class GroupBody extends Component {
                 <Collapse collapsed={ this.props.toggleGroupMenu }>
                     <GroupMenu groupIndex={this.props.groupIndex} />
                 </Collapse>
-                <div className="card-body p-1 pt-2 pb-2">
+                <div className="card-body p-1 pt-2">
                     <ul className="list-layout">
                         <TransitionGroup>
                             { this.renderDisplays() }
@@ -56,7 +56,7 @@ class GroupBody extends Component {
                 <div>
                     <ul className="list-group list-group-flush">
                         <TransitionGroup>
-                            <DraggableList onDragEnd={(info) => console.log(info)} droppableId={this.props.groupIndex}>
+                            <DraggableList className="pt-2" onDragEnd={(info) => console.log(info)} droppableId={this.props.groupIndex}>
                                 { this.renderDashboard() }
                             </DraggableList>
                         </TransitionGroup>
