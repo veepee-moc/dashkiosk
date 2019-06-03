@@ -1,11 +1,12 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-const DraggableList = ({ droppableId, children }) => {
+const DraggableList = ({ droppableId, children, ...props }) => {
     return (
         <Droppable droppableId={`${droppableId}`}>
             {(provided) => (
                 <div
+                    {...props}
                     {...provided.droppableProps}
                     ref={provided.innerRef}>
                     {React.Children.map(children, (child, index) => (
