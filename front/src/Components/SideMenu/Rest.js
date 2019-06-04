@@ -28,7 +28,7 @@ class Rest {
             }
             return out.toUpperCase();
           })(6);
-        Axios.post('/api/group', {
+        return Axios.post('/api/group', {
             name: `New group ${ random }`,
             description: 'Newly created group'
         })

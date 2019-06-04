@@ -70,7 +70,8 @@ class SideMenu extends Component {
 			groupTagsCollapsed: true,
 			settings: false,
 			keycloakLogout: null,
-			images: false
+			images: false,
+			disableAddGroup: false
 		};
 		this.Rest = new Rest(this);
 	}
@@ -94,7 +95,8 @@ class SideMenu extends Component {
 	}
 
 	addNewGroup = () => {
-		this.Rest.addNewGroup();
+		this.setState({ disableAddGroup: true });
+		this.Rest.addNewGroup().then(() => this.setState({ disableAddGroup: false }));
 	}
 
 	animateSideMenu(action) {
@@ -151,6 +153,7 @@ class SideMenu extends Component {
 					</li>
 					<li className="nav-item">
 						<button onClick={this.addNewGroup}
+							disabled={this.state.disableAddGroup}
 							className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
 							<IoMdAdd width="20" height="20" /> Add new group
             </button>
