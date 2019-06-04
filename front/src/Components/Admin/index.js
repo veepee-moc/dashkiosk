@@ -27,7 +27,6 @@ class Admin extends Component {
         this.searchOptions = {
             shouldSort: true,
             matchAllTokens: true,
-            tokenize: true,
             threshold: 0.3,
             location: 0,
             distance: 100,
