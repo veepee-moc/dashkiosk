@@ -22,9 +22,7 @@ class GroupBody extends Component {
 
     renderDashboard() {
         return this.props.dashboards.map((dashboard, key) =>
-            <CSSTransition key={ key } timeout={ 500 } classNames="fade">
-                    <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } nbDashboard={ this.props.dashboards.length }/>
-            </CSSTransition>
+                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } key={key} nbDashboard={ this.props.dashboards.length }/>
         );
     }
 
@@ -55,11 +53,9 @@ class GroupBody extends Component {
                 </div>
                 <div>
                     <ul className="list-group list-group-flush">
-                        <TransitionGroup>
-                            <DraggableList className="pt-2" onDragEnd={(info) => console.log(info)} droppableId={this.props.groupIndex}>
-                                { this.renderDashboard() }
-                            </DraggableList>
-                        </TransitionGroup>
+                        <DraggableList className="pt-2" droppableId={this.props.groupIndex}>
+                            { this.renderDashboard() }
+                        </DraggableList>
                     </ul>
                 </div>
             </div>
