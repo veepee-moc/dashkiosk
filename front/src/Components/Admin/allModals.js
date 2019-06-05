@@ -1,31 +1,65 @@
 import React from 'react';
 import ModalDashboard from '../Modals/dashboard/dashboard';
 import ModalEditDashboard from '../Modals/dashboard/editDashboard';
+import ModalBroadcast from '../Modals/broadcast';
+import ModalSettings from '../Settings/index';
+import SavedDashboard from '../Modals/dashboard/savedDashboard';
+import ModalEditDisplay from '../Modals/editDisplay';
+import Modals from '../Modals/index';
 import { connect } from 'react-redux';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import ImportedImage from '../uploadImage/importedImage';
 
-const closeModal = () => Store.dispatch(action(Types.SetModal, {
-  modal: {
-    show: false
-  }
-}));
+var ModalImages = (props) => {
+  return (
+    <Modals
+      show={props.modalShow === 'savedImage'}
+      title='Imported images management'
+      subtitle={props.modalImages}
+    >
+      <ImportedImage
+        handleInput={() => { }}
+        value=''
+        folder={props.modalImages}
+        management={true}
+        images={{ index: 0 }}
+      />
+    </Modals>
+  );
+}
 
+var ModalSavedDashboard = (props) => {
+  return (
+    <Modals
+      show={props.modalShow === 'savedDashboard'}
+      title='Saved dashboard management'
+    >
+      <SavedDashboard
+        handleInput={() => { }}
+        group={0}
+        submitLoad={() => { }}
+        management={true}
+      />
+    </Modals>
+  );
+}
+
+ModalSavedDashboard = connect(mapStateToProps)(ModalSavedDashboard)
+ModalImages = connect(mapStateToProps)(ModalImages)
 const AllModals = (props) =>
-  <div>
-    <ModalDashboard show={props.modalShow === 'addDashboard'} rest={props.modalRest}
-      group={props.modalGroup} onHide={() => closeModal()} />
-    <ModalEditDashboard
-      dashboard={props.modalDashboard} show={props.modalShow === 'editDashboard'} rest={props.modalRest}
-      group={props.modalGroup} onHide={() => closeModal()} />
-  </div>
+  <>
+    <ModalDashboard />
+    <ModalEditDashboard/>
+    <ModalBroadcast />
+    <ModalSettings />
+    <ModalImages />
+    <ModalSavedDashboard />
+    <ModalEditDisplay />
+  </>
 
 function mapStateToProps(state) {
   return ({
-      modalDashboard: state.modal.dashboard,
-      modalGroup: state.modal.group,
-      modalRest: state.modal.rest,
-      modalShow: state.modal.show
+    modalShow: state.modal.show,
+    modalImages: state.modal.images
   });
 }
 

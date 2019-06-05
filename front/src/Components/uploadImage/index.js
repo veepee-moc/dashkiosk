@@ -25,7 +25,7 @@ const UploadImage = (props) => {
           props.reload();
           toast.success('Successfully added image!');
          })
-        .catch((err) => {toast.error(`Failed to upload image: File too large or memory limit reached`); setIsLoading(false); console.log(err)});
+        .catch((err) => {toast.error(`Failed to upload image: File too large, memory limit reached or bad file`); setIsLoading(false); console.log(err)});
   }
 
   return (

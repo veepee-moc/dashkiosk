@@ -6,6 +6,9 @@ import { IoIosSave } from 'react-icons/io';
 import Swap from '../../Swap';
 import DashboardSelection from './dashboardSelection';
 import SavedDashboard from './savedDashboard';
+import Store from '../../../Store';
+import { connect } from 'react-redux';
+import { Types, action } from '../../../Actions';
 import ImportedImage from '../../uploadImage/importedImage';
 import NewDashboard from './newDashboard';
 
@@ -95,7 +98,7 @@ class ModalDashboard extends Component {
       }
     };
     this.props.rest.addDashboard(body);
-    this.props.onHide();
+    this.closeModal();
   }
 
   isValidViewport = () => {
@@ -144,7 +147,7 @@ class ModalDashboard extends Component {
       this.props.rest.saveDashboard(body);
     this.props.rest.addDashboard(body);
     this.reinitialise();
-    this.props.onHide();
+    this.closeModal();
   }
 
   validateImage = () => {
@@ -159,17 +162,24 @@ class ModalDashboard extends Component {
     }
   }
 
+  closeModal = () => {
+    Store.dispatch(action(Types.SetModal, {
+      modal: {
+        show: false
+      }
+    }));
+  }
+
   render() {
     const importedImagesValue = 
     ((this.state.images.name === 'Url')
       ? this.state[this.state.images.name][this.state.images.index]
       : this.state[this.state.images.name]) 
     const template = this.state.chosedTemplate;
-    if (!this.props.show)
-      return '';
     return (
       <Modal
-        {...this.props}
+        rest={this.props.rest} group={this.props.group}
+        show={this.props.show === 'addDashboard'} onHide={this.closeModal}
         className='onTop'
         size='lg'
         aria-labelledby="contained-modal-title-vcenter"
@@ -226,7 +236,7 @@ class ModalDashboard extends Component {
           </Modal.Body>
           <Modal.Footer>
             {!this.state.newDashboard
-              ? <Button onClick={() => { this.setState({ submitLoad: true }, () => this.props.onHide()) }}>
+              ? <Button onClick={() => { this.setState({ submitLoad: true }, () => this.closeModal()) }}>
                   Add dashboard
                 </Button>
               : this.state.images
@@ -275,4 +285,12 @@ class ModalDashboard extends Component {
   }
 }
 
-export default ModalDashboard;
+function mapStateWithProps(state) {
+  return {
+    show: state.modal.show,
+    group: state.modal.group,
+    rest: state.modal.rest,
+  };
+}
+
+export default connect(mapStateWithProps)(ModalDashboard);

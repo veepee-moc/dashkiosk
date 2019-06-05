@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ModalEditDisplay from '../Modals/editDisplay';
 import Rest from '../Group/Rest';
 import './Display.css';
 import {IoIosWifi} from 'react-icons/io';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 
 class Display extends Component {
     constructor(props) {
@@ -16,8 +17,6 @@ class Display extends Component {
             showModal: false,
         };
         this.Rest = new Rest(this.props.groupIndex);
-        this.closeModal = this.closeModal.bind(this);
-        this.openModal = this.openModal.bind(this);
     }
 
     updateDisplay() {
@@ -30,36 +29,36 @@ class Display extends Component {
         }
     }
 
-    closeModal() {
-        this.setState({ showModal: false });
-    }
-
-    openModal() {
-        this.setState({ showModal: true });
+    openModal = () => {
+        Store.dispatch(action(Types.SetModal, {
+            modal: {
+                show: 'editDisplay',
+                display: this.props.display,
+                rest: this.Rest
+            }
+        }));
     }
 
     componentDidMount() {
         this.updateDisplay();
     }
-
+    
     componentDidUpdate(prevProps) {
         if (this.props.display !== prevProps.display) {
             this.updateDisplay();
         }
     }
-
+    
     render() {
         return (
             <div>
-                <div onClick={this.openModal} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
+                <div onClick={() => this.openModal()} className={"embed-responsive embed-responsive-16by9 rounded display" + (this.state.on ? " on" : "")}>
                     <IoIosWifi hidden={(this.props.display && !this.props.display.chromecast ? true : false)} className="ml-2 chromecastIcon absolute left bottom" />
                     <div className="embed-responsive-item content">
                         <p className="text-monospace text-light mb-0 innerDisplay">{this.state.name}</p>
                         <p className="text-monospace text-light font-italic displayName">{this.state.description}</p>
                     </div>
                 </div>
-                <ModalEditDisplay rest={this.Rest} display={this.props.display}
-                    show={this.state.showModal} onHide={this.closeModal} />
             </div>
         );
     }

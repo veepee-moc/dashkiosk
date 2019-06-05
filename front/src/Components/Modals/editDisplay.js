@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button, Container, Form } from 'react-bootstrap';
 import FormInput from './formInput';
+import { connect } from 'react-redux';
 import { IoIosTrash } from 'react-icons/io'
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 
 class ModalEditDisplay extends Component {
   constructor(props) {
@@ -15,7 +18,7 @@ class ModalEditDisplay extends Component {
 
   deleteDisplay = () => {
     this.props.rest.deleteDisplay(this.props.display.name);
-    this.props.onHide();
+    this.closeModal();
   }
 
   handleSubmit = (event) => {
@@ -26,7 +29,7 @@ class ModalEditDisplay extends Component {
     event.preventDefault();
     if (display.description !== this.props.display.description || display.viewport !== this.props.display.viewport)
       this.props.rest.editDisplay(display, this.props.display.name);
-    this.props.onHide();
+    this.closeModal();
   }
 
   handleInput = (inputName, inputValue) => {
@@ -41,10 +44,18 @@ class ModalEditDisplay extends Component {
     return true;
   }
 
+  closeModal = () => {
+    Store.dispatch(action(Types.SetModal, {
+      modal: {
+        show: false
+      }
+    }));
+  }
+
   render() {
     if (this.props.display) {
       return (
-        <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+        <Modal show={this.props.show === 'editDisplay'} onHide={() => this.closeModal()} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
           <Form
             onSubmit={this.handleSubmit}
             noValidate
@@ -78,4 +89,12 @@ class ModalEditDisplay extends Component {
   }
 }
 
-export default ModalEditDisplay;
+function mapStateToProps(state) {
+  return ({
+      rest: state.modal.rest,
+      display: state.modal.display,
+      show: state.modal.show,
+  });
+}
+
+export default connect(mapStateToProps)(ModalEditDisplay);
