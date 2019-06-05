@@ -45,7 +45,7 @@ var ModalSavedDashboard = (props) => {
 
 ModalSavedDashboard = connect(mapStateToProps)(ModalSavedDashboard)
 ModalImages = connect(mapStateToProps)(ModalImages)
-const AllModals = (props) =>
+const AllModals = () =>
   <>
     <ModalDashboard />
     <ModalEditDashboard/>
@@ -63,4 +63,4 @@ function mapStateToProps(state) {
   });
 }
 
-export default connect(mapStateToProps)(AllModals);
+export default AllModals;
