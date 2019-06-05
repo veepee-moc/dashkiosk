@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Types, action } from '../../Actions';
 import Store from '../../Store';
 import Rest from './Rest';
@@ -96,9 +97,9 @@ class SideMenu extends Component {
 				</button>
 				<ul className="container nav flex-column px-0">
 					<li className="nav-item">
-						<button className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+						<Link to="/history" className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
 							<IoMdTime width="20" height="20" /> History
-            </button>
+            </Link>
 					</li>
 					<li className="nav-item">
 						<a className="btn btn-noframe-light d-block w-100 rounded-0 text-left"

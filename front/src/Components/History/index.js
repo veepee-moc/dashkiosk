@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import { IoMdReturnLeft } from 'react-icons/io';
 import { Types, action } from '../../Actions';
 import './History.css';
 
@@ -53,7 +55,7 @@ const History = ({historyLogs, setLogs}) => {
         if (!(page >= nbPage-3))
             arr.push({page: nbPage});
         return (
-            <span>
+            <span className="absolute center">
                 { arr.map((button, key) => <button key={key} className="btn btn-light" onClick={() => changePage(button.page)}>{button.page}</button> ) }
             </span>
         );
@@ -71,7 +73,10 @@ const History = ({historyLogs, setLogs}) => {
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="mr-auto">
-                    <button className="btn btn-light " onClick={ () => getLogs(page, limit, setLogs) }>
+                    <Link to="/admin" className="btn btn-dark mr-3">
+                        <IoMdReturnLeft className="mr-1" /> Back to admin
+                    </Link>
+                    <button className="btn btn-dark mr-3" onClick={ () => getLogs(page, limit, setLogs) }>
                         Refresh
                     </button>
                     { renderPages() }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IoMdMenu } from 'react-icons/io';
 import Store from '../../Store';
@@ -25,9 +25,9 @@ class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-sm navbar-light bg-white fixed-top border-bottom">
                 <Swap className="navbar-brand navbar-logo-centered" control={ this.props.socketConnected }>
-                    <a className="navbar-brand navbar-logo-centered" href="/receiver" draggable="false">
+                    <Link className="navbar-brand navbar-logo-centered" to="/receiver" draggable="false">
                         <img src={dashkioskIcon} width="50" height="50" alt="dashkiosk icon" draggable="false" />
-                    </a>
+                    </Link>
                     <div className="nav-item spinner-grow text-dark navbar-spinner-size">
                         <span className="sr-only">Loading...</span>
                     </div>
