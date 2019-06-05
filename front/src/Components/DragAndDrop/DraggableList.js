@@ -6,8 +6,7 @@ const DraggableList = ({ droppableId, children, ...props }) => {
         <Droppable droppableId={`${droppableId}`}>
             {(provided) => (
                 <div
-                    className={props.className}
-                    style={props.style}
+                    {...props}
                     {...provided.droppableProps}
                     ref={provided.innerRef}>
                     {React.Children.map(children, (child, index) => (
