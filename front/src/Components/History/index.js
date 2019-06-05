@@ -103,7 +103,7 @@ const History = ({historyLogs, setLogs}) => {
                     { historyLogs.map((log, key) =>
                         <tr key={key}>
                             <th scope="row">{(key+1)+((page-1)*limit)}</th>
-                            <td className="text-nowrap">{log.email}ccornut@vente-privee.com</td>
+                            <td className="text-nowrap">{log.email}</td>
                             <td>{log.originalMethod}</td>
                             <td className="text-nowrap">{log.refererUrl}</td>
                             <td>{log.originalUrl}</td>
