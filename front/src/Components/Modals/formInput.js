@@ -113,23 +113,6 @@ class FormInput extends Component {
         onClick={() => this.props.openImageManagement(this.props.name, this.props.index, this.props.dataName)}>
         <IoMdImages size='22'/>
       </Button>
-      /*return (
-        <div className='align-items-center' style={/*this.props.name === 'unassigned' ? uploadStyleWithoutRadius : *//*uploadStyle}>
-          <input
-            title='file'
-            style={{ display: 'none' }}
-            id={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
-            type='file'
-            onChange={event => this.uploadImage(event)}
-          />
-          <label
-            htmlFor={`${this.props.name}fileUpload${this.props.index ? this.props.index : ''}`}
-            style={{ height: '100%', cursor: 'pointer' }}
-          >
-            <Col className='d-flex align-items-center mt-2'><IoMdImages size='25' /></Col>
-          </label>
-        </div>
-      );*/
     }
   }
 
@@ -162,9 +145,15 @@ class FormInput extends Component {
             value={this.props.value}
             size='lg'
             type={this.props.type}
+            onKeyDown={(evt) => {
+              if (this.props.type === 'number' && !(evt.keyCode < 32 || (evt.keyCode >= 48 && evt.keyCode <= 57) || evt.keyCode === 127)) {
+                evt.preventDefault();
+                return false;
+              }
+            }}
             placeholder={this.props.placeholder}
             aria-describedby="inputGroupPrepend"
-            onChange={(event) => { this.props.updateValue(this.props.name, event.target.value, event, this.props.index) }}
+            onChange={(event) => this.props.updateValue(this.props.name, event.target.value, event, this.props.index)}
             isInvalid={this.props.isInvalid}
           />
           <InputGroup.Append>

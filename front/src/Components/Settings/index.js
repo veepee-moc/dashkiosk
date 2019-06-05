@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
 import Moment from 'moment-timezone';
+import Store from '../../Store';
 import ImportedImage from '../uploadImage/importedImage';
 import { IoMdImage, IoMdColorPalette, IoMdAdd, IoMdTime } from 'react-icons/io';
 import './Settings.css';
@@ -63,7 +64,7 @@ class ModalSettings extends Component {
     event.preventDefault();
     Axios.put('/api/settings/config', { config: this.state })
       .then(() => {
-        this.props.onHide();
+        this.closeModal();
         toast.success('Successfully updated settings');
       })
       .catch((err) => {
@@ -223,6 +224,14 @@ class ModalSettings extends Component {
     );
   }
 
+  closeModal = () => {
+    Store.dispatch(action(Types.SetModal, {
+      modal: {
+        show: false
+      }
+    }));
+  }
+
   render() {
     const importedImagesValue = this.state.images
       ? (this.state.images.name === 'unassigned'
@@ -230,7 +239,7 @@ class ModalSettings extends Component {
         : this.state[this.state.images.name]) 
       : '';
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal show={this.props.show === 'settings'} onHide={this.closeModal} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate
@@ -346,7 +355,8 @@ class ModalSettings extends Component {
 
 function mapStateToProps(state) {
   return ({
-    settings: state.settings
+    settings: state.settings,
+    show: state.modal.show
   });
 }
 

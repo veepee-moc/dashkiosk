@@ -5,6 +5,9 @@ import ImportedImage from '../../uploadImage/importedImage';
 import FormInput from '../formInput';
 import Availability from '../availability';
 import AnimatedSwap from '../../Swap/Animated';
+import Store from '../../../Store';
+import { connect } from 'react-redux';
+import { Types, action } from '../../../Actions';
 import MultiDashboardEdit from '../MultiDashboardEdit';
 
 class ModalEditDashboard extends Component {
@@ -71,7 +74,7 @@ class ModalEditDashboard extends Component {
 
   deleteDashboard = () => {
     this.props.rest.deleteDashboard(this.props.dashboard.id, this.props.dashboard.url);
-    this.props.onHide();
+    this.closeModal();
   }
 
   handleSubmit = (event) => {
@@ -92,7 +95,7 @@ class ModalEditDashboard extends Component {
       this.props.rest.saveDashboard(body);
     }
     this.props.rest.editDashboard(body, this.props.dashboard.id, this.props.url);
-    this.props.onHide();
+    this.closeModal();
   }
 
   setTime = (time, value) => {
@@ -169,12 +172,24 @@ class ModalEditDashboard extends Component {
     }
   }
 
+  closeModal = () => {
+    Store.dispatch(action(Types.SetModal, {
+      modal: {
+        show: false
+      }
+    }));
+  }
+
   render() {
     const importedImagesValue = this.state.images
     ? this.state[this.state.images.name]
     : '';
     return (
-      <Modal {...this.props} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal rest={this.props.rest}
+        group={this.props.group}
+        dashboard={this.props.dashboard}
+        show={this.props.show === 'editDashboard'}
+        onHide={this.closeModal} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate
@@ -298,4 +313,13 @@ class ModalEditDashboard extends Component {
   }
 }
 
-export default ModalEditDashboard;
+function mapStateWithProps(state) {
+  return {
+    dashboard: state.modal.dashboard,
+    show: state.modal.show,
+    group: state.modal.group,
+    rest: state.modal.rest,
+  };
+}
+
+export default connect(mapStateWithProps)(ModalEditDashboard);

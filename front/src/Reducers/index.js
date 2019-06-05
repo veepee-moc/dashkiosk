@@ -48,10 +48,12 @@ const initialState = {
 		unassigned: []
 	},
 	modal: {
-		group: null,
-		rest: null,
+		group: {},
+		rest: {},
 		dashboard: {},
-		show: false
+		show: false,
+		display: {},
+		images: ''
 	},
 	history: {
 		historyLogs: []

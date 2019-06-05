@@ -5,6 +5,8 @@ import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage, 
 import FormInput from './formInput';
 import Axios from 'axios';
 import Collapse from '../Collapse';
+import Store from '../../Store';
+import { Types, action } from '../../Actions';
 import ImportedImage from '../uploadImage/importedImage';
 import { toast } from 'react-toastify';
 
@@ -69,7 +71,7 @@ class ModalBroadcast extends Component {
   }
 
   handleInput = (inputName, inputValue) => {
-    if ((inputName === 'Timeout' && inputValue <= 0) || (inputName === 'Delay' && inputValue <= 0))
+    if ((inputName === 'Timeout' || inputName === 'Delay') && inputValue <= 0)
       inputValue = '';
     this.setState({ [inputName]: inputValue });
   }
@@ -135,7 +137,7 @@ class ModalBroadcast extends Component {
     };
     this.restSendBroadcast(body);
     this.reinitialise();
-    this.props.onHide();
+    this.closeModal();
   }
 
   toggleGroup = (i) => {
@@ -227,12 +229,20 @@ class ModalBroadcast extends Component {
     this.setState({ images: false });
   }
 
+  closeModal = () => {
+    Store.dispatch(action(Types.SetModal, {
+      modal: {
+        show: false
+      }
+    }));
+  }
+
   render() {
     const importedImagesValue = this.state.images
       ? this.state[this.state.images.name]
       : '';
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
+      <Modal show={this.props.show === 'broadcast'} onHide={this.closeModal} className='onTop' size='lg' aria-labelledby="contained-modal-title-vcenter">
         <Form
           onSubmit={this.handleSubmit}
           noValidate
@@ -287,6 +297,7 @@ class ModalBroadcast extends Component {
                           </InputGroup.Text>
                         </InputGroup.Prepend>
                         <Form.Control
+                          className='custom-select custom-select-lg'
                           size='lg'
                           as='select'
                           value={this.state.watermarkPosition}
@@ -331,7 +342,7 @@ class ModalBroadcast extends Component {
                     </Button>
               </>
               :
-              <Button disabled={this.handleError()} type="submit">Save</Button>
+              <Button disabled={this.handleError()} type="submit">Send</Button>
             }
           </Modal.Footer>
         </Form>
@@ -343,7 +354,8 @@ class ModalBroadcast extends Component {
 function mapStateWithProps(state) {
   state.admin.groupTags.forEach(tag => tag.enable = true);
   return {
-    groupTags: state.admin.groupTags
+    groupTags: state.admin.groupTags,
+    show: state.modal.show
   };
 }
 

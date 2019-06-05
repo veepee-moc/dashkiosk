@@ -18,49 +18,8 @@ import {
 	IoMdBookmarks
 } from 'react-icons/io';
 import Collapse from '../Collapse';
-import ModalBroadcast from '../Modals/broadcast';
-import ModalSettings from '../Settings';
-import Modals from '../Modals';
 import GroupTagsMenu from './GroupTagsMenu';
 import './SideMenu.css';
-import ImportedImage from '../uploadImage/importedImage';
-import SavedDashboard from '../Modals/dashboard/savedDashboard';
-
-function ModalImages(props) {
-	return (
-		<Modals 
-			show={props.show} 
-			onHide={props.onHide} 
-			title='Imported images management'
-			subtitle={`${props.folder}`}
-		>
-			<ImportedImage
-				handleInput={() => {}}
-				images={props.images}
-				value={props.images.value}
-				folder={props.folder} 
-				management={true} 
-			/>
-		</Modals>
-	);
-}
-
-function ModalDashboards(props) {
-	return (
-		<Modals 
-			show={props.show} 
-			onHide={props.onHide}
-			title='Saved dashboard management'
-		>
-			<SavedDashboard
-				handleInput={() => {}}
-				group={props.group}
-				submitLoad={() => {}}
-				management={true} 
-			/>
-		</Modals>
-	);
-}
 
 class SideMenu extends Component {
 	constructor(props) {
@@ -90,8 +49,13 @@ class SideMenu extends Component {
 		}
 	}
 
-	openBroadcast = () => {
-		this.setState({ broadcast: true, settings: false });
+	openModal = (modalName, modalParam) => {
+		Store.dispatch(action(Types.SetModal, {
+      modal: {
+				show: modalName,
+				...modalParam
+      }
+    }));
 	}
 
 	addNewGroup = () => {
@@ -146,7 +110,7 @@ class SideMenu extends Component {
 					</li>
 					<hr className="border-bottom w-90 my-2" />
 					<li className="nav-item">
-						<button onClick={this.openBroadcast}
+						<button onClick={() => this.openModal('broadcast')}
 							className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
 							<IoMdWifi width="20" height="20" /> Broadcast
                         </button>
@@ -188,7 +152,7 @@ class SideMenu extends Component {
 					</li>
 					<hr className="border-bottom w-90 my-2" />
 					<li className="nav-item">
-						<button onClick={() => { this.setState({ settings: false, broadcast: false, images: false, dashboards: true }) }}
+						<button onClick={() => this.openModal('savedDashboard')}
 							className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
 							<IoMdBookmarks width="20" height="20" /> Dashboards
             </button>
@@ -201,19 +165,13 @@ class SideMenu extends Component {
 						</button>
 						<Collapse collapsed={this.state.imagesCollapsed}>
 							<div className="bg-light mx-auto text-left">
-								<button className="btn btn-block btn-noframe-dark vcenter rounded-0" onClick={() => this.setState({
-									settings: false, broadcast: false, images: 'dashboard', dashboards: false
-								})}>
+								<button className="btn btn-block btn-noframe-dark vcenter rounded-0" onClick={() => this.openModal('savedImage', {images: 'dashboard'})}>
 									Dashboards
 								</button>
-								<button className="btn btn-block btn-noframe-dark vcenter mt-0 rounded-0" onClick={() => this.setState({
-									settings: false, broadcast: false, images: 'unassigned', dashboards: false
-								})}>
+								<button className="btn btn-block btn-noframe-dark vcenter mt-0 rounded-0" onClick={() => this.openModal('savedImage', {images: 'unassigned'})}>
 									Unassigned
 								</button>
-								<button className="btn btn-block btn-noframe-dark vcenter mt-0 rounded-0" onClick={() => this.setState({
-									settings: false, broadcast: false, images: 'brand', dashboards: false
-								})}>
+								<button className="btn btn-block btn-noframe-dark vcenter mt-0 rounded-0" onClick={() => this.openModal('savedImage', {images: 'brand'})}>
 									Branding
 								</button>
 							</div>
@@ -221,7 +179,7 @@ class SideMenu extends Component {
 					</li>
 					<hr className="border-bottom w-90 my-2" />
 					<li className="nav-item">
-						<button onClick={() => { this.setState({ settings: true, broadcast: false }) }}
+						<button onClick={() => this.openModal('settings')}
 							className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
 							<IoMdSettings width="20" height="20" /> Settings
             </button>
@@ -232,21 +190,6 @@ class SideMenu extends Component {
             </a>
 					</li>
 				</ul>
-				<ModalBroadcast show={this.state.broadcast} onHide={() => { this.setState({ broadcast: false }) }} />
-				<ModalSettings
-					show={this.state.settings}
-					onHide={() => { this.setState({ settings: false }) }}
-				/>
-				<ModalDashboards
-					show={this.state.dashboards}
-					onHide={() => { this.setState({ dashboards: false }) }}
-				/>
-				<ModalImages
-					show={this.state.images}
-					images={{ index: 0, name: 'test', folderName: 'unassigned' }}
-					folder={this.state.images}
-					onHide={() => { this.setState({ images: false }) }}
-				/>
 			</div>
 		);
 	}
