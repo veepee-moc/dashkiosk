@@ -30,10 +30,8 @@ class Display extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      if (this.props.reloadRequired) {
-        this.props.setStoreState({
-          reloadRequired: false
-        });
+      if (this.props.reloadRequired && !this.props.isPreview) {
+        window.location.reload();
       }
       let screenToUpdate = `screen${this.state.displayed === 1 ? 2 : 1}`;
       this.updateScreenWithDashboard(screenToUpdate, this.props.dashboardToDisplay);

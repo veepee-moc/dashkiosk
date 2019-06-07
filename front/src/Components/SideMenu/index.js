@@ -97,7 +97,7 @@ class SideMenu extends Component {
 				</button>
 				<ul className="container nav flex-column px-0">
 					<li className="nav-item">
-						<Link to="/history" className="btn btn-noframe-light d-block w-100 rounded-0 text-left">
+						<Link to="/history" className="btn btn-noframe-light d-block w-100 rounded-0 text-left" onClick={this.closeSideMenu}>
 							<IoMdTime width="20" height="20" /> History
             </Link>
 					</li>
