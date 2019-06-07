@@ -341,7 +341,7 @@ class ModalSettings extends Component {
                   Cancel
                 </Button>
                 <Button type='button' onClick={() => this.validateImage()}>
-                  Add dashboard
+                  Add image
                 </Button>
               </>
               : <Button disabled={this.handleError()} type="submit">Save</Button>
