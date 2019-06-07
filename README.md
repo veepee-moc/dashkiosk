@@ -1,74 +1,61 @@
-# Dashkiosk
+# dashkeeosk
 
-[![Build Status](https://secure.travis-ci.org/vincentbernat/dashkiosk.png?branch=master)](https://travis-ci.org/vincentbernat/dashkiosk)
+[![License][license-img]][license-href]
+[![docker][docker-img]][docker-href]
 
-Dashkiosk is a solution to manage dashboards on multiple screens. It
-comes as four components:
+1. [Overview](#overview)
+2. [Description](#description)
+3. [Setup](#setup)
+4. [Usage](#usage)
+5. [Limitations](#limitations)
+6. [Development](#development)
+7. [Miscellaneous](#miscellaneous)
 
- 1. A _receiver_ runs in a browser attached to each screen and will
-    display the requested dashboards. The receiver is quite dumb, it
-    contacts the server and wait for it to tell which URL to display.
+## Overview
 
- 2. A _server_ which will manage the screens by sending them what they
-    should display. An administration interface allows the user to
-    manage those screens individually or in a group.
-    
- 3. An _Android app_ that will run the receiver. This is mainly a
-    fullscreen webview. There is also a _Firefox app_ fulfilling the
-    same purpose.
+Veepee  fork of  [dashkiosk][overview-href]  originally  developed by  [Vincent
+Bernat][vincentbernat-href]. Managing dashboards on various displays.
 
- 4. A _Chromecast custom receiver_ which will run the regular receiver
-    if you want to display dashboards using Google Chromecast devices.
+Veepee  run  [dashkiosk][overview-href]  on   over  75  screens  around  Europe
+since 2017. We are very grateful to [Vincent Bernat][vincentbernat-href].
 
-The full documentation is available on [ReadTheDocs][].
+## Description
 
-[ReadTheDocs]: https://dashkiosk.readthedocs.io
+WIP.
 
-A live installation, reset every hour, is publicly available:
- - [administration panel](https://dashkiosk-demo.herokuapp.com/admin)
- - [receiver](http://dashkiosk-demo.herokuapp.com/receiver)
+## Setup
 
-Here is a demonstration video:
+WIP.
 
-[![Dashkiosk demo](https://img.youtube.com/vi/Vb4BvEzoYOU/0.jpg)](https://www.youtube.com/watch?v=Vb4BvEzoYOU "Dashkiosk demo")
+## Usage
 
-# Development
+WIP.
 
-To fetch dependencies:
+## Limitations
 
-    $ yarn
+Currently no limitations.
 
-To run the server for development:
+## Development
 
-    $ grunt serve
+Please read carefully [CONTRIBUTING.md][contribute-href]  before making a merge
+request.
 
-# Android receiver
+## Miscellaneous
 
-The Android receiver has moved to its
-[own repository](https://github.com/vincentbernat/dashkiosk-android).
+```
+    ╚⊙ ⊙╝
+  ╚═(███)═╝
+ ╚═(███)═╝
+╚═(███)═╝
+ ╚═(███)═╝
+  ╚═(███)═╝
+   ╚═(███)═╝
+```
 
-# Chromecast receiver
-
-The "official" Chromecast receiver has app ID `5E7A2C2C` and is hosted
-in the `gh-pages` branch of this repository. To update it:
-
-    $ grunt dist
-    $ git worktree add ~/src/dashkiosk-gh-pages gh-pages
-    $ cd ~/src/dashkiosk-gh-pages
-    $ git rm -r *
-    $ rsync -rv --include '*chromecast*' --include '*/' --exclude '*' ~-dashkiosk/dist/public/* .
-    $ git add *
-    $ git commit -m "Update"
-
-# Docker
-
-There is a `Dockerfile` to run *Dashkiosk* inside Docker. In this
-case, it is unlikely that Chromecast will work as expected. You can
-run this container like this:
-
-    $ docker run -d -p 8080:8080 \
-                 -v /var/lib/dashkiosk/database:/database \
-                 vincentbernat/dashkiosk:latest
-
-Using `latest` can be broken from time to time. You may prefer a
-stable tag, like `2.6.1`.
+[license-img]: https://img.shields.io/badge/license-ISC-blue.svg
+[license-href]: LICENSE
+[docker-img]: https://img.shields.io/docker/pulls/vptech/dashkeeosk.svg
+[docker-href]: https://hub.docker.com/r/vptech/dashkeeosk/
+[overview-href]: https://github.com/vincentbernat/dashkiosk
+[vincentbernat-href]: https://github.com/vincentbernat
+[contribute-href]: CONTRIBUTING.md

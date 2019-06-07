@@ -1,0 +1,86 @@
+---
+
+# build template
+.build:
+  stage: build
+  image: docker:latest
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - image
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
+# test template
+.test:
+  stage: test
+  image: docker:latest
+  before_script:
+    - docker load -i image/v3.0.0.tar
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
+# deploy template
+.deploy:
+  stage: deploy
+  image: docker:latest
+  before_script:
+    - docker login -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
+    - docker load -i image/v3.0.0.tar
+  only:
+    - master
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay
+
+stages:
+  - lint
+  - build
+  - test
+  - deploy
+
+# lint
+dockerlint:
+  stage: lint
+  image: vptech/linter:docker
+  script:
+    - find . -type f -name "Dockerfile" | xargs -I {} dockerlint {}
+
+# build
+v3.0.0:build:
+  extends: .build
+  script:
+    - docker build --rm --tag dashkeeosk:3.0.0 .
+    - mkdir image
+    - docker save dashkeeosk:3.0.0 > image/v3.0.0.tar
+
+# test
+v3.0.0:test:
+  extends: .test
+  script:
+    - docker run dashkeeosk:3.0.0 --version
+
+# deploy
+# https://hub.docker.com/u/vpgrp/
+vpgrp:
+  extends: .deploy
+  script:
+    - docker tak dashkeeosk:3.0.0  vpgrp/dashkeeosk:3.0.0
+    - docker tag dashkeeosk:latest vpgrp/dashkeeosk:latest
+    - docker push vpgrp/dashkeeosk:3.0.0
+    - docker push vpgrp/dashkeeosk:latest
+
+# https://hub.docker.com/u/vptech/
+vptech:
+  extends: .deploy
+  script:
+    - docker tak dashkeeosk:3.0.0  vptech/dashkeeosk:3.0.0
+    - docker tag dashkeeosk:latest vptech/dashkeeosk:latest
+    - docker push vptech/dashkeeosk:3.0.0
+    - docker push vptech/dashkeeosk:latest
+# EOF
