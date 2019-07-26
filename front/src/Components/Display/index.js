@@ -16,7 +16,7 @@ class Display extends Component {
             on: true,
             showModal: false,
         };
-        this.Rest = new Rest(this.props.groupIndex);
+        this.Rest = Rest;
     }
 
     updateDisplay() {
@@ -66,7 +66,7 @@ class Display extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        display: state.admin.groups[ownProps.groupIndex].displays[ownProps.displayKey]
+        display: state.Data.Displays.find(obj => obj.id === ownProps.displayId)
     };
 }
 

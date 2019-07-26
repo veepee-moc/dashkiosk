@@ -5,15 +5,15 @@ import Rest from './Rest';
 import Droppable from '../DragAndDrop/Droppable';
 import GroupHeader from './GroupHeader';
 import GroupBody from './GroupBody';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 
 class Group extends Component {
     constructor(props) {
         super(props);
         this.state = {
         };
-        this.Rest = new Rest(this.props.groupIndex);
+        this.Rest = Rest;
         this.onDrop = this.onDrop.bind(this);
         this.openModal = this.openModal.bind(this);
     }
@@ -21,13 +21,13 @@ class Group extends Component {
     onDrop(dropEffect, dnd) {
         switch (dnd.type) {
             case "Display":
-                this.Rest.moveDisplay(dnd.object.props.groupIndex, dnd.object.props.displayKey);
+                this.Rest.moveDisplay(dnd.object.props.displayId);
                 return;
             case "Dashboard":
                 if (dropEffect === "move")
-                    this.Rest.moveDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                    this.Rest.moveDashboard(dnd.object.props.dashboardKey);
                 else if (dropEffect === "copy")
-                    this.Rest.copyDashboard(dnd.object.props.groupIndex, dnd.object.props.dashboardKey);
+                    this.Rest.copyDashboard(dnd.object.props.dashboardKey);
                 return;
             case "GroupTag":
                 this.Rest.addTagToGroup(dnd.object.props.tagid);
@@ -51,9 +51,9 @@ class Group extends Component {
         return (
             <Droppable types={["Display", "Dashboard", "GroupTag"]} onDrop={ this.onDrop }>
                 <div className="card">
-                    <GroupHeader groupIndex={ this.props.groupIndex } searched={ this.props.searched }
+                    <GroupHeader groupId={ this.props.groupId } searched={ this.props.searched }
                         onToggleGroupMenu={ (toggle) => this.setState({ toggleGroupMenu: toggle }) } />
-                    <GroupBody groupIndex={ this.props.groupIndex } toggleGroupMenu={ this.state.toggleGroupMenu } />
+                    <GroupBody groupId={ this.props.groupId } toggleGroupMenu={ this.state.toggleGroupMenu } />
                     <div className="btn-group btn-group-sm">
                         <button type="button" className="btn btn-light w-50 border-right rounded-0"
                             onClick={() => this.openModal()}>
@@ -71,7 +71,7 @@ class Group extends Component {
 
 function mapStateToProps(state, ownProps) {
     return ({
-        group: state.admin.groups[ownProps.groupIndex]
+        group: state.Data.Groups.find(g => g.id === ownProps.groupId)
     });
 }
 

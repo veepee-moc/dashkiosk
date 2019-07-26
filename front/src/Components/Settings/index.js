@@ -355,8 +355,8 @@ class ModalSettings extends Component {
 
 function mapStateToProps(state) {
   return ({
-    settings: state.settings,
-    show: state.modal.show
+    settings: state.Settings,
+    show: state.Modal.show
   });
 }
 

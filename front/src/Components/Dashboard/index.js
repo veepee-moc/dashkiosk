@@ -19,7 +19,7 @@ class Dashboard extends Component {
             description: '',
             id: 0
         };
-        this.rest = new Rest(this.props.groupIndex);
+        this.rest = Rest;
         this.openModal = this.openModal.bind(this);
         this.updateDashboard = this.updateDashboard.bind(this);
     }
@@ -51,7 +51,7 @@ class Dashboard extends Component {
     openModal() {
         Store.dispatch(action(Types.SetModal, {
             modal: {
-                group: { id: this.props.groupIndex },
+                group: { id: this.props.groupId },
                 rest: this.rest,
                 dashboard: this.props.dashboard,
                 show: 'editDashboard'
@@ -93,7 +93,7 @@ class Dashboard extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        dashboard: state.admin.groups[ownProps.groupIndex].dashboards[ownProps.dashboardKey]
+        dashboard: state.Data.Dashboards.find(obj => obj.id === ownProps.dashboardId)
     };
 }
 

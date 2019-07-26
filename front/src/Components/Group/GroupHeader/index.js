@@ -19,7 +19,7 @@ class GroupHeader extends Component {
         this.state = {
             toggleGroupMenu: false
         };
-        this.Rest = new Rest(this.props.groupIndex);
+        this.Rest = Rest;
         this.handleToggleGroupMenu = this.handleToggleGroupMenu.bind(this);
     }
 
@@ -35,7 +35,7 @@ class GroupHeader extends Component {
                 <div className="float-right">
                     <div>
                         <Swap className="float-left" control={ this.props.group.empty }>
-                            <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.Rest.deleteGroup }>
+                            <button className={`btn btn-noframe-dark p-1 pl-2 pr-2 ${ this.props.group.id === 1 ? "hidden" : "" }`} onClick={ this.Rest.deleteGroup }>
                                 <IoMdTrash />
                             </button>
                             <div hidden={ !this.props.group.displayConnected }>
@@ -68,25 +68,12 @@ class GroupHeader extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
-    const group = state.admin.groups[ownProps.groupIndex];
-    if (group)
-        return {
-            group: {
-                name: group.name,
-                description: group.description,
-                empty: Object.keys(group.displays).length === 0,
-                displayConnected: Object.values(group.displays).find((obj) => obj.connected) !== undefined
-            }
-        };
-    else
-        return {
-            group: {
-                name: "Unknown",
-                description: "Can't find this group",
-                empty: true,
-                displayConnected: false
-            }
-        }
+    return { 
+        group: Object.assign({}, state.Data.Groups.find(g => g.id === ownProps.groupId), {
+            empty: state.Data.Displays.find(obj => obj.groupId === ownProps.groupId) === undefined,
+            displayConnected: state.Data.Displays.find((obj) => obj.connected) !== undefined
+        })
+    };
 }
 
 export default connect(mapStateToProps)(GroupHeader);

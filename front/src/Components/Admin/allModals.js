@@ -58,8 +58,8 @@ const AllModals = () =>
 
 function mapStateToProps(state) {
   return ({
-    modalShow: state.modal.show,
-    modalImages: state.modal.images
+    modalShow: state.Modal.show,
+    modalImages: state.Modal.images
   });
 }
 

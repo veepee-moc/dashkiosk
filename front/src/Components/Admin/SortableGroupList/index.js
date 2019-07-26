@@ -1,0 +1,34 @@
+import React from 'react';
+import { SortableElement, SortableContainer } from 'react-sortable-hoc';
+import Group from '../../Group';
+
+const SortableGroup = SortableElement(({ passedProps, groupWidth }) => {
+    return (
+        <li className="list-layout-item d-inline-block" style={{ width: groupWidth, maxWidth: groupWidth }}>
+            <Group {...passedProps} />
+        </li>
+    );
+});
+
+const SortableList = SortableContainer(({ items }) => {
+    return (
+        <ul className="list-layout">
+            {items}
+        </ul>
+    );
+});
+
+const SortableGroupList = ({ groups, searched, groupWidth }) => {
+    const onSortEnd = ({ oldIndex, newIndex }) => {
+        const groupSrc = groups[oldIndex];
+        // Dispatch here
+        // Call REST here
+    };
+
+    const sortableGroups = groups.map((groupId, key) =>
+        <SortableGroup key={key} index={key} passedProps={{ groupId, searched }} groupWidth={groupWidth} />
+    );
+    return <SortableList items={sortableGroups} axis="xy" onSortEnd={onSortEnd} useDragHandle />
+};
+
+export default SortableGroupList;

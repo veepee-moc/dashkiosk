@@ -315,10 +315,10 @@ class ModalEditDashboard extends Component {
 
 function mapStateWithProps(state) {
   return {
-    dashboard: state.modal.dashboard,
-    show: state.modal.show,
-    group: state.modal.group,
-    rest: state.modal.rest,
+    dashboard: state.Modal.dashboard,
+    show: state.Modal.show,
+    group: state.Modal.group,
+    rest: state.Modal.rest,
   };
 }
 

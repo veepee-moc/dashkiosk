@@ -16,9 +16,11 @@ import updateGroupTag from './updateGroupTag';
 import deleteGroupTag from './deleteGroupTag';
 import setModal from './setModal';
 import setLogs from './setLogs';
+import setAuthenticated from './setAuthenticated';
 
 const initialState = {
 	admin: {
+		authenticated: false,
 		socketConnected: false,
 		groups: [],
 		groupTags: [],
@@ -96,6 +98,8 @@ function rootReducer(state = initialState, action) {
 			return setModal(state, action.payload);
 		case Types.SetLogs:
 			return setLogs(state, action.payload);
+		case Types.SetAuthenticated:
+			return setAuthenticated(state, action.payload);
 		default:
 			return (state);
 	}

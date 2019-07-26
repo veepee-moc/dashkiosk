@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Types, action } from './Actions';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Types, action } from './Redux/Actions';
+import { ToastContainer } from 'react-toastify';
 import Axios from 'axios';
 import Admin from './Components/Admin';
 import Receiver from './Components/Receiver';
 import FromServer from './Components/FromServer';
 import History from './Components/History';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
-import './App.css';
+import Login from './Components/Login';
 
 class App extends Component {
   componentWillMount() {
     Axios.get('/api/settings/config')
-      .then(ret => { 
-        this.props.setStoreState({settings: ret.data});
-      })
-      .catch((err) => console.error(`Failed to get configuration file: ${err.message}`));
-  }
-
-  componentDidMount() {
-    const script = document.createElement("script");
-
-    script.async = false;
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.js";
-    document.body.appendChild(script);
+      .then(res => this.props.Redux.setSettings(res.data))
+      .catch(err => console.error(`Failed to get configuration file: ${err.message}`));
   }
 
   render() {
@@ -36,6 +25,7 @@ class App extends Component {
             <Route exact path={["/", "/receiver"]} component={Receiver} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/history" component={History} />
+            <Route exact path="/login" component={Login} />
             <Route component={FromServer} />
           </Switch>
         </BrowserRouter>
@@ -43,11 +33,13 @@ class App extends Component {
       </div>
     );
   }
-}
+};
 
 function mapDispatchWithProps(dispatch) {
   return {
-    setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
+    Redux: {
+      setSettings: payload => dispatch(action(Types.SetSettings, payload))
+    }
   };
 }
 

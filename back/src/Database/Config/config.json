@@ -1,0 +1,24 @@
+{
+  "development": {
+    "database": "dashkiosk",
+    "username": "dashkiosk",
+    "password": "dashkiosk",
+    "storage": "dashkiosk_development.db",
+    "dialect": "sqlite"
+  },
+  "test": {
+    "database": "dashkiosk",
+    "username": "dashkiosk",
+    "password": "dashkiosk",
+    "storage": "dashkiosk_test.db",
+    "dialect": "sqlite"
+  },
+  "production": {
+    "database": "dashkiosk",
+    "username": "dashkiosk",
+    "password": "dashkiosk",
+    "storage": "dashkiosk_production.db",
+    "dialect": "sqlite",
+    "logging": false
+  }
+}

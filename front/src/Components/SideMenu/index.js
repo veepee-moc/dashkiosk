@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Types, action } from '../../Actions';
-import Store from '../../Store';
+import { Types, action } from '../../Redux/Actions';
+import Store from '../../Redux/Store';
 import Rest from './Rest';
 import {
 	IoMdArrowBack,
@@ -38,7 +38,7 @@ class SideMenu extends Component {
 
 	componentDidMount() {
 		Store.dispatch(action(Types.SetAdminState, { sideMenuWidth: this.mainDiv.clientWidth }));
-		this.Rest.getKeycloakLogout();
+		//this.Rest.getKeycloakLogout();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -198,8 +198,8 @@ class SideMenu extends Component {
 
 function mapStateWithProps(state) {
 	return {
-		toggleMenu: state.admin.toggleMenu,
-		layoutSize: state.admin.layoutSize
+		toggleMenu: state.Admin.toggleMenu,
+		layoutSize: state.Admin.layoutSize
 	};
 }
 

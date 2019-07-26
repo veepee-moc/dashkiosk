@@ -9,14 +9,14 @@
     "dashkiosk": "./server.js"
   },
   "scripts": {
-    "start": "NODE_ENV=production node dist/forever.js dist/server.js",
+    "start": "cd dist && NODE_ENV=production yarn start",
     "test": "mocha ./test/**/*.js",
     "clean": "rm -rf dist && mkdir dist",
     "dist": "yarn --silent clean && yarn --silent build-react && yarn --silent build-server && yarn --silent imagemin",
     "build-react": "cd front && yarn install && yarn build && cd ../ && yarn --silent copy-react",
-    "build-server": "yarn install --ignore-engines && yarn --silent copy-server",
+    "build-server": "cd back && yarn install --ignore-engines && cd .. && yarn --silent copy-server",
     "copy-react": "cp -r front/build/ dist/front",
-    "copy-server": "cp package.json dist/ && cp server.js dist/ && cp forever.js dist/ && cp -r lib/ dist && mkdir -p dist/db/migrations && cp -r db/migrations dist/db",
+    "copy-server": "cp -r ./back/* ./dist",
     "lint": "eslint server.js && eslint lib/",
     "imagemin": "imagemin -p dist/front/static/media/* --out-dir=dist/front/static/media",
     "dev": "concurrently -n Server,Front -c \"bgRed.bold,bgBlue.bold\" \"yarn dev-server\" \"yarn dev-front\"",

@@ -2,72 +2,69 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import { IoMdSearch } from 'react-icons/io';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Socket from './Socket';
 import Navbar from '../Navbar';
-import Group from '../Group';
 import Preview from '../Preview';
 import Rest from './Rest';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
 import SideMenu from '../SideMenu';
 import AllModals from './allModals';
+import SearchBar from '../SearchBar';
+import SortableGroupList from './SortableGroupList';
 import './Admin.css';
-import Fuse from 'fuse.js';
+import Axios from 'axios';
 
 class Admin extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            searched_groups: [],
-            search_input: ''
-        };
-        this.searchOptions = {
-            shouldSort: true,
-            matchAllTokens: true,
-            threshold: 0.3,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: [
-              "description",
-              "name"
-            ]
-          };
+        this.state = { groups: [] };
         this.Rest = new Rest();
-        this.Rest.loadGroupTags();
-        Socket();
+        this.socket = null;
+    }
+
+    componentWillMount() {
+        Axios.head('/isauth')
+            .then(() => this.socket = Socket())
+            .catch(() => window.location.replace('/login'));
+    }
+
+    componentWillUnmount() {
+        if (this.socket)
+            this.socket.disconnect();
     }
 
     componentDidMount() {
         this.container.style.paddingLeft = '5px';
+        this.setState({ groups: this.props.Redux.groups });
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.toggleMenu !== this.props.toggleMenu) {
-            if (this.props.toggleMenu)
+        Axios.head('/isauth')
+            .catch(() => this.props.history.push('/login'));
+        if (prevProps.Redux.toggleMenu !== this.props.Redux.toggleMenu) {
+            if (this.props.Redux.toggleMenu)
                 this.animateSideMenu('Open');
             else
                 this.animateSideMenu('Close');
         }
+        if (prevProps.Redux.groups !== this.props.Redux.groups)
+            this.setState({ groups: this.props.Redux.groups });
     }
 
     animateSideMenu(action) {
         switch (action) {
             case 'Open':
-                this.container.style.paddingLeft = `${this.props.sideMenuWidth + 5}px`;
+                this.container.style.paddingLeft = `${this.props.Redux.sideMenuWidth + 5}px`;
                 this.container.animate([
                     { paddingLeft: `5px` },
-                    { paddingLeft: `${this.props.sideMenuWidth + 5}px` }
+                    { paddingLeft: `${this.props.Redux.sideMenuWidth + 5}px` }
                 ], { duration: 400, easing: 'ease-out' });
                 return;
             case 'Close':
                 this.container.style.paddingLeft = `5px`;
                 this.container.animate([
-                    { paddingLeft: `${this.props.sideMenuWidth + 5}px` },
+                    { paddingLeft: `${this.props.Redux.sideMenuWidth + 5}px` },
                     { paddingLeft: `5px` }
                 ], { duration: 400, easing: 'ease-out' });
                 return;
@@ -76,76 +73,29 @@ class Admin extends Component {
         }
     }
 
-    searchBar = () =>
-        <div className="input-group input-group-lg mx-auto mb-2 w-75 handle-fixed-navbar handle-side-menu">
-            <div className="input-group-prepend">
-                <span className="input-group-text" id="inputGroup-sizing-lg"><IoMdSearch /></span>
-            </div>
-            <input 
-                onChange={this.searchEngine} 
-                type="text" 
-                className="form-control" 
-                aria-label="search" 
-                aria-describedby="inputGroup-sizing-sm" 
-                placeholder='Search group...'
-            />
-        </div>
-
-    searchEngine = (event) => {
-        this.setState({ search_input: event.target.value });
-        if (event.target.value.length === 0) {
-            if (this.state.searched_groups !== [])
-                this.setState({ searched_groups: [] });
-            return;
-        }
-        var fuse = new Fuse(Store.getState().admin.groups, this.searchOptions);
-        this.setState({ searched_groups: fuse.search(event.target.value) });
-    }
-
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        if (oldIndex !== newIndex) {
-            Store.dispatch(action(Types.SwapGroup, { src: oldIndex, dst: newIndex }));
-            this.Rest.editRank(newIndex)
-                .catch(() => Store.dispatch(action(Types.SortGroups)));
-        }
-    }
-
-    renderSortableGroupList() {
-        const size = 100 / this.props.layoutSize + '%';
-        const SortableGroupItem = SortableElement(({value, searched}) =>
-            <li className="list-layout-item d-inline-block" style={{ width: size, maxWidth: size }}>
-                <Group groupIndex={ value } searched={ searched } />
-            </li>
-        );
-        const SortableGroupList = SortableContainer(({items}) =>
-            <ul className="list-layout">
-                { items }
-            </ul>
-        );
-        const groups = [];
-        if (this.state.search_input.length > 0) {
-            for (var i = 0; i < this.props.gourpsNbr; i++) {
-                if (this.state.searched_groups.find(group => {return group.id === Store.getState().admin.groups[i].id}))
-                    groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } searched={ true }/>);
-            }
-        }
-        else {
-            for (i = 0; i < this.props.gourpsNbr; i++)
-                groups.push(<SortableGroupItem key={ `group-${ i }` } index={ i } value={ i } searched={ false }/>);
-        }
-        return <SortableGroupList items={ groups } axis="xy" onSortEnd={ this.onSortEnd } useDragHandle />
+    onSearchGroup = (groups) => {
+        if (groups)
+            this.setState({ groups: groups.map(group => group.id) });
+        else
+            this.setState({ groups: this.props.Redux.groups });
     }
 
     render() {
+        const groups = Store.getState().Data.Groups;
+        const groupWidth = 100 / this.props.Redux.layoutSize + '%';
         return (
             <div>
                 <AllModals/>
                 <SideMenu />
                 <Navbar />
-                <div ref={ (elem) => this.container = elem } className={ `container-fluid` }>
-                    {this.searchBar()}
+                <div ref={ (elem) => this.container = elem } className={ `container-fluid handle-fixed-navbar handle-side-menu` }>
+                    <SearchBar list={groups} searchOptions={{ keys: ['name', 'description'] }} callback={this.onSearchGroup} />
                     <DragDropContext onDragEnd={this.Rest.moveDashboard}>
-                        { this.renderSortableGroupList() }
+                        <SortableGroupList
+                            groups={this.state.groups}
+                            searched={this.props.Redux.groups !== this.state.groups}
+                            groupWidth={groupWidth}
+                        />
                     </DragDropContext>
                     <div className="my-3">
                         <Preview />
@@ -154,14 +104,17 @@ class Admin extends Component {
             </div>
         );
     }
-}
+};
 
 function mapStateToProps(state) {
     return ({
-        gourpsNbr: state.admin.groups.length,
-        toggleMenu: state.admin.toggleMenu,
-        layoutSize: state.admin.layoutSize,
-        sideMenuWidth: state.admin.sideMenuWidth
+        Redux: {
+            groups: state.Data.Groups.map(group => group.id),
+            layoutSize: state.Admin.layoutSize,
+            sideMenuWidth: state.Admin.sideMenuWidth,
+            authenticated: state.Admin.authenticated,
+            toggleMenu: state.Admin.toggleMenu
+        }
     });
 }
 

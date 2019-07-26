@@ -81,9 +81,8 @@ class GroupTag extends Component {
 };
 
 function mapStateWithProps(state, ownProps) {
-    const tag = state.admin.groupTags.find((tag) => tag.id === ownProps.tagId);
     return {
-        tag: tag ? tag : {}
+        tag: state.Data.GroupTags.find(t => t.id === ownProps.tagId)
     };
 }
 

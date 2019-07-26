@@ -45,7 +45,7 @@ class ModalDashboard extends Component {
   }
 
   componentDidMount() {
-    Axios.get('/api/multi-dashboards')
+    Axios.get('/api/multidashboard/templates')
       .then((res) => this.setState({ templates: res.data }))
       .catch((err) => toast.error(`Failed to get dashboard templates:\n${err.message}`));
   }
@@ -287,9 +287,9 @@ class ModalDashboard extends Component {
 
 function mapStateWithProps(state) {
   return {
-    show: state.modal.show,
-    group: state.modal.group,
-    rest: state.modal.rest,
+    show: state.Modal.show,
+    group: state.Modal.group,
+    rest: state.Modal.rest,
   };
 }
 

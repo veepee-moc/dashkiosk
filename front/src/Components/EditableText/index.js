@@ -66,11 +66,13 @@ class EditableText extends Component {
         return (
             <span ref={(node) => { this.node = node }}>
                 <Swap control={ !this.state.editable }>
-                    <span className={this.props.className} onClick={this.handleTextClick}>
+                    <div className={this.props.className} onClick={this.handleTextClick} style={{   minHeight: '20px'}}>
                         {this.state.text}
-                    </span>
+                    </div>
                     <form className="form-inline m-0" onSubmit={this.handleAcceptClick}>
-                        <input ref={(input) => { this.input = input; }} type="text" className="form-control form-control-sm" />
+                        <input ref={(input) => { this.input = input; }} type="text" className="form-control form-control-sm"
+                            placeholder="Description"
+                        />
                         <span className="btn-group ml-1" hidden={ !this.state.showButton }>
                             <button type="submit" className="btn btn-outline-success btn-sm ml-1">
                                 <IoMdCheckmark />

@@ -65,7 +65,7 @@ class Droppable extends Component {
 
 function mapStateToProps(state) {
     return {
-        dnd: state.dnd
+        dnd: state.DnD
     };
 }
 

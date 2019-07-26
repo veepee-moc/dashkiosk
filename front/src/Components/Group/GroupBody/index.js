@@ -17,21 +17,21 @@ class GroupBody extends Component {
             toggleMenu: false,
             toggleTagsMenu: false
         };
-        this.Rest = new Rest(this.props.groupIndex);
+        this.Rest = Rest;
     }
 
     renderDashboard() {
         return this.props.dashboards.map((dashboard, key) =>
-                <Dashboard groupIndex={ this.props.groupIndex } dashboardKey={ key } key={key} nbDashboard={ this.props.dashboards.length }/>
+                <Dashboard groupId={ this.props.group.id } dashboardId={dashboard.id} key={key} />
         );
     }
 
     renderDisplays() {
-        return this.props.displays.map((key) =>
+        return this.props.displays.map((display, key) =>
             <CSSTransition key={ key } timeout={ 500 } classNames="fade">
-                <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.props.layoutSize + '%' }}>
+                <li className="list-layout-item p-1" key={ key } style={{ width: 100 / this.props.group.layoutSize + '%' }}>
                     <Draggable type="Display">
-                        <Display groupIndex={ this.props.groupIndex } displayKey={ key } />
+                        <Display groupId={ this.props.groupId } displayId={display.id} />
                     </Draggable>
                 </li>
             </CSSTransition>
@@ -42,7 +42,7 @@ class GroupBody extends Component {
         return (
             <div>
                 <Collapse collapsed={ this.props.toggleGroupMenu }>
-                    <GroupMenu groupIndex={this.props.groupIndex} />
+                    <GroupMenu groupId={ this.props.groupId } />
                 </Collapse>
                 <div className="card-body p-1 pt-2">
                     <ul className="list-layout">
@@ -53,7 +53,7 @@ class GroupBody extends Component {
                 </div>
                 <div>
                     <ul className="list-group list-group-flush">
-                        <DraggableList className="pt-2" droppableId={this.props.groupIndex}>
+                        <DraggableList className="pt-2" droppableId={this.props.groupId}>
                             { this.renderDashboard() }
                         </DraggableList>
                     </ul>
@@ -64,13 +64,10 @@ class GroupBody extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
-    const group = state.admin.groups[ownProps.groupIndex];
-    if (!group)
-        return { displays: 0, dashboards: [] }
     return {
-        displays: Object.keys(group.displays),
-        dashboards: group.dashboards,
-        layoutSize: group.layoutSize
+        group: state.Data.Groups.find(g => g.id === ownProps.groupId),
+        displays: state.Data.Displays.filter(d => d.groupId === ownProps.groupId),
+        dashboards: state.Data.Dashboards.filter(d => d.groupId === ownProps.groupId),
     };
 }
 

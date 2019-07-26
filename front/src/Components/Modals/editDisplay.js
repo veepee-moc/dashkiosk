@@ -91,9 +91,9 @@ class ModalEditDisplay extends Component {
 
 function mapStateToProps(state) {
   return ({
-      rest: state.modal.rest,
-      display: state.modal.display,
-      show: state.modal.show,
+      rest: state.Modal.rest,
+      display: state.Modal.display,
+      show: state.Modal.show,
   });
 }
 

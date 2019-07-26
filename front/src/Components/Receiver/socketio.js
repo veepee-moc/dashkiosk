@@ -14,13 +14,11 @@ export default function (receiver) {
       receiverConnected: true,
       connectionLost: false
     });
-    // We register by providing a blob the server handed us to
+    // We register by providing a name the server handed us to
     // remember us. If we get null, that's fine, the server will see
     // us as a new fresh screen.
-    var blob = localStorage.getItem('register') || null;
-    socket.emit('register', {
-      blob: blob
-    }, function (data) {
+    var name = localStorage.getItem('register') || null;
+    socket.emit('register', { name }, function (data) {
       console.info('[Dashkiosk] registered to server');
       localStorage.setItem('register', data);
     });

@@ -352,10 +352,10 @@ class ModalBroadcast extends Component {
 }
 
 function mapStateWithProps(state) {
-  state.admin.groupTags.forEach(tag => tag.enable = true);
+  state.Data.GroupTags.forEach(tag => tag.enable = true);
   return {
-    groupTags: state.admin.groupTags,
-    show: state.modal.show
+    groupTags: state.Data.GroupTags,
+    show: state.Modal.show
   };
 }
 

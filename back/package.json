@@ -1,0 +1,43 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "Dashkiosk backend",
+  "main": "src/index.js",
+  "license": "ISC",
+  "nodemonConfig": {
+    "ignore": [
+      "Database/Migrations/*",
+      "*.db"
+    ]
+  },
+  "scripts": {
+    "start": "nodemon ."
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "du": "^1.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-winston": "^3.2.0",
+    "jimp": "^0.6.4",
+    "later": "^1.2.0",
+    "multer": "^1.4.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-openid": "^0.4.0",
+    "passport-openidconnect": "^0.0.2",
+    "prom-client": "^11.5.3",
+    "pug": "^2.0.4",
+    "redux": "^4.0.1",
+    "sequelize": "^5.8.11",
+    "sequelize-cli": "^5.5.0",
+    "sqlite3": "^4.0.9",
+    "umzug": "^2.2.0",
+    "underscore": "^1.9.1",
+    "uniqid": "^5.0.3",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

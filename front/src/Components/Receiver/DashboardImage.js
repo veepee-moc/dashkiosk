@@ -20,7 +20,7 @@ function DashboardImage(props) {
 
 function mapStateToProps(state) {
 	return ({
-    uploaded_images_format: state.settings.uploaded_images_format
+    uploaded_images_format: state.Settings.uploaded_images_format
 	});
 }
 

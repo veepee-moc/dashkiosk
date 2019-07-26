@@ -69,7 +69,7 @@ class GroupTagsMenu extends Component {
 
 function mapStateWithProps(state) {
     return {
-        groupTags: state.admin.groupTags
+        groupTags: state.Data.GroupTags
     };
 }
 

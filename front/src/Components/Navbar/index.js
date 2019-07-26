@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { IoMdMenu } from 'react-icons/io';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 import dashkioskIcon from '../../Resources/Images/dashkiosk.svg';
 import Swap from '../Swap';
 import './Navbar.css';
@@ -49,9 +49,9 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
     return ({
-        socketConnected: state.admin.socketConnected,
-        useBranding: state.settings.useBranding,
-        stamp: state.settings.stamp,
+        socketConnected: state.Admin.socketConnected,
+        useBranding: state.Settings.useBranding,
+        stamp: state.Settings.stamp,
     });
 }
 

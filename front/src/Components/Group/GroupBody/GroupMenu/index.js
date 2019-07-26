@@ -7,7 +7,7 @@ import Rest from '../../Rest';
 class GroupMenu extends Component {
     constructor(props) {
         super(props);
-        this.Rest = new Rest(this.props.groupIndex);
+        this.Rest = Rest;
     }
 
     componentDidUpdate(prevProps) {
@@ -16,7 +16,7 @@ class GroupMenu extends Component {
     }
 
     setLayoutSize = (incr) => {
-        this.Rest.updadeGroupLayoutSize(this.props.layoutSize + incr);
+        this.Rest.updadeGroupLayoutSize(this.props.group.layoutSize + incr);
     }
 
     renderTags() {
@@ -49,7 +49,7 @@ class GroupMenu extends Component {
                               onClick={() => this.setLayoutSize(-1)}>
                                 <IoMdRemove />
                             </button>
-                            {this.props.layoutSize}
+                            {this.props.group.layoutSize}
                             <button className="btn btn-noframe-dark btn-sm mx-1 py-0 px-1 mb-1"
                               onClick={() => this.setLayoutSize(1)}>
                                 <IoMdAdd />
@@ -63,16 +63,14 @@ class GroupMenu extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
-    const group = state.admin.groups[ownProps.groupIndex];
-    if (!group)
-        return { groupId: 0, layoutSize: 3, tags: [] }
     const tags = [];
-    for (const tag of state.admin.groupTags)
-        if (tag.groups && tag.groups.find((id) => id === `${group.id}`))
+    for (const tag of state.Data.GroupTags)
+        if (tag.groups && tag.groups.find((id) => id === ownProps.groupId)) {
+            console.log(tag);
             tags.push(tag);
+        }
     return {
-        groupId: group.id,
-        layoutSize: group.layoutSize,
+        group: state.Data.Groups.find(g => g.id === ownProps.groupId),
         tags: tags
     };
 }

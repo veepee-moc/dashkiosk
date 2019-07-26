@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Types, action } from '../../Actions';
-import Store from '../../Store';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 
 class Draggable extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class Draggable extends Component {
 
     handleDragStart(event) {
         event.dataTransfer.setData('text/plain', null);
-        Store.dispatch(action(Types.SetDragAndDrop, { type: this.props.type, object: this.props.children }));
+        Store.dispatch(action(Types.SetDndState, { type: this.props.type, object: this.props.children }));
     }
 
     render() {
