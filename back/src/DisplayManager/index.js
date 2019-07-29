@@ -20,11 +20,11 @@ class DisplayManager {
         this.rollovers = new Array();
         const groups = Store.getState().Data.Groups;
         for (const group of groups) {
-            this.rollovers.push(new Rollover(group.id));
             EventEmitter.on('NextDashboard-' + group.id, (dashboard) => {
                 console.log('Emit dashboard');
                 this.io.to(group.id).emit('NextDashboard', dashboard);
             });
+            this.rollovers.push(new Rollover(group.id));
         }
 
         EventEmitter.on(Types.NewGroup, (prevState, newState, payload) => {

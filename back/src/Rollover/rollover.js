@@ -8,15 +8,15 @@ class Rollover {
         this.groupId = groupId;
         this.dashboard = null;
         this.loadDashboards();
-        EventEmitter.on(Types.NewDashbord, (prevState, newState, payload) => {
+        EventEmitter.on(Types.NewDashboard, (prevState, newState, payload) => {
             this.loadDashboards();
         });
 
-        EventEmitter.on(Types.UpdateDashbord, (prevState, newState, payload) => {
+        EventEmitter.on(Types.UpdateDashboard, (prevState, newState, payload) => {
             this.loadDashboards();
         });
 
-        EventEmitter.on(Types.DeleteDashbord, (prevState, newState, payload) => {
+        EventEmitter.on(Types.DeleteDashboard, (prevState, newState, payload) => {
             this.loadDashboards();
         });
     }
@@ -53,14 +53,8 @@ class Rollover {
         let dashboard = null;
         let rank = this.rank + 1;
         while (!dashboard) {
-            console.log('rank: ' + rank);
-            console.log('rank max: ' + this.rankMax);
             if (rank > this.rankMax)
                 rank = 0;
-            if (rank === this.rank) {
-                console.log('QUIT');
-                return null;
-            }
             dashboard = this.dashboards.find((obj) => obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now())));
             ++rank;
         }
@@ -72,14 +66,14 @@ class Rollover {
         if (!dashboard)
             dashboard = this.getDashboard();
         if (!dashboard) {
-            console.log('LOL');
             return;
         }
-        console.log(dashboard);
         EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         this.dashboard = dashboard;
-        if (!dashboard.timeout)
+        if (!dashboard.timeout) {
+            this.dashboard = null;
             return;
+        }
         this.timeout = setTimeout(() => {
             console.log('Timeout');
             this.dashboard = null;
