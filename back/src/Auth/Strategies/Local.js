@@ -25,7 +25,10 @@ module.exports = {
             );
         });
         app.post('/login', Passport.authenticate('local'), (req, res, next) => {
-            res.redirect('/admin');
+            if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+                res.sendStatus(200);
+            else
+                res.redirect('/admin');
         });
         app.get('/logout', (req, res, next) => {
             req.logOut();
