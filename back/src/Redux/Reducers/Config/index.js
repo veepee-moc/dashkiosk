@@ -3,7 +3,7 @@ const { loadReducerActions } = require('../Utils');
 const Actions = loadReducerActions(__dirname);
 const initialState = {
     Auth: {
-        strategy: 'Keycloak',
+        strategy: 'Local',
         roles: {
             broadcast: null,
             dashboard: null,

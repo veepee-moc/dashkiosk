@@ -1,3 +1,4 @@
-node_modules
-yarn.lock
-*.db
+/node_modules
+/yarn.lock
+/*.db
+/config.json
