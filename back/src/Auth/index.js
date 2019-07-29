@@ -2,7 +2,6 @@
  * Imports
  */
 const fs = require('fs');
-const cookieParser = require('cookie-parser');
 const Passport = require('passport');
 const BodyParser = require('body-parser');
 const { Session, PassportInitialize, PassportSession } = require('./Middleware');

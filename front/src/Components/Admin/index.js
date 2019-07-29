@@ -41,7 +41,7 @@ class Admin extends Component {
 
     componentDidUpdate(prevProps) {
         Axios.head('/isauth')
-            .catch(() => this.props.history.push('/login'));
+            .catch(() => window.location.replace('/login'));
         if (prevProps.Redux.toggleMenu !== this.props.Redux.toggleMenu) {
             if (this.props.Redux.toggleMenu)
                 this.animateSideMenu('Open');
