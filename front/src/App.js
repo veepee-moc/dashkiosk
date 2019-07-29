@@ -8,7 +8,6 @@ import Admin from './Components/Admin';
 import Receiver from './Components/Receiver';
 import FromServer from './Components/FromServer';
 import History from './Components/History';
-import Login from './Components/Login';
 
 class App extends Component {
   componentWillMount() {
@@ -25,7 +24,6 @@ class App extends Component {
             <Route exact path={["/", "/receiver"]} component={Receiver} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/history" component={History} />
-            <Route exact path="/login" component={Login} />
             <Route component={FromServer} />
           </Switch>
         </BrowserRouter>

@@ -43,7 +43,6 @@ function setPassportStrategy(app, strategyName) {
  */
 module.exports = (app, strategy) => {
     app.use(Session);
-    app.use(cookieParser());
     app.use(BodyParser.urlencoded({ extended: false }));
     app.use(PassportInitialize);
     app.use(PassportSession);
