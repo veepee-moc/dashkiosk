@@ -8,7 +8,6 @@ class Rollover {
         this.groupId = groupId;
         this.dashboard = null;
         this.loadDashboards();
-
         EventEmitter.on(Types.NewDashbord, (prevState, newState, payload) => {
             this.loadDashboards();
         });
@@ -33,6 +32,7 @@ class Rollover {
     loadDashboards() {
         const { Data } = Store.getState();
         this.dashboards = Data.Dashboards.filter((obj) => obj.groupId === this.groupId);
+        console.log(this.dashboards);
         this.rankMax = this.getRankMax();
         if (!this.rank)
             this.rank = this.rankMax;
@@ -50,17 +50,18 @@ class Rollover {
     getDashboard() {
         if (this.rankMax < 0 || this.dashboard)
             return null;
-        let dashboard;
+        let dashboard = null;
         let rank = this.rank + 1;
         while (!dashboard) {
+            console.log('rank: ' + rank);
+            console.log('rank max: ' + this.rankMax);
             if (rank > this.rankMax)
                 rank = 0;
-            if (rank === this.rank)
+            if (rank === this.rank) {
+                console.log('QUIT');
                 return null;
-            dashboard = this.dashboards.find((obj) => {
-                obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now()))
-            });
-            EventEmitter.emit('NextDashboard-' + this.groupId);
+            }
+            dashboard = this.dashboards.find((obj) => obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now())));
             ++rank;
         }
         return dashboard;
@@ -70,12 +71,17 @@ class Rollover {
         let dashboard = this.getBroadcast();
         if (!dashboard)
             dashboard = this.getDashboard();
-        if (!dashboard)
+        if (!dashboard) {
+            console.log('LOL');
             return;
+        }
+        console.log(dashboard);
+        EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         this.dashboard = dashboard;
         if (!dashboard.timeout)
             return;
         this.timeout = setTimeout(() => {
+            console.log('Timeout');
             this.dashboard = null;
             this.nextDashboard();
         }, dashboard.timeout);
