@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Types, action } from '../../Actions';
+import { Types, action } from '../../Redux/Actions';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 import { Modal, Button, Container, Form, Col, InputGroup } from 'react-bootstrap';
 import FormInput from '../Modals/formInput';
 import Moment from 'moment-timezone';
-import Store from '../../Store';
+import Store from '../../Redux/Store';
 import ImportedImage from '../uploadImage/importedImage';
 import { IoMdImage, IoMdColorPalette, IoMdAdd, IoMdTime } from 'react-icons/io';
 import './Settings.css';
@@ -62,7 +62,7 @@ class ModalSettings extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    Axios.put('/api/settings/config', { config: this.state })
+    Axios.patch('/api/settings/config', { config: this.state })
       .then(() => {
         this.closeModal();
         toast.success('Successfully updated settings');
@@ -225,10 +225,8 @@ class ModalSettings extends Component {
   }
 
   closeModal = () => {
-    Store.dispatch(action(Types.SetModal, {
-      modal: {
-        show: false
-      }
+    Store.dispatch(action(Types.SetModalState, {
+      show: false
     }));
   }
 
@@ -362,7 +360,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return ({
-    setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
+    SetSettings: (payload) => dispatch(action(Types.SetSettings, payload))
   });
 }
 

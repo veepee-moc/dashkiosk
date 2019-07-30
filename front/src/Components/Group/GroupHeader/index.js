@@ -35,14 +35,14 @@ class GroupHeader extends Component {
                 <div className="float-right">
                     <div>
                         <Swap className="float-left" control={ this.props.group.empty }>
-                            <button className={`btn btn-noframe-dark p-1 pl-2 pr-2 ${ this.props.group.id === 1 ? "hidden" : "" }`} onClick={ this.Rest.deleteGroup }>
+                            <button className={`btn btn-noframe-dark p-1 pl-2 pr-2 ${ this.props.group.id === 1 ? "hidden" : "" }`} onClick={ () => this.Rest.deleteGroup(this.props.group.id) }>
                                 <IoMdTrash />
                             </button>
                             <div hidden={ !this.props.group.displayConnected }>
-                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.Rest.reloadGroupDisplays }>
+                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.reloadGroupDisplays(this.props.group.id) }>
                                     <IoMdRefresh />
                                 </button>
-                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ this.Rest.toggleOSD }>
+                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.toggleOSD(this.props.group.id) }>
                                     <IoMdLocate />
                                 </button>
                             </div>
@@ -56,11 +56,11 @@ class GroupHeader extends Component {
                 </div>
                 <div className="card-title mb-0">
                     <EditableText text={ this.props.group.name }
-                        onSubmit={ this.Rest.updateGroupName } />
+                        onSubmit={ (name) => this.Rest.updateGroupName(name ,this.props.group.id) } />
                 </div>
                 <div className="card-subtitle text-muted m-0 mb-1">
                     <EditableText text={ this.props.group.description }
-                        onSubmit={ this.Rest.updateGroupDescription } />
+                        onSubmit={ (description) => this.Rest.updateGroupDescription(description, this.props.group.id) } />
                 </div>
             </div>
         );
