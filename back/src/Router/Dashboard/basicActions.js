@@ -38,6 +38,7 @@ Router.get('/:dashboardId(\\d+)', basicCheck, (req, res) => {
 });
 
 Router.post('/', protectRoute('dashboard'), BodyParser.json(), (req, res) => {
+    console.log(req.body);
     if (!req.body.url || !req.body.groupId)
         res.sendStatus(400);
     else if (!protectGroup(req, req.groupId))

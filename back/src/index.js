@@ -29,7 +29,7 @@ app.use(expressWinston.logger({
 
 app.use(Router);
 
-if (app.get('env') !== 'development') {
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     app.use(express.static(path.join(__dirname, '../front')));
     app.get(['/', '/receiver', '/admin', '/history'], (req, res) => {
         res.sendFile(path.join(__dirname, '../front', 'index.html'));

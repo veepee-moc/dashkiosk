@@ -25,8 +25,7 @@ class Admin extends Component {
 
     componentWillMount() {
         Axios.head('/isauth')
-            .then(() => this.socket = Socket())
-            .catch(() => window.location.replace('/login'));
+            .then(() => this.socket = Socket());
     }
 
     componentWillUnmount() {
@@ -41,7 +40,12 @@ class Admin extends Component {
 
     componentDidUpdate(prevProps) {
         Axios.head('/isauth')
-            .catch(() => this.props.history.push('/login'));
+            .catch(() => {
+                if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+                    this.props.history.push('/login');
+                else
+                    window.location.replace('/login');
+            });
         if (prevProps.Redux.toggleMenu !== this.props.Redux.toggleMenu) {
             if (this.props.Redux.toggleMenu)
                 this.animateSideMenu('Open');

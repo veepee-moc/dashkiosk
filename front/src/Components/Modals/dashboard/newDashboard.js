@@ -148,10 +148,12 @@ export default function NewDashboard (props) {
           updateValue={props.handleInput}
           type="text"
         />
-        <Form.Text className="text-muted">
-          <Availability input={props.Available} />
-        </Form.Text>
+        
       </Form.Row>
       </>
   );
 }
+
+/**<Form.Text className="text-muted">
+          <Availability input={props.Available} />
+        </Form.Text> */

@@ -38,21 +38,22 @@ export default class savedDashboard extends Component {
 
   componentDidUpdate() {
     if (this.props.submitLoad === true) {
+      const dashboard = Object.assign({}, this.state.dashboards[this.state.selected], { groupId: this.props.groupId });
       this.props.handleInput('submitLoad', false);
-      Axios.post(`/api/group/${this.props.group.id}/dashboard`, this.state.dashboards[this.state.selected])
+      Axios.post(`/api/dashboard/`, dashboard)
         .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
     }
   }
 
   updateDashboard() {
     this.setState({selected: -1});
-    Axios.get('/api/saved_dashboard')
+    Axios.get('/api/dashboard/saved')
       .then(res => this.setState({ dashboards: res.data }))
       .catch(err => console.error(err));
   }
 
   remove(i) {
-    Axios.delete(`/api/saved_dashboard/${this.state.dashboards[i].id}`)
+    Axios.delete(`/api/dashboard/saved/${this.state.dashboards[i].id}`)
       .then(() => this.updateDashboard())
       .catch((err) => toast.error(`Failed to remove dashboard: ${err.message}`));
   }

@@ -5,8 +5,8 @@ import { IoMdAddCircle, IoMdCloseCircle, IoMdArrowBack, IoMdDesktop, IoMdImage, 
 import FormInput from './formInput';
 import Axios from 'axios';
 import Collapse from '../Collapse';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 import ImportedImage from '../uploadImage/importedImage';
 import { toast } from 'react-toastify';
 
@@ -230,11 +230,7 @@ class ModalBroadcast extends Component {
   }
 
   closeModal = () => {
-    Store.dispatch(action(Types.SetModal, {
-      modal: {
-        show: false
-      }
-    }));
+    Store.dispatch(action(Types.SetModalState, { show: false }));
   }
 
   render() {

@@ -17,9 +17,6 @@ module.exports = {
                 return done(null, profile);
             }));
         Passport.serializeUser((data, done) => {
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
-            console.log(data);
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH');
             done(null, data);
         });
         Passport.deserializeUser((user, done) => {
@@ -32,8 +29,7 @@ module.exports = {
             res.redirect('/admin');
         });
         app.get('/logout', (req, res, next) => {
-            req.logout();
-            req.session.destroy();
+            req.logOut();
             res.sendStatus(200);
             next();
         });

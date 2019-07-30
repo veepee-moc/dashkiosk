@@ -15,9 +15,20 @@ module.exports = {
         Passport.deserializeUser((user, done) => {
             done(null, { roles: ['admin'] });
         });
+        app.get('/login', (req, res, next) => {
+            res.send(
+                '<form method="POST" action="/login">'+
+                    '<input type="text" name="username" placeholder="Username"/>'+
+                    '<input type="password" name="password" placeholder="Password"/>'+
+                    '<button type="submit">Login</button>'+
+                '</form>'
+            );
+        });
         app.post('/login', Passport.authenticate('local'), (req, res, next) => {
-            res.sendStatus(200);
-            next();
+            if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+                res.sendStatus(200);
+            else
+                res.redirect('/admin');
         });
         app.get('/logout', (req, res, next) => {
             req.logOut();

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Rest from '../Group/Rest';
 import './Display.css';
 import {IoIosWifi} from 'react-icons/io';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 
 class Display extends Component {
     constructor(props) {
@@ -30,12 +30,10 @@ class Display extends Component {
     }
 
     openModal = () => {
-        Store.dispatch(action(Types.SetModal, {
-            modal: {
-                show: 'editDisplay',
-                display: this.props.display,
-                rest: this.Rest
-            }
+        Store.dispatch(action(Types.SetModalState, {
+            show: 'editDisplay',
+            display: this.props.display,
+            rest: this.Rest
         }));
     }
 

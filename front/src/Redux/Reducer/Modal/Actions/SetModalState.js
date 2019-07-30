@@ -1,7 +1,7 @@
 const { Types } = require('../../../Actions');
 
 export default {
-    type: Types.SetAdminState,
+    type: Types.SetModalState,
     do(state, payload) {
         return Object.assign({}, state, payload);
     }

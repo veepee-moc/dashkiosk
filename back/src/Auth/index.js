@@ -2,7 +2,6 @@
  * Imports
  */
 const fs = require('fs');
-const cookieParser = require('cookie-parser');
 const Passport = require('passport');
 const BodyParser = require('body-parser');
 const { Session, PassportInitialize, PassportSession } = require('./Middleware');
@@ -43,7 +42,6 @@ function setPassportStrategy(app, strategyName) {
  */
 module.exports = (app, strategy) => {
     app.use(Session);
-    app.use(cookieParser());
     app.use(BodyParser.urlencoded({ extended: false }));
     app.use(PassportInitialize);
     app.use(PassportSession);
