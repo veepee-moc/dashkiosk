@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { IoMdCreate, IoMdTimer, IoMdResize, IoMdSync } from 'react-icons/io';
 import { connect } from 'react-redux';
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import './Dashboard.css';
 import Rest from '../Group/Rest'
@@ -49,13 +49,11 @@ class Dashboard extends Component {
     }
 
     openModal() {
-        Store.dispatch(action(Types.SetModal, {
-            modal: {
-                group: { id: this.props.groupId },
-                rest: this.rest,
-                dashboard: this.props.dashboard,
-                show: 'editDashboard'
-            }
+        Store.dispatch(action(Types.SetModalState, {
+            group: { id: this.props.groupId },
+            rest: this.rest,
+            dashboard: this.props.dashboard,
+            show: 'editDashboard'
         }));
     }
 

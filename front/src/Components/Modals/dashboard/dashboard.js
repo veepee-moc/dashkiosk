@@ -6,9 +6,9 @@ import { IoIosSave } from 'react-icons/io';
 import Swap from '../../Swap';
 import DashboardSelection from './dashboardSelection';
 import SavedDashboard from './savedDashboard';
-import Store from '../../../Store';
+import Store from '../../../Redux/Store';
 import { connect } from 'react-redux';
-import { Types, action } from '../../../Actions';
+import { Types, action } from '../../../Redux/Actions';
 import ImportedImage from '../../uploadImage/importedImage';
 import NewDashboard from './newDashboard';
 
@@ -145,7 +145,7 @@ class ModalDashboard extends Component {
     };
     if (this.state.save)
       this.props.rest.saveDashboard(body);
-    this.props.rest.addDashboard(body);
+    this.props.rest.addDashboard(body, this.props.group.id);
     this.reinitialise();
     this.closeModal();
   }
@@ -163,11 +163,7 @@ class ModalDashboard extends Component {
   }
 
   closeModal = () => {
-    Store.dispatch(action(Types.SetModal, {
-      modal: {
-        show: false
-      }
-    }));
+    Store.dispatch(action(Types.SetModalState, { show: false }));
   }
 
   render() {
@@ -204,7 +200,7 @@ class ModalDashboard extends Component {
               <Swap control={!this.state.newDashboard}>
                 <SavedDashboard
                   handleInput={this.handleInput}
-                  group={this.props.group}
+                  groupId={this.props.group.id}
                   submitLoad={this.state.submitLoad}
                 />
                 {this.state.images

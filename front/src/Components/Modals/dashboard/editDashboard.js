@@ -5,9 +5,9 @@ import ImportedImage from '../../uploadImage/importedImage';
 import FormInput from '../formInput';
 import Availability from '../availability';
 import AnimatedSwap from '../../Swap/Animated';
-import Store from '../../../Store';
+import Store from '../../../Redux/Store';
 import { connect } from 'react-redux';
-import { Types, action } from '../../../Actions';
+import { Types, action } from '../../../Redux/Actions';
 import MultiDashboardEdit from '../MultiDashboardEdit';
 
 class ModalEditDashboard extends Component {
@@ -173,11 +173,7 @@ class ModalEditDashboard extends Component {
   }
 
   closeModal = () => {
-    Store.dispatch(action(Types.SetModal, {
-      modal: {
-        show: false
-      }
-    }));
+    Store.dispatch(action(Types.SetModalState, { show: false }));
   }
 
   render() {
@@ -263,9 +259,7 @@ class ModalEditDashboard extends Component {
                   dropdown={true} time={this.state.delayTime} selectTime={(value) => { this.setState({ delayTime: value }) }} />
                 <FormInput md={12} sm={12} required={false} value={this.state.Available} hasTextArea={true}
                   placeholder="This dashboard is available when..." name='Available' updateValue={this.handleInput} type="text" />
-                <Form.Text className="text-muted">
-                  <Availability input={this.state.Available} />
-                </Form.Text>
+                
               </Form.Row>
             }
             </Container>

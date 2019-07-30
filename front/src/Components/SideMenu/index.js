@@ -51,12 +51,10 @@ class SideMenu extends Component {
 	}
 
 	openModal = (modalName, modalParam) => {
-		Store.dispatch(action(Types.SetModal, {
-      modal: {
-				show: modalName,
-				...modalParam
-      }
-    }));
+		Store.dispatch(action(Types.SetModalState, {
+			show: modalName,
+			...modalParam
+		}));
 	}
 
 	addNewGroup = () => {

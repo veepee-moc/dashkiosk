@@ -18,7 +18,8 @@ const Types = {
     NewBroadcast: "NewBroadcast",
     SetSettings: "SetSettings",
     SetAdminState: "SetAdminState",
-    SetDndState: "SetDndState"
+    SetDndState: "SetDndState",
+    SetModalState: "SetModalState"
 };
 
 function action(type, payload) {

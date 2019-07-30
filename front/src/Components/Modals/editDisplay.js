@@ -3,8 +3,8 @@ import { Modal, Button, Container, Form } from 'react-bootstrap';
 import FormInput from './formInput';
 import { connect } from 'react-redux';
 import { IoIosTrash } from 'react-icons/io'
-import Store from '../../Store';
-import { Types, action } from '../../Actions';
+import Store from '../../Redux/Store';
+import { Types, action } from '../../Redux/Actions';
 
 class ModalEditDisplay extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class ModalEditDisplay extends Component {
   }
 
   deleteDisplay = () => {
-    this.props.rest.deleteDisplay(this.props.display.name);
+    this.props.rest.deleteDisplay(this.props.display.id);
     this.closeModal();
   }
 
@@ -28,7 +28,7 @@ class ModalEditDisplay extends Component {
     }
     event.preventDefault();
     if (display.description !== this.props.display.description || display.viewport !== this.props.display.viewport)
-      this.props.rest.editDisplay(display, this.props.display.name);
+      this.props.rest.editDisplay(display, this.props.display.id);
     this.closeModal();
   }
 
@@ -45,11 +45,7 @@ class ModalEditDisplay extends Component {
   }
 
   closeModal = () => {
-    Store.dispatch(action(Types.SetModal, {
-      modal: {
-        show: false
-      }
-    }));
+    Store.dispatch(action(Types.SetModalState, { show: false }));
   }
 
   render() {

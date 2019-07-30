@@ -38,12 +38,10 @@ class Group extends Component {
     }
 
     openModal() {
-        Store.dispatch(action(Types.SetModal, {
-            modal: {
-                group: this.props.group,
-                rest: this.Rest,
-                show: 'addDashboard'
-            }
+        Store.dispatch(action(Types.SetModalState, {
+            group: this.props.group,
+            rest: this.Rest,
+            show: 'addDashboard'
         }));
     }
 
