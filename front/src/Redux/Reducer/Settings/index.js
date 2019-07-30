@@ -1,4 +1,4 @@
-import setSettings from './Actions/setSettings';
+import SetSettings from './Actions/SetSettings';
 
 const initialState = {
     timezone: 'Europe/Paris',
@@ -13,8 +13,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case setSettings.type:
-            return setSettings.do(state, action.payload);
+        case SetSettings.type:
+            return SetSettings.do(state, action.payload);
         default:
             return state;
     }

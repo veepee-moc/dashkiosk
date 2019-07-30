@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { IoMdReturnLeft } from 'react-icons/io';
-import { Types, action } from '../../Actions';
+import { Types, action } from '../../Redux/Actions';
 import './History.css';
 
 function getLogs(page, limit, setLogs) {
@@ -121,7 +121,7 @@ const History = ({historyLogs, setLogs}) => {
 
 function mapStateToProps(state) {
     return ({
-        historyLogs: state.history.historyLogs
+        historyLogs: state.History.historyLogs
     });
 }
 

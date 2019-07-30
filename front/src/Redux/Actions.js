@@ -19,7 +19,8 @@ const Types = {
     SetSettings: "SetSettings",
     SetAdminState: "SetAdminState",
     SetDndState: "SetDndState",
-    SetModalState: "SetModalState"
+    SetModalState: "SetModalState",
+    SetLogs: "SetLogs"
 };
 
 function action(type, payload) {
