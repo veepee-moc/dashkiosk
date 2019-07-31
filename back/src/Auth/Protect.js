@@ -2,8 +2,6 @@ const Store = require('../Redux/Store');
 const { includesAll } = require('./Utils');
 
 function protectRoute(req, res, next, role) {
-    next();
-    return;
     if (req.isAuthenticated()) {
         const roles = Store.getState().Config.Auth.roles[role];
         if (!roles) {
@@ -27,15 +25,13 @@ function preProtectRoute(role) {
 }
 
 function protectGroup(req, groupId) {
-    return true;
-    const { Data } = Store.getState();
-    const group = Data.Groups.find((obj) => obj.id === groupId);
+    const group = Store.getState().Data.Groups.find((obj) => obj.id === groupId);
     if (!group)
         return false;
-    else if (!group.roles)
+    else if (!group.roles || group.roles.length === 0)
         return true;
     for (const roles of group.roles) {
-        //if (includesAll(req.user.roles, roles))
+        if (includesAll(req.user.roles, roles))
             return true;
     }
     return false;

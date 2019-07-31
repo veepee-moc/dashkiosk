@@ -11,7 +11,7 @@ const Login = ({ history }) => {
     })
         .then(() => history.push('/admin'))
         .catch(err => console.error(err));
-    return <h1>LOGIN PAGE</h1>;
+    return <a href="http://localhost:8080/admin"><button className="btn btn-primary btn-lg absolute center">LOGIN</button></a>;
 };
 
 export default withRouter(Login);

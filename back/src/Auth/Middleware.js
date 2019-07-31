@@ -2,19 +2,20 @@ const ExpressSession = require('express-session');
 const Passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(ExpressSession.Store);
 const Sequelize = require('../Database/Models').sequelize;
+const Store = require('../Redux/Store');
 
-const Store = new SequelizeStore({
+const sequelizeStore = new SequelizeStore({
     db: Sequelize
 });
 
 module.exports.Session = ExpressSession({
-    secret: 'dashkiosk_app',
+    secret: Store.getState().Config.Server.secret,
     saveUninitialized: true,
     resave: false,
-    store: Store
+    store: sequelizeStore
 });
 
-Store.sync();
+sequelizeStore.sync();
 
 module.exports.PassportInitialize = Passport.initialize();
 

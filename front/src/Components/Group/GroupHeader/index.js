@@ -70,6 +70,10 @@ class GroupHeader extends Component {
 function mapStateToProps(state, ownProps) {
     const group = state.Data.Groups.find(g => g.id === ownProps.groupId);
     //console.log(group);
+    if (!group)
+        return {
+            group: {}
+        };
     return { 
         group: {
             id: group.id,
