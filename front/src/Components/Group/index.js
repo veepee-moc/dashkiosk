@@ -21,13 +21,7 @@ class Group extends Component {
     onDrop(dropEffect, dnd) {
         switch (dnd.type) {
             case "Display":
-                this.Rest.moveDisplay(dnd.object.props.displayId);
-                return;
-            case "Dashboard":
-                if (dropEffect === "move")
-                    this.Rest.moveDashboard(dnd.object.props.dashboardKey);
-                else if (dropEffect === "copy")
-                    this.Rest.copyDashboard(dnd.object.props.dashboardKey);
+                this.Rest.moveDisplay(dnd.object.props.displayId, this.props.groupId);
                 return;
             case "GroupTag":
                 this.Rest.addTagToGroup(dnd.object.props.tagid, this.props.groupId);

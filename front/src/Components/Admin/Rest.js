@@ -25,12 +25,13 @@ class Rest {
     moveDashboard(info) {
         if (!info.destination)
             return;
-        const dashboardIndex = info.source.index;
-        const dashboard = Store.getState().Data.Dashboards.find(dash => dash.id === dashboardIndex);
-        const destGroup = Store.getState().Data.Groups.find(group => group.id === info.destination.droppableId);
-        const newDashboard = Object.assign({}, dashboard, { rank: info.destination.index, groupId: destGroup.id });
-        Axios.patch(`/api/dashboard/${dashboard.id}`, newDashboard)
-            .catch((err) => toast.error(`Failed to move dashboard: ${err.message}`));
+        const srcGroup = parseInt(info.source.droppableId);
+        const dstGroup = parseInt(info.destination.droppableId);
+        const dashboard = Store.getState().Data.Dashboards.find(obj => obj.rank === info.source.index && obj.groupId === srcGroup);
+        if (!dashboard)
+            return;
+        Axios.patch(`/api/dashboard/move/${dashboard.id}`, { srcGroup, dstGroup, newRank: info.destination.index })
+            .catch(err => toast.error(`Failed to move dashboard: ${err.message}`));
     }
 };
 

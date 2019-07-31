@@ -98,8 +98,7 @@ const Rest = {
     },
 
     moveDisplay: (displayId, groupId) => {
-        const display = Store.getState().Data.Displays.find(disp => disp.id === displayId);
-        Axios.patch(`/api/display/${display.id}`, { groupId })
+        Axios.patch(`/api/display/${displayId}`, { groupId })
             .catch(() => toast.error('Failed to move display.'));
     },
 
@@ -111,22 +110,6 @@ const Rest = {
     deleteDisplay: (displayId) => {
         Axios.delete(`/api/display/${displayId}`)
             .catch(() => toast.error('Failed to delete display.'));
-    },
-
-    moveDashboard: (dashboardIndex, groupId) => {
-        const dashboard = Store.getState().Data.Dashboards.find(dash => dash.id === dashboardIndex);
-        if (dashboard.groupId === groupId)
-            return;
-        Axios.patch(`/api/dashboard/${dashboardIndex}`, { groupId })
-            .catch((err) => toast.error(`Failed to move dashboard: ${err.message}`));
-    },
-
-    copyDashboard: (dashboardIndex, groupId) => {
-        const dashboard = Store.getState().Data.Dashboards.find(dash => dash.id === dashboardIndex);
-        if (dashboard.groupId === groupId)
-            return;
-        Axios.post(`/api/dashboard`, dashboard)
-            .catch((err) => toast.error(`Failed to copy dashboard: ${err.message}`));
     },
 
     addTagToGroup: (tagId, groupId) => {
