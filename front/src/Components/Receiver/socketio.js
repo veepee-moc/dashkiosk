@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import localStorage from './localstorage';
+import { Types } from '../../Redux/Actions';
 
 export default function (receiver) {
 
@@ -10,7 +11,7 @@ export default function (receiver) {
 
   socket.on('connect', function () {
     console.info('[Dashkiosk] connected to socket.io server');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       receiverConnected: true,
       connectionLost: false
     });
@@ -27,21 +28,21 @@ export default function (receiver) {
   // Log various events
   socket.on('connecting', function () {
     console.info('[Dashkiosk] connect in progress to socket.io server');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       connectionLost: true,
     });
   });
 
   socket.on('connect_failed', function () {
     console.warn('[Dashkiosk] unable to connect to socket.io server');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       receiverConnected: false,
     });
   });
 
   socket.on('error', function (message) {
     console.warn('[Dashkiosk] uncaught error with socket.io server: ' + message);
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       connectionLost: true,
     });
   });
@@ -49,35 +50,35 @@ export default function (receiver) {
   socket.on('reconnecting', function (delay, attempts) {
     console.info('[Dashkiosk] reconnect in progress to socket.io server (next: ' +
       delay + ' attempts: ' + attempts + ')');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       connectionLost: true
     });
   });
 
   socket.on('reconnect_failed', function () {
     console.warn('[Dashkiosk] unable to reconnect to socket.io server');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       receiverConnected: false
     });
   });
 
   socket.on('disconnect', function () {
     console.warn('[Dashkiosk] connection to socket.io lost');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       connectionLost: true
     });
   });
 
   socket.on('NextDashboard', function (dashboard) {
     console.info('[Dashkiosk] should display dashboard ' + dashboard.url);
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       dashboardToDisplay: dashboard
     });
   });
 
   socket.on('reload', function () {
     console.info('[Dashkiosk] reload requested');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       reloadRequired: true
     });
   });
@@ -85,27 +86,27 @@ export default function (receiver) {
   socket.on('osd', function (text) {
     if (text === undefined || text === null) {
       console.info('[Dashkiosk] hide OSD');
-      receiver.props.setStoreState({
+      receiver.props.SetReceiverState({
         osd: ''
       });
     } else {
       console.info('[Dashkiosk] display OSD');
-      receiver.props.setStoreState({
+      receiver.props.SetReceiverState({
         osd: text
       });
     }
   });
 
-  socket.on('viewport', function (vp) {
-    console.info('[Dashkiosk] viewport change to ' + (vp || 'default') + ' requested');
-    receiver.props.setStoreState({
-      displayViewport: vp
+  socket.on(Types.UpdateDisplay, function (display) {
+    console.info('[Dashkiosk] viewport change to ' + (display.viewport || 'default') + ' requested');
+    receiver.props.SetReceiverState({
+      displayViewport: display.viewport
     });
   });
 
-  socket.on('settings', function (config) {
+  socket.on('UpdateSettings', function (config) {
     console.info('[Dashkiosk] settings updated');
-    receiver.props.setStoreState({
+    receiver.props.SetReceiverState({
       settings:JSON.parse(config)
     });
   });

@@ -22,7 +22,10 @@ app.use(expressWinston.logger({
         new winston.transports.Console()
     ],
     format: winston.format.combine(
-        winston.format.prettyPrint()
+        winston.format.timestamp(),
+        winston.format.colorize(),
+        winston.format.errors({ stack: true }),
+        Logger.printFormat
     ),
     level: Store.getState().Config.Log.level
 }));
@@ -41,7 +44,10 @@ app.use(expressWinston.errorLogger({
         new winston.transports.Console()
     ],
     format: winston.format.combine(
-        winston.format.prettyPrint()
+        winston.format.timestamp(),
+        winston.format.colorize(),
+        winston.format.errors({ stack: true }),
+        Logger.printFormat
     ),
     level: Store.getState().Config.Log.level
 }));

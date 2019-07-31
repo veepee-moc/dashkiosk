@@ -23,7 +23,7 @@ module.exports = (io) => {
     });
 
     EventEmitter.on(Types.DeleteDisplay, (prevState, newState, payload) => {
-        const display = prevState.Data.Groups.find((obj) => obj.id === payload);
+        const display = prevState.Data.Displays.find((obj) => obj.id === payload);
         if (!display) {
             Logger.error('Display not found');
             return;

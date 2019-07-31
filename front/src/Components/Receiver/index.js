@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Types, action } from '../../Actions';
+import { Types, action } from '../../Redux/Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import './Receiver.css';
 import socketio from './socketio';
-import supervisor from './supervisor';
 import errors from './errors';
 import Display from './Display';
 import Swap from '../Swap';
@@ -19,7 +18,6 @@ class Receiver extends Component {
 
 	componentDidMount() {
 		errors.enable();
-		supervisor.ready();
 		console.log('[Dashkiosk] dashkiosk ready, connect to socket.io server');
 		socketio(this);
 	}
@@ -42,7 +40,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return ({
-		setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
+		SetReceiverState: (payload) => dispatch(action(Types.SetReceiverState, payload))
 	});
 }
 

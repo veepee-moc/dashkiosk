@@ -7,7 +7,7 @@ const DbActions = require('../../Database/Actions');
 const Store = require('../../Redux/Store');
 const { protectRoute } = require('../../Auth/Protect');
 
-const Templates = [];
+let Templates = [];
 function loadTemplates() {
     const tempTemplates = [];
     try {

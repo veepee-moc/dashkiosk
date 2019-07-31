@@ -22,7 +22,8 @@ const Types = {
     SetModalState: "SetModalState",
     SetLogs: "SetLogs",
     DecrLayoutSize: "DecrLayoutSize",
-    IncrLayoutSize: "IncrLayoutSize"
+    IncrLayoutSize: "IncrLayoutSize",
+    SetReceiverState: "SetReceiverState"
 };
 
 function action(type, payload) {
