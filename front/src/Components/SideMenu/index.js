@@ -38,7 +38,6 @@ class SideMenu extends Component {
 
 	componentDidMount() {
 		Store.dispatch(action(Types.SetAdminState, { sideMenuWidth: this.mainDiv.clientWidth }));
-		//this.Rest.getKeycloakLogout();
 	}
 
 	componentDidUpdate(prevProps) {

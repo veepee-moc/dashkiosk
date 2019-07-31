@@ -67,6 +67,11 @@ export default function () {
         Store.dispatch(action(Types.DeleteGroupTag, deletedGroupTag));
     });
 
+    socket.on('UpdateSettings', (settings) => {
+        console.log('[Socket.io]: Update Settings');
+        Store.dispatch(action(Types.SetSettings, JSON.parse(settings)));
+    });
+
     socket.on('loadStore', (data) => {
         console.log('[Socket.io]: Load Store');
         Store.dispatch(action(Types.LoadStore, data));

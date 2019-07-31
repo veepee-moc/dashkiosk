@@ -358,10 +358,4 @@ function mapStateToProps(state) {
   });
 }
 
-function mapDispatchToProps(dispatch) {
-  return ({
-    SetSettings: (payload) => dispatch(action(Types.SetSettings, payload))
-  });
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ModalSettings);
+export default connect(mapStateToProps)(ModalSettings);

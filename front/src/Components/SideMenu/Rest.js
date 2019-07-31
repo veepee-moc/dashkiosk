@@ -5,10 +5,7 @@ class Rest {
     constructor(parent) {
         this.parent = parent;
     }
-
-    getKeycloakLogout() {
-    }
-
+    
     addNewGroup() {
         return Axios.post('/api/group')
             .catch((err) => toast.error(`Failed to create a new group: ${err.message}`));
