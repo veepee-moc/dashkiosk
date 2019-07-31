@@ -67,7 +67,14 @@ function mapStateToProps(state, ownProps) {
     return {
         group: state.Data.Groups.find(g => g.id === ownProps.groupId),
         displays: state.Data.Displays.filter(d => d.groupId === ownProps.groupId),
-        dashboards: state.Data.Dashboards.filter(d => d.groupId === ownProps.groupId),
+        dashboards: state.Data.Dashboards.filter(d => d.groupId === ownProps.groupId).sort((a, b) => {
+            if (a.rank > b.rank)
+                return 1;
+            else if (a.rank < b.rank)
+                return -1;
+            else
+                return 0;
+        }),
     };
 }
 
