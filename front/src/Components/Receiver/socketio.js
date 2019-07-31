@@ -68,7 +68,7 @@ export default function (receiver) {
     });
   });
 
-  socket.on('dashboard', function (dashboard) {
+  socket.on('NextDashboard', function (dashboard) {
     console.info('[Dashkiosk] should display dashboard ' + dashboard.url);
     receiver.props.setStoreState({
       dashboardToDisplay: dashboard

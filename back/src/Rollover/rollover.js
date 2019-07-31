@@ -8,17 +8,20 @@ class Rollover {
         this.groupId = groupId;
         this.dashboard = null;
         this.loadDashboards();
-
-        EventEmitter.on(Types.NewDashbord, (prevState, newState, payload) => {
-            this.loadDashboards();
+        EventEmitter.on(Types.NewDashboard, (prevState, newState, payload) => {
+            if (payload.groupId === this.groupId)
+                this.loadDashboards();
         });
 
-        EventEmitter.on(Types.UpdateDashbord, (prevState, newState, payload) => {
-            this.loadDashboards();
+        EventEmitter.on(Types.UpdateDashboard, (prevState, newState, payload) => {
+            if (payload.groupId === this.groupId)
+                this.loadDashboards();
         });
 
-        EventEmitter.on(Types.DeleteDashbord, (prevState, newState, payload) => {
-            this.loadDashboards();
+        EventEmitter.on(Types.DeleteDashboard, (prevState, newState, payload) => {
+            const dashboard = prevState.Data.Dashboards.find((obj) => obj.id === payload);
+            if (dashboard && dashboard.groupId === this.groupId)
+                this.loadDashboards();
         });
     }
 
@@ -50,17 +53,12 @@ class Rollover {
     getDashboard() {
         if (this.rankMax < 0 || this.dashboard)
             return null;
-        let dashboard;
+        let dashboard = null;
         let rank = this.rank + 1;
         while (!dashboard) {
             if (rank > this.rankMax)
                 rank = 0;
-            if (rank === this.rank)
-                return null;
-            dashboard = this.dashboards.find((obj) => {
-                obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now()))
-            });
-            EventEmitter.emit('NextDashboard-' + this.groupId);
+            dashboard = this.dashboards.find((obj) => obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now())));
             ++rank;
         }
         return dashboard;
@@ -70,11 +68,15 @@ class Rollover {
         let dashboard = this.getBroadcast();
         if (!dashboard)
             dashboard = this.getDashboard();
-        if (!dashboard)
+        if (!dashboard) {
             return;
+        }
+        EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         this.dashboard = dashboard;
-        if (!dashboard.timeout)
+        if (!dashboard.timeout) {
+            this.dashboard = null;
             return;
+        }
         this.timeout = setTimeout(() => {
             this.dashboard = null;
             this.nextDashboard();
