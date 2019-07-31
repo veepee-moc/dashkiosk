@@ -14,7 +14,7 @@ module.exports = (dashboard) => {
     if(dashboard.id)
         delete dashboard.id;
     if(dashboard.rank)
-        delete deashboard.rank;
+        delete dashboard.rank;
     return new Promise((resolve, reject) => {
         db.Dashboards.create({ rank, ...dashboard })
             .then((res) => {

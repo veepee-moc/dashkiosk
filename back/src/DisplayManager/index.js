@@ -6,45 +6,54 @@ const Rollover = require('../Rollover/rollover.js');
 
 const EventEmitter = require('../EventEmitter');
 const { Types } = require('../Redux/Actions');
-// [display.id][socket]
-const socketList = new Map();
-
-
-
-// EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {
-//     const oldGroups = ;
-//     const newGroups = ;
-//     if (oldGroups == newGroups) {
-//         return;
-//     }
-//     const socket = sokcetList(payload.id);
-//     socket.join();
-//     socket.leave();
-// });
-
-EventEmitter.on(Types.DeleteGroup, (prevState, newState, payload) => {
-    // rollovers.pop();
-});
 
 class DisplayManager {
     constructor(io) {
         this.io = io.of('/displays');
         this.handleNewDisplay();
         this.rollovers = null;
+        // [display.id][socket]
+        this.socketList = new Map();
     }
 
     initRollovers() {
-        this.rollovers = new Array(new Rollover(1));
-    }
+        this.rollovers = new Array();
+        const groups = Store.getState().Data.Groups;
+        for (const group of groups) {
+            EventEmitter.on('NextDashboard-' + group.id, (dashboard) => {
+                console.log('Emit dashboard');
+                this.io.to(group.id).emit('NextDashboard', dashboard);
+            });
+            this.rollovers.push(new Rollover(group.id));
+        }
 
-    handleNewDisplay() {
         EventEmitter.on(Types.NewGroup, (prevState, newState, payload) => {
             this.rollovers.push(new Rollover(payload.id));
             EventEmitter.on('NextDashboard-' + payload.id, (dashboard) => {
-                this.io.to(display.groupId).emit('dashboard', dashboard.url);
+                console.log('Emit dashboard');
+                this.io.to(display.groupId).emit('NextDashboard', dashboard);
             });
         });
 
+        EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {
+            const oldGroupId = prevState.Data.Displays.find((obj) => payload.id).groupId;
+            if (oldGroupId !== payload.groupId) {
+                const socket = this.sokcetList(payload.id);
+                socket.leave(oldGroupId);
+                socket.join(payload.id);
+            }
+        });
+
+        EventEmitter.on(Types.DeleteGroup, (prevState, newState, payload) => {
+            const index = this.rollovers.findIndex((rollover) => rollover.groupId === payload);
+            if (index === undefined)
+                return;
+            rollovers.splice(index, 1);
+            EventEmitter.removeListener('NextDashboard-' + payload);
+        });
+    }
+
+    handleNewDisplay() {
         this.io.on('connection', (socket) => {
             let ip = (socket.handshake.headers || {})['x-forwarded-for'] ||
                 socket.request.connection.remoteAddress;
@@ -62,8 +71,10 @@ class DisplayManager {
                         Logger.info(`New display: ${ display.name }-${ ip }`);
                     })
                     .then(() => {
-                        socketList.set(display.id, socket);
+                        this.socketList.set(display.id, socket);
+                        socket.join(display.groupId);
                         socket.on('disconnect', () => {
+                            this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);
                             display.connected = false;
                             Logger.info(`display disconnected: ${ display.name } `);
