@@ -9,6 +9,7 @@ const initialState = {
             dashboard: null,
             display: null,
             group: null,
+            moveGroup: null,
             groupTag: null,
             history: null,
             multiDashboard: null,
