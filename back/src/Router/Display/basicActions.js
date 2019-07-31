@@ -19,8 +19,6 @@ function basicCheck(req, res, next) {
 }
 
 Router.patch('/:displayId(\\d+)', basicCheck, BodyParser.json(), (req, res) => {
-    console.log('MY BODY:');
-    console.log(req.body);
     DbAction.updateDisplay(req.params.displayId, req.body)
         .then((updatedDisplay) => {
             res.json(updatedDisplay);

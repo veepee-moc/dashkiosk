@@ -22,7 +22,7 @@ logger = winston.createLogger({
     transports: transports
 });
 
-EventEmitter.on(Types.SetConfigState, (type, prevState, state, payload) => {
+EventEmitter.on(Types.SetConfigState, (prevState, state, payload) => {
     if (prevState === state) {
         return;
     }

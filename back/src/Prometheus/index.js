@@ -20,7 +20,6 @@ const metrics = (req, res) => {
 }
 
 EventEmitter.on(Types.DeleteDisplay, (prevState, state, payload) => {
-    console.log('---test-----');
     regenMetrics(state);
 });
 

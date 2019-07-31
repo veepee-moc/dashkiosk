@@ -35,7 +35,6 @@ Router.post('/', (req, res) => {
             res.status(201).json(newGroup);
         })
         .catch((err) => {
-            console.log(err);
             Logger.error(err);
             res.sendStatus(500);
         });
