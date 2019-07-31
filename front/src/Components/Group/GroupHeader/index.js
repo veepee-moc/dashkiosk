@@ -68,11 +68,16 @@ class GroupHeader extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
+    const group = state.Data.Groups.find(g => g.id === ownProps.groupId);
+    //console.log(group);
     return { 
-        group: Object.assign({}, state.Data.Groups.find(g => g.id === ownProps.groupId), {
+        group: {
+            id: group.id,
+            name: group.name,
+            description: group.description,
             empty: state.Data.Displays.find(obj => obj.groupId === ownProps.groupId) === undefined,
-            displayConnected: state.Data.Displays.find((obj) => obj.connected) !== undefined
-        })
+            displayConnected: state.Data.Displays.find((obj) => obj.groupId === ownProps.groupId && obj.connected) !== undefined
+        }
     };
 }
 
