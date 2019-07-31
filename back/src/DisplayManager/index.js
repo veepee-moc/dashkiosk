@@ -72,7 +72,7 @@ class DisplayManager {
                     })
                     .then(() => {
                         this.socketList.set(display.id, socket);
-                        socket.join(1);
+                        socket.join(display.groupId);
                         socket.on('disconnect', () => {
                             this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);
