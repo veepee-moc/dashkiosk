@@ -9,15 +9,19 @@ class Rollover {
         this.dashboard = null;
         this.loadDashboards();
         EventEmitter.on(Types.NewDashboard, (prevState, newState, payload) => {
-            this.loadDashboards();
+            if (payload.groupId === this.groupId)
+                this.loadDashboards();
         });
 
         EventEmitter.on(Types.UpdateDashboard, (prevState, newState, payload) => {
-            this.loadDashboards();
+            if (payload.groupId === this.groupId)
+                this.loadDashboards();
         });
 
         EventEmitter.on(Types.DeleteDashboard, (prevState, newState, payload) => {
-            this.loadDashboards();
+            const dashboard = prevState.Data.Dashboards.find((obj) => obj.id === payload);
+            if (dashboard && dashboard.groupId === this.groupId)
+                this.loadDashboards();
         });
     }
 
