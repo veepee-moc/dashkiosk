@@ -36,7 +36,6 @@ class Rollover {
     loadDashboards() {
         const { Data } = Store.getState();
         this.dashboards = Data.Dashboards.filter((obj) => obj.groupId === this.groupId);
-        console.log(this.dashboards);
         this.rankMax = this.getRankMax();
         if (!this.rank)
             this.rank = this.rankMax;
@@ -79,7 +78,6 @@ class Rollover {
             return;
         }
         this.timeout = setTimeout(() => {
-            console.log('Timeout');
             this.dashboard = null;
             this.nextDashboard();
         }, dashboard.timeout);
