@@ -45,8 +45,10 @@ class DisplayManager {
         });
 
         EventEmitter.on(Types.DeleteGroup, (prevState, newState, payload) => {
-            const index = rollovers.indexOf(payload);
-            rollovers.splice(payload.id, 1);
+            const index = this.rollovers.findIndex((rollover) => rollover.groupId === payload);
+            if (index === undefined)
+                return;
+            rollovers.splice(index, 1);
             EventEmitter.removeListener('NextDashboard-' + payload);
         });
     }
