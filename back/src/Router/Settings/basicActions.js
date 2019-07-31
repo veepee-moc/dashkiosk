@@ -1,9 +1,10 @@
 const multer = require('multer');
 const BodyParser = require('body-parser');
 const fs = require('fs');
+const Router = require('express').Router();
 const image = require('../UploadImages/Utils');
 const settings = require('./ConfigSettings');
-const Router = require('express').Router();
+const EventEmitter = require('../../EventEmitter');
 
 // Upload unnasigned images
 // TYPES : unassigned
@@ -41,8 +42,9 @@ Router.patch('/settings/config', BodyParser.json(), function (req, res, next) {
         res.sendStatus(400);
         return;
     }
-    fs.writeFileSync(`./public/settings/config.json`, JSON.stringify(req.body.config), 'utf8');
-    //bus.publish('settings.updated', JSON.stringify(req.body.config));
+    const settings = JSON.stringify(req.body.config);
+    fs.writeFileSync(`./public/settings/config.json`, settings, 'utf8');
+    EventEmitter.emit('UpdateSettings', settings);
     res.sendStatus(202);
 });
 
