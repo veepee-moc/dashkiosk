@@ -4,7 +4,7 @@ const db = require('../Database/Models');
 const prometheus = require('../Prometheus');
 const Store = require('../Redux/Store');
 
-Router.use((req, res, next) => {
+Router.use('/api', (req, res, next) => {
     if (req.method !== 'GET') {
       const data = {
         refererUrl: req.headers.referer,

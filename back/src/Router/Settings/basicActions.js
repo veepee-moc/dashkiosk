@@ -1,4 +1,5 @@
 const multer = require('multer');
+const BodyParser = require('body-parser');
 const fs = require('fs');
 const image = require('../UploadImages/Utils');
 const settings = require('./ConfigSettings');
@@ -35,9 +36,11 @@ Router.post('/settings/upload/brand', image.checkStorage, image.brandMulter.sing
 });
 
 // Edit config
-Router.put('/settings/config', function (req, res, next) {
-    if (!req.body || !req.body.config)
+Router.patch('/settings/config', BodyParser.json(), function (req, res, next) { 
+    if (!req.body || !req.body.config) {
         res.sendStatus(400);
+        return;
+    }
     fs.writeFileSync(`./public/settings/config.json`, JSON.stringify(req.body.config), 'utf8');
     //bus.publish('settings.updated', JSON.stringify(req.body.config));
     res.sendStatus(202);

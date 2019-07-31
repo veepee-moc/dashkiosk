@@ -1,4 +1,4 @@
-import SetDndState from './Actions/setDndState';
+import SetDndState from './Actions/SetDndState';
 
 const initialState = {
     type: null,

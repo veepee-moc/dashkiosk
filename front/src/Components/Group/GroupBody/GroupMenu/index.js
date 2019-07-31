@@ -16,7 +16,7 @@ class GroupMenu extends Component {
     }
 
     setLayoutSize = (incr) => {
-        this.Rest.updadeGroupLayoutSize(this.props.group.layoutSize + incr);
+        this.Rest.updadeGroupLayoutSize(this.props.group.layoutSize + incr, this.props.groupId);
     }
 
     renderTags() {
@@ -65,10 +65,8 @@ class GroupMenu extends Component {
 function mapStateToProps(state, ownProps) {
     const tags = [];
     for (const tag of state.Data.GroupTags)
-        if (tag.groups && tag.groups.find((id) => id === ownProps.groupId)) {
-            console.log(tag);
+        if (tag.groups && tag.groups.find((id) => id === ownProps.groupId))
             tags.push(tag);
-        }
     return {
         group: state.Data.Groups.find(g => g.id === ownProps.groupId),
         tags: tags

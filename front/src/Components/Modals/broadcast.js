@@ -148,17 +148,17 @@ class ModalBroadcast extends Component {
   }
 
   toggleTag = (id) => {
-    let tmp = this.state.Groups;
+    let tmp = this.state.Groups.slice();
     let tag = this.props.groupTags.find(elem => elem.id === id);
+    tag.enable = !tag.enable;
     if (!tag || !tag.groups)
       return;
     tag.groups.forEach((groupId, i) => {
       tmp.forEach((group, i) => {
-        if (`${group.id}` === groupId)
-          group.enabled = !tag.enable;
+        if (group.id === groupId)
+          group.enabled = tag.enable;
       });
     });
-    tag.enable = !tag.enable
     this.setState({ Groups: tmp });
   }
 
@@ -348,9 +348,10 @@ class ModalBroadcast extends Component {
 }
 
 function mapStateWithProps(state) {
-  state.Data.GroupTags.forEach(tag => tag.enable = true);
+  const tags = state.Data.GroupTags.slice();
+  tags.forEach(tag => tag.enable = true);
   return {
-    groupTags: state.Data.GroupTags,
+    groupTags: tags,
     show: state.Modal.show
   };
 }

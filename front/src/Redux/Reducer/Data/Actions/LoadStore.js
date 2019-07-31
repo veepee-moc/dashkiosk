@@ -10,7 +10,6 @@ export default {
         newState.Broadcasts = payload.Broadcasts;
         newState.MultiDashboards = payload.MultiDashboards;
         newState.GroupTags = payload.GroupTags;
-        console.log(newState);
         return newState;
     }
 };

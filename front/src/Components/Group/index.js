@@ -30,7 +30,7 @@ class Group extends Component {
                     this.Rest.copyDashboard(dnd.object.props.dashboardKey);
                 return;
             case "GroupTag":
-                this.Rest.addTagToGroup(dnd.object.props.tagid);
+                this.Rest.addTagToGroup(dnd.object.props.tagid, this.props.groupId);
                 return;
             default:
                 return;
