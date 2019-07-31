@@ -20,7 +20,9 @@ const Types = {
     SetAdminState: "SetAdminState",
     SetDndState: "SetDndState",
     SetModalState: "SetModalState",
-    SetLogs: "SetLogs"
+    SetLogs: "SetLogs",
+    DecrLayoutSize: "DecrLayoutSize",
+    IncrLayoutSize: "IncrLayoutSize"
 };
 
 function action(type, payload) {
