@@ -1,6 +1,8 @@
 import React from 'react';
 import { SortableElement, SortableContainer } from 'react-sortable-hoc';
 import Group from '../../Group';
+import Axios from 'axios';
+import { toast } from 'react-toastify';
 
 const SortableGroup = SortableElement(({ passedProps, groupWidth }) => {
     return (
@@ -20,11 +22,10 @@ const SortableList = SortableContainer(({ items }) => {
 
 const SortableGroupList = ({ groups, searched, groupWidth }) => {
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        const groupSrc = groups[oldIndex];
-        // Dispatch here
-        // Call REST here
+        const srcGroup = groups[oldIndex];
+        Axios.patch(`/api/group/move/${srcGroup}`, { newRank: newIndex })
+            .catch(err => toast.error(`Failed to move group: ${err.message}`));
     };
-
     const sortableGroups = groups.map((groupId, key) =>
         <SortableGroup key={key} index={key} passedProps={{ groupId, searched }} groupWidth={groupWidth} />
     );

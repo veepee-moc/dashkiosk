@@ -111,9 +111,17 @@ class Admin extends Component {
 };
 
 function mapStateToProps(state) {
+    const groups = [...state.Data.Groups].sort((a, b) => {
+        if (a.rank > b.rank)
+            return 1;
+        else if (a.rank < b.rank)
+            return -1;
+        else
+            return 0;
+    });
     return ({
         Redux: {
-            groups: state.Data.Groups.map(group => group.id),
+            groups: groups.map(group => group.id),
             layoutSize: state.Admin.layoutSize,
             sideMenuWidth: state.Admin.sideMenuWidth,
             authenticated: state.Admin.authenticated,
