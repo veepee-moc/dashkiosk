@@ -4,6 +4,7 @@
 const fs = require('fs');
 const Passport = require('passport');
 const BodyParser = require('body-parser');
+const logger = require('../Logger');
 const { Session, PassportInitialize, PassportSession } = require('./Middleware');
 
 /**
@@ -28,11 +29,11 @@ function setPassportStrategy(app, strategyName) {
     for (const strategy of Strategies) {
         if (strategy.name === strategyName) {
             strategy.do(app, Passport);
-            console.log(`${strategyName} passport strategy loaded.`);
+            logger.info(`${strategyName} passport strategy loaded.`);
             return;
         }
     }
-    console.log(`${strategyName} passport strategy doesn't exist.`);
+    logger.error(`${strategyName} passport strategy doesn't exist.`);
 }
 
 /**

@@ -3,6 +3,7 @@ const Router = require('express').Router();
 const db = require('../Database/Models');
 const prometheus = require('../Prometheus');
 const Store = require('../Redux/Store');
+const logger = require('../Logger');
 
 Router.use('/api', (req, res, next) => {
     if (req.method !== 'GET') {
@@ -15,7 +16,7 @@ Router.use('/api', (req, res, next) => {
         body: JSON.stringify(req.body),
         email: null //TODO
       };
-      db.History.create(data).catch((err) => console.log(err));
+      db.History.create(data).catch((err) => logger.error(err));
     }
     next();
 });

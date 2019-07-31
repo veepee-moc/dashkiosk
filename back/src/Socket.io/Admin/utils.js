@@ -21,9 +21,7 @@ function matchRole (userRoles, recipientRole) {
 
 // Send a message to all socket that match the given roles
 module.exports.sendActionToRole = (io, action, payload, roles) => {
-    console.log(roles);
     if (!roles || roles.length === 0) {
-        console.log(`Emit to all client ${ action }`);
         io.emit(action, payload);
         return;
     }
