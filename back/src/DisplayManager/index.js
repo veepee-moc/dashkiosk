@@ -97,4 +97,10 @@ class DisplayManager {
     }
 };
 
-module.exports = DisplayManager;
+let dm;
+
+module.exports = (io) => {
+    if (!dm)
+        dm = new DisplayManager(io);
+    return dm;
+};

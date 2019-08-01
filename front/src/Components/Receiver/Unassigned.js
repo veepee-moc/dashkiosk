@@ -112,14 +112,14 @@ class Unassigned extends Component {
 
 function mapStateToProps(state) {
 	return ({
-    receiverConnected: state.receiverConnected,
-    useBranding: state.settings.useBranding,
-    timezone: state.settings.timezone,
-    background_choice: state.settings.background_choice,
-    background_color: state.settings.background_color,
-    background_image: state.settings.background_image,
-    loading_image: state.settings.loading_image,
-    unassigned: state.settings.unassigned,
+    receiverConnected: state.Receiver.receiverConnected,
+    useBranding: state.Settings.useBranding,
+    timezone: state.Settings.timezone,
+    background_choice: state.Settings.background_choice,
+    background_color: state.Settings.background_color,
+    background_image: state.Settings.background_image,
+    loading_image: state.Settings.loading_image,
+    unassigned: state.Settings.unassigned,
 	});
 }
 

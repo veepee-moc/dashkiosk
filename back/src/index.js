@@ -13,7 +13,7 @@ require('./Auth')(app, Store.getState().Config.Auth.strategy);
 const io = require('./Socket.io')(http);
 const DisplayManager = require('./DisplayManager');
 
-const dm = new DisplayManager(io);
+const dm = DisplayManager(io);
 
 db.initialize().then(() => dm.initRollovers());
 

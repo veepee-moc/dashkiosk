@@ -4,6 +4,7 @@ const SocketPassport = require('../../Auth/Socketio');
 const { protectGroup, protectSocket } = require('../../Auth/Protect');
 const Store = require('../../Redux/Store');
 const Logger = require('../../Logger');
+const DisplayManager = require('../../DisplayManager');
 
 module.exports = (io) => {
     io = io.of('/admin');
@@ -35,8 +36,21 @@ module.exports = (io) => {
         data.Broadcasts = storeData.Broadcasts;
         data.MultiDashboards = storeData.MultiDashboards;
         data.GroupTags = storeData.GroupTags;
-        socket.emit('loadStore', data);
 
+        const dm = DisplayManager();
+        if (!dm) {
+            socket.disconnect();
+            return;
+        }
+        for (const rollover of dm.rollovers) {
+            if (rollover.dashboard) {
+                const index = data.Dashboards.findIndex(dash => dash.id === rollover.dashboard.id);
+                if (index !== -1)
+                    data.Dashboards[index] = Object.assign({}, data.Dashboards[index], { active: true });
+            }
+        }
+
+        socket.emit('loadStore', data);
         socket.on('disconnect', (reason) => {
             Logger.info(`Socket ${ socket.id } has disconnected : ${ reason }`);
             Utils.socketList.delete(socket.id);

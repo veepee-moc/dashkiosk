@@ -46,6 +46,8 @@ class Rollover {
         this.rankMax = this.getRankMax();
         if (!this.rank)
             this.rank = this.rankMax;
+        if (this.dashboard && !this.dashboards.includes(this.dashboard))
+            this.stop();
         this.nextDashboard();
     }
 
@@ -68,11 +70,11 @@ class Rollover {
         let rank = this.rank;
         while (!dashboard) {
             ++rank;
-            if (rank === this.rank)
-                return null;
             if (rank > this.rankMax)
                 rank = 0;
             dashboard = this.dashboards.find((obj) => obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now())));
+            if (rank === this.rank && !dashboard)
+                return null;
         }
         this.rank = rank;
         return dashboard;
@@ -85,12 +87,11 @@ class Rollover {
         if (!dashboard)
             return;
         this.dashboard = dashboard;
+        console.log(dashboard);
         EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         EventEmitter.emit('UpdateActiveDashboard', { active: true, ...dashboard });
-        if (!dashboard.timeout) {
-            this.dashboard = null;
+        if (!dashboard.timeout)
             return;
-        }
         this.timeout = setTimeout(() => {
             EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
             this.dashboard = null;
