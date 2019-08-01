@@ -14,7 +14,6 @@ module.exports = {
     do(state, config) {
         const Config = Object.assign({}, state);
         assign(Config, config);
-        console.log(Config);
         return Object.assign({}, state, Config);
     }
 };

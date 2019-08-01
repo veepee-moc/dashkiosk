@@ -15,7 +15,8 @@ const Types = {
     NewGroupTag: "NewGroupTag",
     DeleteGroupTag: "DeleteGroupTag",
     UpdateGroupTag: "UpdateGroupTag",
-    NewBroadcast: "NewBroadcast"
+    NewBroadcast: "NewBroadcast",
+    DeleteBroadcast: "DeleteBroadcast"
 };
 
 function action(type, payload) {

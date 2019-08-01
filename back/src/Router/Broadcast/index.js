@@ -11,7 +11,7 @@ Router.post('/broadcast', protectRoute('broadcast'), BodyParser.json(), (req, re
             return;
         }
     for (const groupId of req.body.groups)
-        Store.dispatch(action(Types.NewBroadcast, Object.assign({}, req.body.dashboard, { groupId })));
+        Store.dispatch(action(Types.NewBroadcast, Object.assign({}, req.body.dashboard, { groupId, broadcast: true })));
     res.sendStatus(200);
 });
 

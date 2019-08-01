@@ -28,7 +28,7 @@ module.exports = (io) => {
             Logger.error('Display not found');
             return;
         }
-        const group = pevState.Data.Groups.find((obj) => obj.id === display.groupId);
+        const group = prevState.Data.Groups.find((obj) => obj.id === display.groupId);
         if (!group) {
             Logger.error('Group not found');
             return;

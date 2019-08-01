@@ -71,6 +71,9 @@ class DisplayManager {
                     .then(() => {
                         this.socketList.set(display.id, socket);
                         socket.join(display.groupId);
+                        const rollover = this.rollovers.find(r => r.groupId === display.groupId);
+                        if (rollover)
+                            socket.emit('NextDashboard', rollover.dashboard);
                         socket.on('disconnect', () => {
                             this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);

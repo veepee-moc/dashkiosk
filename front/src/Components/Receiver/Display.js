@@ -44,7 +44,7 @@ class Display extends Component {
 
   updateScreenWithDashboard(screen, dashboardToDisplay) {
     const timeout = (!this.props.dashboardToDisplay.timeout) ? 0 : this.props.dashboardToDisplay.timeout;
-    const delay = (!this.props.dashboardToDisplay.delay) ? 0 : this.props.dashboardToDisplay.delay;
+    const delay = (!this.props.dashboardToDisplay.delay) ? 1 : this.props.dashboardToDisplay.delay;
     const actualDisp = this.state.displayed;
     this.setState({
       [screen]: {

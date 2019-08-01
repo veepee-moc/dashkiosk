@@ -1,6 +1,6 @@
 const Store = require('../Redux/Store');
 const EventEmitter = require('../EventEmitter');
-const { Types } = require('../Redux/Actions');
+const { Types, action } = require('../Redux/Actions');
 
 class Rollover {
     constructor(groupId) {
@@ -11,15 +11,22 @@ class Rollover {
             if (payload.groupId === this.groupId)
                 this.loadDashboards();
         });
-
+        EventEmitter.on(Types.NewBroadcast, (prevState, newState, payload) => {
+            if (payload.groupId === this.groupId)
+                this.loadDashboards()
+        });
         EventEmitter.on(Types.UpdateDashboard, (prevState, newState, payload) => {
             if (payload.groupId === this.groupId)
                 this.loadDashboards();
         });
-
         EventEmitter.on(Types.DeleteDashboard, (prevState, newState, payload) => {
             const dashboard = prevState.Data.Dashboards.find((obj) => obj.id === payload);
             if (dashboard && dashboard.groupId === this.groupId)
+                this.loadDashboards();
+        });
+        EventEmitter.on(Types.DeleteBroadcast, (prevState, newState, payload) => {
+            const broadcast = prevState.Data.Broadcasts.find(obj => obj.id === payload);
+            if (broadcast && broadcast.groupId === this.groupId)
                 this.loadDashboards();
         });
         this.loadDashboards();
@@ -43,10 +50,14 @@ class Rollover {
     }
 
     getBroadcast() {
+        if (this.dashboard && this.dashboard.broadcast)
+            return;
         const { Data } = Store.getState();
         const broadcast = Data.Broadcasts.find((obj) => obj.groupId === this.groupId && (!obj.availability || obj.availability.isValid(Date.now())));
-        if (broadcast)
+        if (broadcast) {
             clearTimeout(this.timeout);
+            Store.dispatch(action(Types.DeleteBroadcast, broadcast.id));
+        }
         return broadcast;
     }
 
@@ -54,13 +65,16 @@ class Rollover {
         if (this.rankMax < 0 || this.dashboard)
             return null;
         let dashboard = null;
-        let rank = this.rank + 1;
+        let rank = this.rank;
         while (!dashboard) {
+            ++rank;
+            if (rank === this.rank)
+                return null;
             if (rank > this.rankMax)
                 rank = 0;
             dashboard = this.dashboards.find((obj) => obj.rank === rank && (!obj.availability || obj.availability.isValid(Date.now())));
-            ++rank;
         }
+        this.rank = rank;
         return dashboard;
     }
 
@@ -68,11 +82,10 @@ class Rollover {
         let dashboard = this.getBroadcast();
         if (!dashboard)
             dashboard = this.getDashboard();
-        if (!dashboard) {
+        if (!dashboard)
             return;
-        }
-        EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         this.dashboard = dashboard;
+        EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         if (!dashboard.timeout) {
             this.dashboard = null;
             return;
@@ -80,7 +93,7 @@ class Rollover {
         this.timeout = setTimeout(() => {
             this.dashboard = null;
             this.nextDashboard();
-        }, dashboard.timeout);
+        }, dashboard.timeout * 1000);
     }
 
     stop() {
