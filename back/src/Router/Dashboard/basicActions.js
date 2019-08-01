@@ -40,7 +40,7 @@ Router.get('/:dashboardId(\\d+)', basicCheck, (req, res) => {
 Router.post('/', protectRoute('dashboard'), BodyParser.json(), (req, res) => {
     if (!req.body.url || !req.body.groupId)
         res.sendStatus(400);
-    else if (!protectGroup(req, req.groupId))
+    else if (!protectGroup(req, req.body.groupId))
         res.sendStatus(401);
     else
         DbActions.newDashboard(req.body)
