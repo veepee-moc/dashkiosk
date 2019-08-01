@@ -5,6 +5,7 @@ import Settings from './Settings';
 import Modal from './Modal';
 import DnD from './DnD';
 import History from './History';
+import Receiver from './Receiver';
 
 export default combineReducers({
     Admin,
@@ -12,5 +13,6 @@ export default combineReducers({
     Settings,
     Modal,
     DnD,
-    History
+    History,
+    Receiver
 });

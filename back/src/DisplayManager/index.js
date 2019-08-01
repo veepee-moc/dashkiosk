@@ -10,14 +10,13 @@ const { Types } = require('../Redux/Actions');
 class DisplayManager {
     constructor(io) {
         this.io = io.of('/displays');
-        this.handleNewDisplay();
-        this.rollovers = null;
+        this.rollovers = [];
         // [display.id][socket]
         this.socketList = new Map();
+        this.handleNewDisplay();
     }
 
     initRollovers() {
-        this.rollovers = new Array();
         const groups = Store.getState().Data.Groups;
         for (const group of groups) {
             EventEmitter.on('NextDashboard-' + group.id, (dashboard) => {
@@ -29,7 +28,7 @@ class DisplayManager {
         EventEmitter.on(Types.NewGroup, (prevState, newState, payload) => {
             this.rollovers.push(new Rollover(payload.id));
             EventEmitter.on('NextDashboard-' + payload.id, (dashboard) => {
-                this.io.to(display.groupId).emit('NextDashboard', dashboard);
+                this.io.to(dashboard.groupId).emit('NextDashboard', dashboard);
             });
         });
 
@@ -46,8 +45,9 @@ class DisplayManager {
             const index = this.rollovers.findIndex((rollover) => rollover.groupId === payload);
             if (index === undefined)
                 return;
-            rollovers.splice(index, 1);
-            EventEmitter.removeListener('NextDashboard-' + payload);
+            this.rollovers[index].stop();
+            this.rollovers.splice(index, 1);
+            EventEmitter.removeAllListeners('NextDashboard-' + payload);
         });
     }
 

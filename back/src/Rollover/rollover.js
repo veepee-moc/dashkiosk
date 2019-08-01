@@ -7,7 +7,6 @@ class Rollover {
         this.rank = null;
         this.groupId = groupId;
         this.dashboard = null;
-        this.loadDashboards();
         EventEmitter.on(Types.NewDashboard, (prevState, newState, payload) => {
             if (payload.groupId === this.groupId)
                 this.loadDashboards();
@@ -23,6 +22,7 @@ class Rollover {
             if (dashboard && dashboard.groupId === this.groupId)
                 this.loadDashboards();
         });
+        this.loadDashboards();
     }
 
     getRankMax() {

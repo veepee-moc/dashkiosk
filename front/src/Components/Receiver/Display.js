@@ -128,17 +128,17 @@ class Display extends Component {
 
 function mapStateToProps(state) {
   return ({
-    dashboardToDisplay: state.dashboardToDisplay,
-    connectionLost: state.connectionLost,
-    reloadRequired: state.reloadRequired,
-    osd: state.osd,
-    displayViewport: state.displayViewport,
+    dashboardToDisplay: state.Receiver.dashboardToDisplay,
+    connectionLost: state.Receiver.connectionLost,
+    reloadRequired: state.Receiver.reloadRequired,
+    osd: state.Receiver.osd,
+    displayViewport: state.Receiver.displayViewport,
   });
 }
 
 function mapDispatchToProps(dispatch) {
   return ({
-    setStoreState: (payload) => dispatch(action(Types.SetStoreState, payload))
+    setStoreState: (payload) => dispatch(action(Types.SetReceiverState, payload))
   });
 }
 

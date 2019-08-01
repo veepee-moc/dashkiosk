@@ -4,6 +4,7 @@ import { Types, action } from '../../Redux/Actions';
 import { connect } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import './Receiver.css';
+import supervisor from './supervisor';
 import socketio from './socketio';
 import errors from './errors';
 import Display from './Display';
@@ -18,6 +19,7 @@ class Receiver extends Component {
 
 	componentDidMount() {
 		errors.enable();
+		supervisor.ready();
 		console.log('[Dashkiosk] dashkiosk ready, connect to socket.io server');
 		socketio(this);
 	}
@@ -33,8 +35,9 @@ class Receiver extends Component {
 }
 
 function mapStateToProps(state) {
+	console.log(state);
 	return ({
-		receiverConnected: state.receiverConnected
+		receiverConnected: state.Receiver.receiverConnected
 	});
 }
 
