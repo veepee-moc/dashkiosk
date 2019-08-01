@@ -55,7 +55,7 @@ class Rollover {
         const { Data } = Store.getState();
         const broadcast = Data.Broadcasts.find((obj) => obj.groupId === this.groupId && (!obj.availability || obj.availability.isValid(Date.now())));
         if (broadcast) {
-            clearTimeout(this.timeout);
+            this.stop();
             Store.dispatch(action(Types.DeleteBroadcast, broadcast.id));
         }
         return broadcast;
@@ -86,11 +86,13 @@ class Rollover {
             return;
         this.dashboard = dashboard;
         EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
+        EventEmitter.emit('UpdateActiveDashboard', { active: true, ...dashboard });
         if (!dashboard.timeout) {
             this.dashboard = null;
             return;
         }
         this.timeout = setTimeout(() => {
+            EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
             this.dashboard = null;
             this.nextDashboard();
         }, dashboard.timeout * 1000);
@@ -98,6 +100,7 @@ class Rollover {
 
     stop() {
         clearTimeout(this.timeout);
+        EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
         this.dashboard = null;
     }
 };

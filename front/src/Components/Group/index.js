@@ -51,7 +51,7 @@ class Group extends Component {
                             onClick={() => this.openModal()}>
                             Add a new dashboard
                         </button>
-                        <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={ this.Rest.preview }>
+                        <button type="button" className="btn btn-light w-50 border-left rounded-0" onClick={ () => this.Rest.preview(this.props.groupId) }>
                             Preview
                         </button>
                     </div>

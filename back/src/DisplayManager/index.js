@@ -3,9 +3,8 @@ const Store = require('../Redux/Store');
 const DbActions = require('../Database/Actions');
 const prometheus = require('../Prometheus');
 const Rollover = require('../Rollover/rollover.js');
-
 const EventEmitter = require('../EventEmitter');
-const { Types } = require('../Redux/Actions');
+const { Types, action } = require('../Redux/Actions');
 
 class DisplayManager {
     constructor(io) {
@@ -33,9 +32,9 @@ class DisplayManager {
         });
 
         EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {
-            const oldGroupId = prevState.Data.Displays.find((obj) => payload.id).groupId;
+            const oldGroupId = prevState.Data.Displays.find((obj) => obj.id === payload.id).groupId;
             if (oldGroupId !== payload.groupId) {
-                const socket = this.sokcetList(payload.id);
+                const socket = this.socketList.get(payload.id);
                 socket.leave(oldGroupId);
                 socket.join(payload.id);
             }
@@ -65,18 +64,20 @@ class DisplayManager {
                     .then((res) => {
                         display = res;
                         fn(display.name);
+                        this.socketList.set(display.id, socket);
                         prometheus.setDisplayStatus(display, 1);
                         Logger.info(`New display: ${ display.name }-${ ip }`);
                     })
                     .then(() => {
-                        this.socketList.set(display.id, socket);
                         socket.join(display.groupId);
+                        Store.dispatch(action(Types.UpdateDisplay, { connected: true, ...display }));
                         const rollover = this.rollovers.find(r => r.groupId === display.groupId);
-                        if (rollover)
+                        if (rollover && rollover.dashboard)
                             socket.emit('NextDashboard', rollover.dashboard);
                         socket.on('disconnect', () => {
                             this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);
+                            Store.dispatch(action(Types.UpdateDisplay, { connected: false, ...display }));
                             display.connected = false;
                             Logger.info(`display disconnected: ${ display.name } `);
                         })

@@ -1,6 +1,7 @@
 const EventEmitter = require('../../../EventEmitter');
 const Logger = require('../../../Logger');
 const Utils = require('../utils.js');
+const Store = require('../../../Redux/Store');
 const { Types } = require('../../../Redux/Actions');
 
 module.exports = (io) => {
@@ -20,6 +21,15 @@ module.exports = (io) => {
             return;
         }
         Utils.sendActionToRole(io, Types.UpdateDashboard, payload, group.roles);
+    });
+
+    EventEmitter.on('UpdateActiveDashboard', (dashboard) => {
+        const group = Store.getState().Data.Groups.find((obj) => obj.id === dashboard.groupId);
+        if (!group) {
+            Logger.error('Group not found');
+            return;
+        }
+        Utils.sendActionToRole(io, Types.UpdateDashboard, dashboard, group.roles);
     });
 
     EventEmitter.on(Types.DeleteDashboard, (prevState, newState, payload) => {

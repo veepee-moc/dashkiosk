@@ -29,7 +29,7 @@ const Rest = {
     },
 
     reloadGroupDisplays: (groupId) => {
-        const group = Store.getState().Admin.Groups[groupId];
+        const group = Store.getState().Data.Groups[groupId];
         const promises = Object.values(group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
@@ -57,7 +57,10 @@ const Rest = {
     },
 
     preview: (groupId) => {
-        Axios.post(`/api/group/${groupId}`, { blob: localStorage.getItem('register') })
+        const display = Store.getState().Data.Displays.find(d => d.name === localStorage.getItem('register'));
+        if (!display)
+            return;
+        Axios.patch(`/api/display/${display.id}`, { groupId })
             .catch(() => toast.error('Failed to preview group.'));
     },
 

@@ -4,7 +4,8 @@
     "username": "dashkiosk",
     "password": "dashkiosk",
     "storage": "dashkiosk_development.db",
-    "dialect": "sqlite"
+    "dialect": "sqlite",
+    "logging": false
   },
   "test": {
     "database": "dashkiosk",

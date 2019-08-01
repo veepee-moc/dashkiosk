@@ -32,18 +32,16 @@ class ModalBroadcast extends Component {
   getGroup = () => {
     var newGroups = [];
 
-    Axios.get('/api/group').then((res) => {
-      Object.keys(res.data).forEach(item => {
-        newGroups.push({
-          title: res.data[item].name,
-          id: res.data[item].id,
-          enabled: true
-        })
-      });
-      if (this.state.Groups !== newGroups)
-        this.setState({ Groups: newGroups });
-    })
-      ;
+    const Groups = Store.getState().Data.Groups;
+    for (const group of Groups) {
+      newGroups.push({
+        title: group.name,
+        id: group.id,
+        enabled: true
+      })
+    }
+    if (this.state.Groups !== newGroups)
+      this.setState({ Groups: newGroups });
   }
 
   componentDidMount() {
