@@ -22,6 +22,7 @@ class DisplayManager {
                 this.io.to(group.id).emit('NextDashboard', dashboard);
             });
             this.rollovers.push(new Rollover(group.id));
+            console.log('New rollover');
         }
 
         EventEmitter.on(Types.NewGroup, (prevState, newState, payload) => {

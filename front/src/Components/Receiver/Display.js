@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Types, action } from '../../Actions';
+import { Types, action } from '../../Redux/Actions';
 import { connect } from 'react-redux';
 import { Spinner, Row, Col } from 'react-bootstrap';
 import Swap from '../Swap';

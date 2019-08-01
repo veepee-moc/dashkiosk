@@ -29,7 +29,7 @@ const Rest = {
     },
 
     reloadGroupDisplays: (groupId) => {
-        const group = Store.getState().Data.Groups[groupId];
+        const group = Store.getState().Data.Groups.find(g => g.id === groupId);
         const promises = Object.values(group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
@@ -42,7 +42,7 @@ const Rest = {
     },
 
     toggleOSD: (groupId) => {
-        const group = Store.getState().Admin.Groups[groupId];
+        const group = Store.getState().Data.Groups.find(g => g.id === groupId);
         const enable = !Object.values(group.displays).every((display) => !display.connected || display.osd);
         const promises = Object.values(group.displays).map((display) => {
             if (display.connected)
