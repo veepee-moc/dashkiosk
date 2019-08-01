@@ -7,6 +7,12 @@ class Rollover {
         this.rank = null;
         this.groupId = groupId;
         this.dashboard = null;
+
+        EventEmitter.on(Types.NewBroadcast, (prevState, newState, payload) => {
+            if (payload.groupId === this.groupId)
+                this.loadDashboards();
+        });
+
         EventEmitter.on(Types.NewDashboard, (prevState, newState, payload) => {
             if (payload.groupId === this.groupId)
                 this.loadDashboards();
