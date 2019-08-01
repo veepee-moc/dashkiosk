@@ -6,10 +6,10 @@ module.exports = {
         if (!payload)
             return state;
         const GroupTags = [...state.GroupTags];
-        const groupTag = GroupTags.find((obj) => obj.id === payload.id);
-        if (!groupTag)
+        const index = GroupTags.findIndex((obj) => obj.id === payload.id);
+        if (index === -1)
             return state;
-        Object.assign(groupTag, payload);
+        GroupTags[index] = Object.assign({}, GroupTags[index], payload);
         return Object.assign({}, state, { GroupTags });
     }
 }

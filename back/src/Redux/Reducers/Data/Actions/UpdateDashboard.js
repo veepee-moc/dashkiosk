@@ -4,10 +4,10 @@ module.exports = {
     type: Types.UpdateDashboard,
     do(state, payload) {
         const Dashboards = [...state.Dashboards];
-        const dashboard = Dashboards.find((obj) => obj.id === payload.id);
-        if (!dashboard)
+        const index = Dashboards.findIndex((obj) => obj.id === payload.id);
+        if (index === -1)
             return state;
-        Object.assign(dashboard, payload);
+        Dashboards[index] = Object.assign({}, Dashboards[index], payload);
         return Object.assign({}, state, { Dashboards });
     }
 };

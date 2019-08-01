@@ -4,10 +4,10 @@ module.exports = {
     type: Types.UpdateDashboard,
     do(state, payload) {
         const MultiDashboards = [...state.MultiDashboards];
-        const multiDashboard = MultiDashboards.find((obj) => obj.id === payload.id);
-        if (!multiDashboard)
+        const index = MultiDashboards.findIndex((obj) => obj.id === payload.id);
+        if (index === -1)
             return state;
-        Object.assign(multiDashboard, payload);
+        MultiDashboards[index] = Object.assign({}, MultiDashboards[index], payload);
         return Object.assign({}, state, { MultiDashboards });
     }
 };

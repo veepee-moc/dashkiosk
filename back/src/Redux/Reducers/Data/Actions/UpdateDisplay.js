@@ -4,10 +4,10 @@ module.exports = {
     type: Types.UpdateDisplay,
     do(state, payload) {
         const Displays = [...state.Displays];
-        const display = Displays.find((obj) => obj.id === payload.id);
-        if (!display)
+        const index = Displays.findIndex((obj) => obj.id === payload.id);
+        if (index === -1)
             return state;
-        Object.assign(display, payload);
+        Displays[index] = Object.assign({}, Displays[index], payload);
         return Object.assign({}, state, { Displays });
     }
 }

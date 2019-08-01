@@ -4,10 +4,10 @@ module.exports = {
     type: Types.UpdateGroup,
     do(state, payload) {
         const Groups = [...state.Groups];
-        const group = Groups.find((obj) => obj.id === payload.id);
-        if (!group)
+        const index = Groups.findIndex((obj) => obj.id === payload.id);
+        if (index === -1)
             return state;
-        Object.assign(group, payload);
+        Groups[index] = Object.assign({}, Groups[index], payload);
         return Object.assign({}, state, { Groups });
     }
 }

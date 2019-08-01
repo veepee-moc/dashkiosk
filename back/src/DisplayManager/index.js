@@ -33,10 +33,15 @@ class DisplayManager {
 
         EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {
             const oldGroupId = prevState.Data.Displays.find((obj) => obj.id === payload.id).groupId;
-            if (oldGroupId !== payload.groupId) {
+            if (oldGroupId && oldGroupId !== payload.groupId) {
                 const socket = this.socketList.get(payload.id);
+                if (!socket)
+                    return;
                 socket.leave(oldGroupId);
-                socket.join(payload.id);
+                socket.join(payload.groupId);
+                const rollover = this.rollovers.find(r => r.groupId === payload.groupId);
+                if (rollover && rollover.dashboard)
+                    socket.emit('NextDashboard', rollover.dashboard);
             }
         });
 
@@ -75,9 +80,9 @@ class DisplayManager {
                         if (rollover && rollover.dashboard)
                             socket.emit('NextDashboard', rollover.dashboard);
                         socket.on('disconnect', () => {
+                            Store.dispatch(action(Types.UpdateDisplay, { connected: false, ...display }));
                             this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);
-                            Store.dispatch(action(Types.UpdateDisplay, { connected: false, ...display }));
                             display.connected = false;
                             Logger.info(`display disconnected: ${ display.name } `);
                         })
