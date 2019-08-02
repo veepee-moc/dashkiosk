@@ -46,7 +46,7 @@ class Rollover {
         this.rankMax = this.getRankMax();
         if (!this.rank)
             this.rank = this.rankMax;
-        if (this.dashboard && !this.dashboards.includes(this.dashboard))
+        if (this.dashboard && !this.dashboards.includes(this.dashboard) && !this.dashboard.broadcast)
             this.stop();
         this.nextDashboard();
     }
@@ -58,14 +58,16 @@ class Rollover {
         const broadcast = Data.Broadcasts.find((obj) => obj.groupId === this.groupId && (!obj.availability || obj.availability.isValid(Date.now())));
         if (broadcast) {
             this.stop();
+            this.dashboard = broadcast;
             Store.dispatch(action(Types.DeleteBroadcast, broadcast.id));
         }
-        return broadcast;
     }
 
     getDashboard() {
+        if (this.dashboard)
+            return;
         if (this.rankMax < 0 || this.dashboard)
-            return null;
+            return;
         let dashboard = null;
         let rank = this.rank;
         while (!dashboard) {
@@ -77,31 +79,36 @@ class Rollover {
                 return null;
         }
         this.rank = rank;
-        return dashboard;
+        this.dashboard = dashboard;
     }
 
     nextDashboard() {
-        let dashboard = this.getBroadcast();
-        if (!dashboard)
-            dashboard = this.getDashboard();
-        if (!dashboard)
+        const actualDashboard = this.dashboard;
+        this.getBroadcast();
+        this.getDashboard();
+        if (!this.dashboard || actualDashboard === this.dashboard)
             return;
-        this.dashboard = dashboard;
-        EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
-        EventEmitter.emit('UpdateActiveDashboard', { active: true, ...dashboard });
-        if (!dashboard.timeout)
+        EventEmitter.emit('NextDashboard-' + this.groupId, this.dashboard);
+        if (!this.dashboard.broadcast)
+            EventEmitter.emit('UpdateActiveDashboard', { active: true, ...this.dashboard });
+        if (!this.dashboard.timeout)
             return;
+        clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-            EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
+            if (!this.dashboard.broadcast)
+                EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
             this.dashboard = null;
             this.nextDashboard();
-        }, dashboard.timeout * 1000);
+        }, this.dashboard.timeout * 1000);
     }
 
     stop() {
         clearTimeout(this.timeout);
-        EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
-        this.dashboard = null;
+        if (this.dashboard) {
+            if (!this.dashboard.broadcast)
+                EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
+            this.dashboard = null;
+        }
     }
 };
 
