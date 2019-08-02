@@ -11,4 +11,5 @@ class MyEmitter extends EventEmitter {
 };
 
 const emitter = new MyEmitter();
+emitter.setMaxListeners(0);
 module.exports = emitter;
