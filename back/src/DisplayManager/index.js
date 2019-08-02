@@ -30,15 +30,14 @@ class DisplayManager {
             });
         });
 
-        EventEmitter.on(Types.UpdateDisplay, (prevState, newState, display) => {
+        /*EventEmitter.on(Types.UpdateDisplay, (prevState, newState, display) => {
             const group = newState.Data.Groups.find((obj) => obj.id === display.groupId);
             if (!group) {
                 Logger.error('Group not found');
                 return;
             }
-            console.log(display);
             this.io.to(group.id).emit(Types.UpdateDisplay, display);
-        });
+        });*/
 
         EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {
             const oldGroupId = prevState.Data.Displays.find((obj) => obj.id === payload.id).groupId;
