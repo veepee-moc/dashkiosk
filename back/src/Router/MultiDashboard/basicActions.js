@@ -26,7 +26,7 @@ Router.get('/templates', protectRoute('multiDashboard'), (req, res) => {
     res.json(Templates.map((obj) => Object.assign({}, { name: obj.name, url: obj.url })));
 });
 
-Router.get('/:multId(\\d+)', protectRoute('multiDashboard'), (req, res) => {
+Router.get('/:multId(\\d+)/info', protectRoute('multiDashboard'), (req, res) => {
     const { Data } = Store.getState();
     const multiDashboard = Data.MultiDashboards.find((obj) => obj.id === parseInt(req.params.multId));
     if (!multiDashboard)
@@ -36,8 +36,8 @@ Router.get('/:multId(\\d+)', protectRoute('multiDashboard'), (req, res) => {
 });
 
 Router.post('/', protectRoute('multiDashboard'), BodyParser.json(), (req, res) => {
-    DbActions.newMultiDashboard(req.body.urls, req.body.template)
-        .then((data) => res.status(201).json(data))
+    DbActions.newMultiDashboard(req.body.urls, req.body.template.name)
+        .then((data) => res.status(201).json({ url: `/api/multidashboard/${data.id}` }))
         .catch((err) => {
             Logger.error(err);
             res.sendStatus(500);
@@ -53,7 +53,7 @@ Router.patch('/:multId(\\d+)', protectRoute('multiDashboard'), (req, res) => {
         });
 });
 
-Router.get('/:multId(\\d+)/show', (req, res) => {
+Router.get('/:multId(\\d+)', (req, res) => {
     const { Data } = Store.getState();
     const multiDashboard = Data.MultiDashboards.find((obj) => obj.id === parseInt(req.params.multId));
     if (!multiDashboard)

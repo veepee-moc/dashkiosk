@@ -90,13 +90,13 @@ class Rollover {
             return;
         EventEmitter.emit('NextDashboard-' + this.groupId, this.dashboard);
         if (!this.dashboard.broadcast)
-            EventEmitter.emit('UpdateActiveDashboard', { active: true, ...this.dashboard });
+            EventEmitter.emit('UpdateActiveDashboard', { active: true, id: this.dashboard.id, groupId: this.dashboard.groupId });
         if (!this.dashboard.timeout)
             return;
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
             if (!this.dashboard.broadcast)
-                EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
+                EventEmitter.emit('UpdateActiveDashboard', { active: false, id: this.dashboard.id, groupId: this.dashboard.groupId });
             this.dashboard = null;
             this.nextDashboard();
         }, this.dashboard.timeout * 1000);
@@ -106,7 +106,7 @@ class Rollover {
         clearTimeout(this.timeout);
         if (this.dashboard) {
             if (!this.dashboard.broadcast)
-                EventEmitter.emit('UpdateActiveDashboard', { active: false, ...this.dashboard });
+                EventEmitter.emit('UpdateActiveDashboard', { active: false, id: this.dashboard.id, groupId: this.dashboard.groupId });
             this.dashboard = null;
         }
     }

@@ -59,7 +59,7 @@ const Rest = {
         Object.assign(inputs, { groupId });
         console.log(inputs);
         if (inputs.template.name !== 'None')
-            Axios.post(`/api/multi-dashboards`, { urls: inputs.url, template: inputs.template })
+            Axios.post(`/api/multidashboard`, { urls: inputs.url, template: inputs.template })
                 .then((res) => Axios.post(`/api/dashboard`, Object.assign(inputs, { url: res.data.url })))
                 .catch((err) => toast.error(`Failed to add dashboard: ${err.message}`));
         else

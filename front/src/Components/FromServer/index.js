@@ -4,7 +4,7 @@ class FromServer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: `http://${window.location.hostname}:8080${window.location.pathname}`
+            url: `http://${window.location.hostname}:3000${window.location.pathname}`
         };
     }
 
