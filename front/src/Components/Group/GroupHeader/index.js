@@ -39,10 +39,10 @@ class GroupHeader extends Component {
                                 <IoMdTrash />
                             </button>
                             <div hidden={ !this.props.group.displayConnected }>
-                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.reloadGroupDisplays(this.props.group.id) }>
+                                <button disabled className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.reloadGroupDisplays(this.props.group.id) }>
                                     <IoMdRefresh />
                                 </button>
-                                <button className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.toggleOSD(this.props.group.id) }>
+                                <button disabled className="btn btn-noframe-dark p-1 pl-2 pr-2" onClick={ () => this.Rest.toggleOSD(this.props.group.id) }>
                                     <IoMdLocate />
                                 </button>
                             </div>

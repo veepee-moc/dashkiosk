@@ -98,9 +98,11 @@ export default function (receiver) {
   });
 
   socket.on(Types.UpdateDisplay, function (display) {
-    console.info('[Dashkiosk] viewport change to ' + (display.viewport || 'default') + ' requested');
+    console.info('[Dashkiosk] DisplayUpdated');
     receiver.props.SetReceiverState({
-      displayViewport: display.viewport
+      displayViewport: display.viewport,
+      osd: !display.osd || display.osd === '' ? null : display.osd,
+      reloadRequired: display.reload || false
     });
   });
 

@@ -10,7 +10,6 @@ class DisplayManager {
     constructor(io) {
         this.io = io.of('/displays');
         this.rollovers = [];
-        // [display.id][socket]
         this.socketList = new Map();
         this.handleNewDisplay();
     }
@@ -22,7 +21,6 @@ class DisplayManager {
                 this.io.to(group.id).emit('NextDashboard', dashboard);
             });
             this.rollovers.push(new Rollover(group.id));
-            console.log('New rollover');
         }
 
         EventEmitter.on(Types.NewGroup, (prevState, newState, payload) => {
@@ -30,6 +28,16 @@ class DisplayManager {
             EventEmitter.on('NextDashboard-' + payload.id, (dashboard) => {
                 this.io.to(dashboard.groupId).emit('NextDashboard', dashboard);
             });
+        });
+
+        EventEmitter.on(Types.UpdateDisplay, (prevState, newState, display) => {
+            const group = newState.Data.Groups.find((obj) => obj.id === display.groupId);
+            if (!group) {
+                Logger.error('Group not found');
+                return;
+            }
+            console.log(display);
+            this.io.to(group.id).emit(Types.UpdateDisplay, display);
         });
 
         EventEmitter.on(Types.UpdateDisplay, (prevState, newState, payload) => {

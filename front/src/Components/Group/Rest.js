@@ -29,7 +29,7 @@ const Rest = {
     },
 
     reloadGroupDisplays: (groupId) => {
-        const group = Store.getState().Data.Groups.find(g => g.id === groupId);
+        /*const group = Store.getState().Data.Groups.find(g => g.id === groupId);
         const promises = Object.values(group.displays).map((display) => {
             if (display.connected)
                 return Axios.post('/api/display/'+ display.name +'/action', { action: 'reload' });
@@ -38,22 +38,13 @@ const Rest = {
         });
         Promise.all(promises)
             .then(() => toast.success('Successfully reloaded all displays.'))
-            .catch(() => toast.error('Failed to reload all displays.'));
+            .catch(() => toast.error('Failed to reload all displays.'));*/
     },
 
     toggleOSD: (groupId) => {
         const group = Store.getState().Data.Groups.find(g => g.id === groupId);
-        const enable = !Object.values(group.displays).every((display) => !display.connected || display.osd);
-        const promises = Object.values(group.displays).map((display) => {
-            if (display.connected)
-                return Axios.post('/api/display/'+ display.name +'/action',
-                    { action: 'osd', text: enable || !display.osd ? display.name : null });
-            else
-                return null;
-        });
-        Promise.all(promises)
-            .then(() => toast.success('Successfully set OSD on all displays.'))
-            .catch(() => toast.error('Failed to set OSD on all displays.'));
+        Axios.post(`/api/group/action/${groupId}`, { osd: '' })
+            .catch(() => toast.error('Failed to preview group.'));
     },
 
     preview: (groupId) => {
