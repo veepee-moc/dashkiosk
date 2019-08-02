@@ -87,7 +87,6 @@ class Rollover {
         if (!dashboard)
             return;
         this.dashboard = dashboard;
-        console.log(dashboard);
         EventEmitter.emit('NextDashboard-' + this.groupId, dashboard);
         EventEmitter.emit('UpdateActiveDashboard', { active: true, ...dashboard });
         if (!dashboard.timeout)

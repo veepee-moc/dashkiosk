@@ -35,7 +35,6 @@ class Receiver extends Component {
 }
 
 function mapStateToProps(state) {
-	console.log(state);
 	return ({
 		receiverConnected: state.Receiver.receiverConnected
 	});
