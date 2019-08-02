@@ -83,12 +83,12 @@ class DisplayManager {
                     })
                     .then(() => {
                         socket.join(display.groupId);
-                        Store.dispatch(action(Types.UpdateDisplay, { connected: true, ...display }));
+                        Store.dispatch(action(Types.UpdateDisplay, { connected: true, id: display.id, groupId: display.groupId }));
                         const rollover = this.rollovers.find(r => r.groupId === display.groupId);
                         if (rollover && rollover.dashboard)
                             socket.emit('NextDashboard', rollover.dashboard);
                         socket.on('disconnect', () => {
-                            Store.dispatch(action(Types.UpdateDisplay, { connected: false, ...display }));
+                            Store.dispatch(action(Types.UpdateDisplay, { connected: false, id: display.id, groupId: display.groupId }));
                             this.socketList.delete(display.id);
                             prometheus.setDisplayStatus(display, 0);
                             display.connected = false;
