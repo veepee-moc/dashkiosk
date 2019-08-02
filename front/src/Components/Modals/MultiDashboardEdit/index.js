@@ -29,7 +29,7 @@ class MultiDashboardEdit extends Component {
     }
 
     getMultDashboardInfo() {
-      if (this.props.url && this.props.url.match(/\/api\/multi-dashboards\/\d+/))
+      if (this.props.url && this.props.url.match(/\/api\/multidashboard\/\d+/))
         Axios.get(`${this.props.url}/info`)
           .then((res) => {
             if (res.status === 204)

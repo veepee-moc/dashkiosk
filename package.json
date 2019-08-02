@@ -9,7 +9,7 @@
     "dashkiosk": "./server.js"
   },
   "scripts": {
-    "start": "cd dist && NODE_ENV=production yarn start",
+    "start": "cd dist && NODE_ENV=production && yarn start",
     "test": "mocha ./test/**/*.js",
     "clean": "rm -rf dist && mkdir dist",
     "dist": "yarn --silent clean && yarn --silent build-react && yarn --silent build-server && yarn --silent imagemin",
